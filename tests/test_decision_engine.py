@@ -145,6 +145,18 @@ def test_daily_decision_board_renders_all_tickers(tmp_path: Path) -> None:
     assert "BBB" in index
 
 
+def test_daily_decision_board_ledger_is_idempotent(tmp_path: Path) -> None:
+    _write_watchlist(tmp_path, ["AAA", "BBB"])
+    _write_decision(tmp_path, "AAA", {"current_decision": "HOLD"})
+    _write_decision(tmp_path, "BBB", {"current_decision": "HOLD"})
+
+    write_daily_board(tmp_path)
+    write_daily_board(tmp_path)
+
+    ledger = (tmp_path / "state" / "decision_ledger.jsonl").read_text(encoding="utf-8")
+    assert len(ledger.splitlines()) == 2
+
+
 def _write_project(
     root: Path,
     ticker: str,

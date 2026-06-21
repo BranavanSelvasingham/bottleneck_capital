@@ -2,11 +2,11 @@
 ticker: SEI
 name: Solaris Energy Infrastructure
 sleeve: power_bottleneck
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
-confidence_score: 0
-urgency: HIGH
+confidence_score: 34
+urgency: MEDIUM
 last_updated: 2026-06-20
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
@@ -16,26 +16,44 @@ unresolved_material_event: false
 dip_approved: false
 valuation_improved: false
 portfolio_risk_allows_add: true
-buy_thesis: ""
-valuation_case: ""
-hedge_or_sizing: ""
-invalidation_trigger: ""
+buy_thesis: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.
+thesis_expressed: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.
+anti_thesis: The company may remain energy-services cyclicality rather than durable datacenter power.
+evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+valuation_case: contracted fleet economics and normalized EBITDA scenario value
+hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+invalidation_trigger: Contracted power demand fails to scale or margins do not support fleet expansion.
 broken_thesis: ""
-next_trigger: Underwrite distributed power infrastructure role and contract quality.
-one_line_rationale: Current SA public holding; research power-bottleneck thesis and valuation before action.
+next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
+one_line_rationale: "Hold/watch only: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets."
 ---
 # SEI Decision
 
 Updated: 2026-06-20
 
-Decision: RESEARCH_REQUIRED  
+Decision: HOLD  
 Dip decision: RESEARCH_FIRST  
 Sell status: NOT_TRIGGERED  
-Confidence: 0 / 100  
-Urgency: HIGH  
+Confidence: 34 / 100  
+Urgency: MEDIUM  
 
 One-line rationale:
-Current SA public holding; research power-bottleneck thesis and valuation before action.
+Hold/watch only: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.
+
+Thesis expressed:
+Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.
+
+Anti-thesis:
+The company may remain energy-services cyclicality rather than durable datacenter power.
+
+Evidence quality:
+SA_FILING_AND_LOCAL_BASELINE
+
+Hedge or sizing:
+No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+
+Invalidation trigger:
+Contracted power demand fails to scale or margins do not support fleet expansion.
 
 Buy now?
 NO
@@ -47,7 +65,7 @@ Sell?
 NO
 
 Next trigger:
-Underwrite distributed power infrastructure role and contract quality.
+Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

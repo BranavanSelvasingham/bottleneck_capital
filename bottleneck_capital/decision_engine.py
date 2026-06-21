@@ -268,6 +268,8 @@ def compile_decisions(root: Path) -> list[DecisionResult]:
     results = evaluate_all(root)
     now = _now()
     by_ticker = {item["ticker"]: item for item in load_watchlist(root)}
+    ledger_path = root / "state" / "decision_ledger.jsonl"
+    latest_ledger = _latest_ledger_by_ticker(read_jsonl(ledger_path))
     for result in results:
         path = root / "research" / "decisions" / f"{result.ticker}.md"
         existing, _ = read_markdown_frontmatter(path)
@@ -276,7 +278,10 @@ def compile_decisions(root: Path) -> list[DecisionResult]:
             _decision_frontmatter(result, existing, now),
             _decision_body(result, existing),
         )
-        append_jsonl(root / "state" / "decision_ledger.jsonl", _ledger_record(result, now))
+        ledger_record = _ledger_record(result, now)
+        if _ledger_changed(latest_ledger.get(result.ticker), ledger_record):
+            append_jsonl(ledger_path, ledger_record)
+            latest_ledger[result.ticker] = ledger_record
     write_decision_index(root, results, now, by_ticker)
     return results
 
@@ -535,6 +540,11 @@ def _decision_frontmatter(
         "valuation_improved": existing.get("valuation_improved", False),
         "portfolio_risk_allows_add": existing.get("portfolio_risk_allows_add", True),
         "buy_thesis": existing.get("buy_thesis", ""),
+        "thesis_expressed": existing.get(
+            "thesis_expressed", existing.get("buy_thesis", "")
+        ),
+        "anti_thesis": existing.get("anti_thesis", ""),
+        "evidence_quality": existing.get("evidence_quality", ""),
         "valuation_case": existing.get("valuation_case", ""),
         "hedge_or_sizing": existing.get("hedge_or_sizing", ""),
         "invalidation_trigger": existing.get("invalidation_trigger", ""),
@@ -572,6 +582,21 @@ Urgency: {result.urgency}
 One-line rationale:
 {result.rationale}
 
+Thesis expressed:
+{scalar_text(existing.get("thesis_expressed") or existing.get("buy_thesis")) or "TBD"}
+
+Anti-thesis:
+{scalar_text(existing.get("anti_thesis")) or "TBD"}
+
+Evidence quality:
+{scalar_text(existing.get("evidence_quality")) or "TBD"}
+
+Hedge or sizing:
+{scalar_text(existing.get("hedge_or_sizing")) or result.hedge}
+
+Invalidation trigger:
+{scalar_text(existing.get("invalidation_trigger")) or "TBD"}
+
 Buy now?
 {buy_answer}
 
@@ -597,6 +622,24 @@ def _ledger_record(result: DecisionResult, now: str) -> dict[str, Any]:
         "urgency": result.urgency,
         "rationale": result.rationale,
     }
+
+
+def _latest_ledger_by_ticker(records: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+    latest: dict[str, dict[str, Any]] = {}
+    for record in records:
+        ticker = scalar_text(record.get("ticker")).upper()
+        if ticker:
+            latest[ticker] = record
+    return latest
+
+
+def _ledger_changed(previous: dict[str, Any] | None, current: dict[str, Any]) -> bool:
+    if previous is None:
+        return True
+    return any(
+        scalar_text(previous.get(key)) != scalar_text(current.get(key))
+        for key in ("decision", "urgency", "rationale")
+    )
 
 
 def _render_board_sections(results: list[DecisionResult]) -> list[str]:

@@ -2,10 +2,10 @@
 ticker: MU
 name: Micron
 sleeve: memory_storage_networking
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
-confidence_score: 0
+confidence_score: 48
 urgency: HIGH
 last_updated: 2026-06-20
 source_classification: sa_reported_current_13f
@@ -16,26 +16,44 @@ unresolved_material_event: false
 dip_approved: false
 valuation_improved: false
 portfolio_risk_allows_add: true
-buy_thesis: ""
-valuation_case: ""
-hedge_or_sizing: ""
-invalidation_trigger: ""
+buy_thesis: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
+thesis_expressed: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
+anti_thesis: The upside may be cyclical pricing rather than durable structural scarcity.
+evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+valuation_case: cycle-normalized earnings plus HBM scarcity scenario value
+hedge_or_sizing: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
+invalidation_trigger: HBM leadership or memory pricing breaks while valuation remains elevated.
 broken_thesis: ""
-next_trigger: Complete first-pass thesis, valuation, hedge, and invalidation review.
-one_line_rationale: Initial scaffold; complete primary-source underwriting before action.
+next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
+one_line_rationale: "Hold/watch only: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial."
 ---
 # MU Decision
 
 Updated: 2026-06-20
 
-Decision: RESEARCH_REQUIRED  
+Decision: HOLD  
 Dip decision: RESEARCH_FIRST  
 Sell status: NOT_TRIGGERED  
-Confidence: 0 / 100  
+Confidence: 48 / 100  
 Urgency: HIGH  
 
 One-line rationale:
-Initial scaffold; complete primary-source underwriting before action.
+Hold/watch only: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
+
+Thesis expressed:
+Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
+
+Anti-thesis:
+The upside may be cyclical pricing rather than durable structural scarcity.
+
+Evidence quality:
+SA_FILING_AND_LOCAL_BASELINE
+
+Hedge or sizing:
+No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
+
+Invalidation trigger:
+HBM leadership or memory pricing breaks while valuation remains elevated.
 
 Buy now?
 NO
@@ -47,7 +65,7 @@ Sell?
 NO
 
 Next trigger:
-Complete first-pass thesis, valuation, hedge, and invalidation review.
+Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

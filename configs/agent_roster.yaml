@@ -1,0 +1,166 @@
+agent_types:
+  asset_analyst:
+    purpose: Ticker-scoped research and decision-file updates.
+    owner_id_format: asset_analyst.{TICKER}
+  sleeve_analyst:
+    purpose: Cross-ticker thesis, hedge, and relative-value synthesis.
+    owner_id_format: sleeve_analyst.{SLEEVE}
+  hedge_analyst:
+    purpose: Interpret SA put exposure and crowded-AI risk without trading puts.
+  portfolio_pm:
+    purpose: Compile ticker decisions into the daily board and backlog.
+  filing_analyst:
+    purpose: Track 13F, 13G, SEC, IR, guidance, financing, and contract updates.
+ticker_owners:
+  -
+    ticker: ASML
+    owner_agent: asset_analyst.ASML
+    sleeve_agent: sleeve_analyst.semicap_equipment
+  -
+    ticker: AMD
+    owner_agent: asset_analyst.AMD
+    sleeve_agent: sleeve_analyst.crowded_ai_beta_hedge
+  -
+    ticker: APLD
+    owner_agent: asset_analyst.APLD
+    sleeve_agent: sleeve_analyst.miner_to_datacenter
+  -
+    ticker: BW
+    owner_agent: asset_analyst.BW
+    sleeve_agent: sleeve_analyst.power_bottleneck
+  -
+    ticker: BTDR
+    owner_agent: asset_analyst.BTDR
+    sleeve_agent: sleeve_analyst.miner_to_datacenter
+  -
+    ticker: BITF
+    owner_agent: asset_analyst.BITF
+    sleeve_agent: sleeve_analyst.miner_to_datacenter
+  -
+    ticker: BE
+    owner_agent: asset_analyst.BE
+    sleeve_agent: sleeve_analyst.power_bottleneck
+  -
+    ticker: AVGO
+    owner_agent: asset_analyst.AVGO
+    sleeve_agent: sleeve_analyst.crowded_ai_beta_hedge
+  -
+    ticker: CLSK
+    owner_agent: asset_analyst.CLSK
+    sleeve_agent: sleeve_analyst.miner_to_datacenter
+  -
+    ticker: CORZ
+    owner_agent: asset_analyst.CORZ
+    sleeve_agent: sleeve_analyst.miner_to_datacenter
+  -
+    ticker: CRWV
+    owner_agent: asset_analyst.CRWV
+    sleeve_agent: sleeve_analyst.compute_infra
+  -
+    ticker: GLW
+    owner_agent: asset_analyst.GLW
+    sleeve_agent: sleeve_analyst.ai_networking_optical
+  -
+    ticker: HIVE
+    owner_agent: asset_analyst.HIVE
+    sleeve_agent: sleeve_analyst.miner_to_datacenter
+  -
+    ticker: IREN
+    owner_agent: asset_analyst.IREN
+    sleeve_agent: sleeve_analyst.miner_to_datacenter
+  -
+    ticker: INFY
+    owner_agent: asset_analyst.INFY
+    sleeve_agent: sleeve_analyst.ai_services_put_signal
+  -
+    ticker: INTC
+    owner_agent: asset_analyst.INTC
+    sleeve_agent: sleeve_analyst.semicap_equipment
+  -
+    ticker: MU
+    owner_agent: asset_analyst.MU
+    sleeve_agent: sleeve_analyst.memory_storage_networking
+  -
+    ticker: NVDA
+    owner_agent: asset_analyst.NVDA
+    sleeve_agent: sleeve_analyst.crowded_ai_beta_hedge
+  -
+    ticker: ORCL
+    owner_agent: asset_analyst.ORCL
+    sleeve_agent: sleeve_analyst.enterprise_ai_infra
+  -
+    ticker: PSIX
+    owner_agent: asset_analyst.PSIX
+    sleeve_agent: sleeve_analyst.power_bottleneck
+  -
+    ticker: PUMP
+    owner_agent: asset_analyst.PUMP
+    sleeve_agent: sleeve_analyst.power_bottleneck
+  -
+    ticker: RIOT
+    owner_agent: asset_analyst.RIOT
+    sleeve_agent: sleeve_analyst.miner_to_datacenter
+  -
+    ticker: SNDK
+    owner_agent: asset_analyst.SNDK
+    sleeve_agent: sleeve_analyst.memory_storage_networking
+  -
+    ticker: SHAZ
+    owner_agent: asset_analyst.SHAZ
+    sleeve_agent: sleeve_analyst.compute_infra
+  -
+    ticker: SEI
+    owner_agent: asset_analyst.SEI
+    sleeve_agent: sleeve_analyst.power_bottleneck
+  -
+    ticker: TE
+    owner_agent: asset_analyst.TE
+    sleeve_agent: sleeve_analyst.power_bottleneck
+  -
+    ticker: TSM
+    owner_agent: asset_analyst.TSM
+    sleeve_agent: sleeve_analyst.memory_storage_networking
+  -
+    ticker: SMH
+    owner_agent: asset_analyst.SMH
+    sleeve_agent: sleeve_analyst.crowded_ai_beta_hedge
+  -
+    ticker: WYFI
+    owner_agent: asset_analyst.WYFI
+    sleeve_agent: sleeve_analyst.compute_infra
+  -
+    ticker: NBIS
+    owner_agent: asset_analyst.NBIS
+    sleeve_agent: sleeve_analyst.compute_infra
+  -
+    ticker: VST
+    owner_agent: asset_analyst.VST
+    sleeve_agent: sleeve_analyst.power_bottleneck
+  -
+    ticker: CEG
+    owner_agent: asset_analyst.CEG
+    sleeve_agent: sleeve_analyst.power_bottleneck
+  -
+    ticker: TLNE
+    owner_agent: asset_analyst.TLNE
+    sleeve_agent: sleeve_analyst.power_bottleneck
+  -
+    ticker: VRT
+    owner_agent: asset_analyst.VRT
+    sleeve_agent: sleeve_analyst.ai_power_equipment
+  -
+    ticker: WTS
+    owner_agent: asset_analyst.WTS
+    sleeve_agent: sleeve_analyst.ai_power_equipment
+  -
+    ticker: LITE
+    owner_agent: asset_analyst.LITE
+    sleeve_agent: sleeve_analyst.ai_networking_optical
+  -
+    ticker: MRVL
+    owner_agent: asset_analyst.MRVL
+    sleeve_agent: sleeve_analyst.ai_networking_optical
+  -
+    ticker: ONTO
+    owner_agent: asset_analyst.ONTO
+    sleeve_agent: sleeve_analyst.semicap_equipment

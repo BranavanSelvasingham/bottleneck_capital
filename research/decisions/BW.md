@@ -2,11 +2,11 @@
 ticker: BW
 name: Babcock & Wilcox Enterprises
 sleeve: power_bottleneck
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
-confidence_score: 0
-urgency: HIGH
+confidence_score: 32
+urgency: MEDIUM
 last_updated: 2026-06-20
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
@@ -16,26 +16,44 @@ unresolved_material_event: false
 dip_approved: false
 valuation_improved: false
 portfolio_risk_allows_add: true
-buy_thesis: ""
-valuation_case: ""
-hedge_or_sizing: ""
-invalidation_trigger: ""
+buy_thesis: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.
+thesis_expressed: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.
+anti_thesis: This could be a levered industrial turnaround rather than an AI power solution.
+evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+valuation_case: backlog, liquidity, and normalized EBITDA scenario value
+hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+invalidation_trigger: Liquidity or backlog deterioration removes any credible power-bottleneck expression.
 broken_thesis: ""
-next_trigger: Underwrite power-bottleneck role, balance sheet risk, and contract exposure.
-one_line_rationale: Current SA public holding; needs first-pass thesis and valuation work before action.
+next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
+one_line_rationale: "Hold/watch only: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves."
 ---
 # BW Decision
 
 Updated: 2026-06-20
 
-Decision: RESEARCH_REQUIRED  
+Decision: HOLD  
 Dip decision: RESEARCH_FIRST  
 Sell status: NOT_TRIGGERED  
-Confidence: 0 / 100  
-Urgency: HIGH  
+Confidence: 32 / 100  
+Urgency: MEDIUM  
 
 One-line rationale:
-Current SA public holding; needs first-pass thesis and valuation work before action.
+Hold/watch only: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.
+
+Thesis expressed:
+Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.
+
+Anti-thesis:
+This could be a levered industrial turnaround rather than an AI power solution.
+
+Evidence quality:
+SA_FILING_AND_LOCAL_BASELINE
+
+Hedge or sizing:
+No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+
+Invalidation trigger:
+Liquidity or backlog deterioration removes any credible power-bottleneck expression.
 
 Buy now?
 NO
@@ -47,7 +65,7 @@ Sell?
 NO
 
 Next trigger:
-Underwrite power-bottleneck role, balance sheet risk, and contract exposure.
+Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

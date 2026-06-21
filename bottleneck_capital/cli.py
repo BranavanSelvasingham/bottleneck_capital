@@ -3,11 +3,13 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from bottleneck_capital.baseline import write_all_wave_baseline
 from bottleneck_capital.decision_engine import (
     compile_decisions,
     create_dip_investigation,
     write_daily_board,
 )
+from bottleneck_capital.initialize import run_initialization
 from bottleneck_capital.sentinel import run_sentinel
 
 
@@ -28,6 +30,8 @@ def main(argv: list[str] | None = None) -> int:
 
     subparsers.add_parser("compile-decisions", help="Evaluate and rewrite ticker decision files.")
     subparsers.add_parser("daily-board", help="Write the daily decision board.")
+    subparsers.add_parser("initialize-run", help="Write initialization baseline and agent packets.")
+    subparsers.add_parser("baseline-decisions", help="Write all-wave baseline ticker decisions.")
 
     dip_parser = subparsers.add_parser("dip-investigate", help="Create a dip investigation memo.")
     dip_parser.add_argument("--ticker", required=True, help="Ticker to investigate.")
@@ -46,6 +50,15 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "daily-board":
         path = write_daily_board(root)
         print(path)
+        return 0
+    if args.command == "initialize-run":
+        paths = run_initialization(root)
+        for path in paths:
+            print(path)
+        return 0
+    if args.command == "baseline-decisions":
+        paths = write_all_wave_baseline(root)
+        print(f"Wrote {len(paths)} baseline file(s).")
         return 0
     if args.command == "dip-investigate":
         path = create_dip_investigation(root, args.ticker)
