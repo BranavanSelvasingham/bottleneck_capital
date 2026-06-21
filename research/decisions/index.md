@@ -1,6 +1,6 @@
 # Bottleneck Capital Decision Index
 
-Updated: 2026-06-20T21:32-04:00
+Updated: 2026-06-20T22:46-04:00
 
 ## Buy Now
 
@@ -55,6 +55,7 @@ Updated: 2026-06-20T21:32-04:00
 | WTS | Hold/watch only: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 | LITE | Hold/watch only: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 | MRVL | Hold/watch only: Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| SPCX | Hold/watch only: SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 | ONTO | Hold/watch only: Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 
 ## Trim / Sell Watch

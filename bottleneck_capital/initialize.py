@@ -124,6 +124,19 @@ SLEEVE_THESES = {
             "Is the name current SA exposure or only an adjacent proxy?",
         ],
     },
+    "space_infra": {
+        "title": "Space Infrastructure",
+        "thesis": (
+            "Reusable launch, satellite networks, secure communications, and space logistics "
+            "can become strategic infrastructure bottlenecks adjacent to AI, defense, and "
+            "compute connectivity."
+        ),
+        "questions": [
+            "Is the exposure actually investable or only a ticker/private-market signal?",
+            "Does space infrastructure reinforce AI, defense, data, or communications scarcity?",
+            "What liquidity, listing, custody, and valuation constraints make it non-actionable?",
+        ],
+    },
     "enterprise_ai_infra": {
         "title": "Enterprise AI Infrastructure Signal",
         "thesis": (

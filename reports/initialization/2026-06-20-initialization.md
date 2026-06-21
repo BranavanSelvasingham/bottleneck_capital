@@ -4,10 +4,10 @@ Date: 2026-06-20
 
 ## Universe Baseline
 
-- Total tracked tickers: 38
+- Total tracked tickers: 39
 - Strict current public SA 13F / signal names: 29
 - Post-quarter public clues: 1
-- Adjacent or historical thesis proxies: 8
+- Adjacent or historical thesis proxies: 9
 - Signal-only no-puts/no-shorts names: 4
 
 Source metadata:
@@ -53,10 +53,11 @@ Source metadata:
 | 32 | LITE | 3 | ai_networking_optical | sa_adjacent_historical_or_thesis_proxy | common_equity | long_only_after_research | 28 |
 | 33 | MRVL | 3 | ai_networking_optical | sa_adjacent_historical_or_thesis_proxy | common_equity | long_only_after_research | 28 |
 | 34 | ONTO | 3 | semicap_equipment | sa_adjacent_historical_or_thesis_proxy | common_equity | long_only_after_research | 28 |
-| 35 | TLNE | 3 | power_bottleneck | sa_adjacent_historical_or_thesis_proxy | common_equity | long_only_after_research | 28 |
-| 36 | VRT | 3 | ai_power_equipment | sa_adjacent_historical_or_thesis_proxy | common_equity | long_only_after_research | 28 |
-| 37 | VST | 3 | power_bottleneck | sa_adjacent_historical_or_thesis_proxy | common_equity | long_only_after_research | 28 |
-| 38 | WTS | 3 | ai_power_equipment | sa_adjacent_thesis_proxy | common_equity | long_only_after_research | 18 |
+| 35 | SPCX | 3 | space_infra | sa_adjacent_thesis_proxy | local_position_adjacent_proxy | long_only_after_research | 28 |
+| 36 | TLNE | 3 | power_bottleneck | sa_adjacent_historical_or_thesis_proxy | common_equity | long_only_after_research | 28 |
+| 37 | VRT | 3 | ai_power_equipment | sa_adjacent_historical_or_thesis_proxy | common_equity | long_only_after_research | 28 |
+| 38 | VST | 3 | power_bottleneck | sa_adjacent_historical_or_thesis_proxy | common_equity | long_only_after_research | 28 |
+| 39 | WTS | 3 | ai_power_equipment | sa_adjacent_thesis_proxy | common_equity | long_only_after_research | 18 |
 
 ## Agent Waves
 
@@ -102,6 +103,7 @@ Source metadata:
 - `LITE` - SA-adjacent, historical, or thesis-proxy name.
 - `MRVL` - SA-adjacent, historical, or thesis-proxy name.
 - `ONTO` - SA-adjacent, historical, or thesis-proxy name.
+- `SPCX` - SA-adjacent, historical, or thesis-proxy name.
 - `TLNE` - SA-adjacent, historical, or thesis-proxy name.
 - `VRT` - SA-adjacent, historical, or thesis-proxy name.
 - `VST` - SA-adjacent, historical, or thesis-proxy name.
