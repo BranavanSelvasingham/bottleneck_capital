@@ -1,0 +1,267 @@
+watchlist:
+  - ticker: ASML
+    name: ASML Holding
+    sleeve: semicap_equipment
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_with_put_signal
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: AMD
+    name: Advanced Micro Devices
+    sleeve: crowded_ai_beta_hedge
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_with_put_signal
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: APLD
+    name: Applied Digital
+    sleeve: miner_to_datacenter
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: BW
+    name: Babcock & Wilcox Enterprises
+    sleeve: power_bottleneck
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: BTDR
+    name: Bitdeer
+    sleeve: miner_to_datacenter
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: BITF
+    name: Bitfarms
+    sleeve: miner_to_datacenter
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: BE
+    name: Bloom Energy
+    sleeve: power_bottleneck
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_and_call_signal
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: AVGO
+    name: Broadcom
+    sleeve: crowded_ai_beta_hedge
+    source_classification: sa_reported_current_13f
+    instrument_role: reported_put_signal
+    trade_policy: signal_only_no_puts_or_shorts
+    priority: high
+  - ticker: CLSK
+    name: CleanSpark
+    sleeve: miner_to_datacenter
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: CORZ
+    name: Core Scientific
+    sleeve: miner_to_datacenter
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: CRWV
+    name: CoreWeave
+    sleeve: compute_infra
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_and_call_signal
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: GLW
+    name: Corning
+    sleeve: ai_networking_optical
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_with_put_signal
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: HIVE
+    name: HIVE Digital Technologies
+    sleeve: miner_to_datacenter
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: IREN
+    name: IREN
+    sleeve: miner_to_datacenter
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: INFY
+    name: Infosys
+    sleeve: ai_services_put_signal
+    source_classification: sa_reported_current_13f
+    instrument_role: reported_put_signal
+    trade_policy: signal_only_no_puts_or_shorts
+    priority: medium
+  - ticker: INTC
+    name: Intel
+    sleeve: semicap_equipment
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_with_put_signal
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: MU
+    name: Micron
+    sleeve: memory_storage_networking
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_call_signal_and_put_signal
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: NVDA
+    name: NVIDIA
+    sleeve: crowded_ai_beta_hedge
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_with_put_signal
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: ORCL
+    name: Oracle
+    sleeve: enterprise_ai_infra
+    source_classification: sa_reported_current_13f
+    instrument_role: reported_put_signal
+    trade_policy: signal_only_no_puts_or_shorts
+    priority: high
+  - ticker: PSIX
+    name: Power Solutions International
+    sleeve: power_bottleneck
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: PUMP
+    name: ProPetro Holding
+    sleeve: power_bottleneck
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: RIOT
+    name: Riot Platforms
+    sleeve: miner_to_datacenter
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: SNDK
+    name: SanDisk
+    sleeve: memory_storage_networking
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_and_call_signal
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: SHAZ
+    name: SharonAI Holdings
+    sleeve: compute_infra
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: SEI
+    name: Solaris Energy Infrastructure
+    sleeve: power_bottleneck
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: TE
+    name: T1 Energy
+    sleeve: power_bottleneck
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: TSM
+    name: Taiwan Semiconductor Manufacturing
+    sleeve: memory_storage_networking
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_call_signal_and_put_signal
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: SMH
+    name: VanEck Semiconductor ETF
+    sleeve: crowded_ai_beta_hedge
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity_with_put_signal
+    trade_policy: signal_only_no_puts_or_shorts
+    priority: high
+  - ticker: WYFI
+    name: WhiteFiber
+    sleeve: compute_infra
+    source_classification: sa_reported_current_13f
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: NBIS
+    name: Nebius
+    sleeve: compute_infra
+    source_classification: sa_post_quarter_13g
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: high
+  - ticker: VST
+    name: Vistra
+    sleeve: power_bottleneck
+    source_classification: sa_adjacent_historical_or_thesis_proxy
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: CEG
+    name: Constellation Energy
+    sleeve: power_bottleneck
+    source_classification: sa_adjacent_thesis_proxy
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: TLNE
+    name: Talen Energy
+    sleeve: power_bottleneck
+    source_classification: sa_adjacent_historical_or_thesis_proxy
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: VRT
+    name: Vertiv
+    sleeve: ai_power_equipment
+    source_classification: sa_adjacent_historical_or_thesis_proxy
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: WTS
+    name: Watts Water Technologies
+    sleeve: ai_power_equipment
+    source_classification: sa_adjacent_thesis_proxy
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: low
+  - ticker: LITE
+    name: Lumentum
+    sleeve: ai_networking_optical
+    source_classification: sa_adjacent_historical_or_thesis_proxy
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: MRVL
+    name: Marvell Technology
+    sleeve: ai_networking_optical
+    source_classification: sa_adjacent_historical_or_thesis_proxy
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium
+  - ticker: ONTO
+    name: Onto Innovation
+    sleeve: semicap_equipment
+    source_classification: sa_adjacent_historical_or_thesis_proxy
+    instrument_role: common_equity
+    trade_policy: long_only_after_research
+    priority: medium

@@ -1,0 +1,40 @@
+timezone: America/Toronto
+
+market_days:
+  - name: pre-market thesis scan
+    time: "07:15"
+    purpose: Catch overnight filings, press releases, earnings, and major AI or macro news.
+  - name: open dislocation scan
+    time: "09:45"
+    purpose: Detect opening gaps and decide whether they need dip research.
+  - name: intraday sentinel checks
+    times:
+      - "10:45"
+      - "12:30"
+      - "14:30"
+    purpose: Cheap checks for sudden price moves, filings, releases, or major source changes.
+  - name: late-day action check
+    time: "15:30"
+    purpose: Decide whether any buyable dip should be acted on before close.
+  - name: close decision board
+    time: "16:20"
+    purpose: Update BUY_NOW, ADD_ON_DIP, HOLD, TRIM, SELL, and RESEARCH_REQUIRED for each ticker.
+  - name: after-hours filing check
+    time: "19:30"
+    purpose: Catch filings, earnings releases, investor decks, and after-hours guidance.
+
+weekly_sleeve_rotation:
+  Monday: compute_infra
+  Tuesday: power_bottleneck
+  Wednesday: miner_to_datacenter
+  Thursday: memory_storage_networking
+  Friday: crowded_ai_beta_hedge
+
+weekend:
+  - name: weekend thesis rebuild
+    day: Saturday
+    purpose: Rebuild one thesis sleeve from scratch.
+  - name: Sunday decision prep
+    day: Sunday
+    purpose: Prepare Monday buy list, dip list, sell watchlist, research priorities, and hedge posture.
+
