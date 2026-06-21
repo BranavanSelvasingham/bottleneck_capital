@@ -2,73 +2,215 @@
 ticker: GLW
 name: Corning
 sleeve: ai_networking_optical
-asset_role: optical_and_materials_bottleneck_signal
-default_holding_period: multi_year
-current_decision: RESEARCH_REQUIRED
-dip_decision: RESEARCH_FIRST
-sell_decision: NOT_TRIGGERED
-research_priority: MEDIUM
 last_updated: 2026-06-20
-thesis_health_score: 0
-confidence_score: 0
-valuation_attractiveness_score: 0
-urgency_score: 100
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: long_only_after_research
-approved_entry_zone: TBD
-do_not_buy_zone: TBD
-sell_trigger_status: false
-hedge_required: true
-main_hedge: TBD
-open_questions_count: 1
 thesis_damage: false
 unresolved_material_event: false
-broken_thesis:
-invalidation_trigger:
-one_line_rationale: SA reports common equity plus put exposure; resolve whether this is long thesis, hedge signal, or both.
+evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+thesis_expressed: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.
+anti_thesis: The AI link may be too diluted by consumer, display, or telecom cycles.
+hedge_or_sizing: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
+invalidation_trigger: AI/datacenter optical demand does not become material enough to change earnings power.
+next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
+one_line_rationale: "Hold/watch only: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only."
+asset_role: AI optical/fiber beneficiary with put-signal caution.
+default_holding_period: multi_year
+current_decision: HOLD
+dip_decision: RESEARCH_FIRST
+sell_decision: NOT_TRIGGERED
+research_priority: MEDIUM
+last_primary_source_check: 2026-06-20
+thesis_health_score: 48
+confidence_score: 38
+valuation_attractiveness_score: 27
+urgency_score: 60
+max_position_weight_pct: 0
+current_position_weight_pct: 0
+approved_entry_zone: No new capital until scheduled scan validates valuation.
+do_not_buy_zone: Any price without thesis, valuation, sizing, and invalidation.
+sell_trigger_status: false
+hedge_required: true
+main_hedge: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
+open_questions_count: 0
+broken_thesis: ""
 ---
 # GLW - Corning
 
 ## 0. Current Decision
-Current action: RESEARCH_REQUIRED
+
+### Simple decision
+
+Current action: HOLD
+
+### One-line decision
+
+Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.
+
+### Decision table
+
+| Field | Status |
+|---|---|
+| Long-term ownership candidate? | POSSIBLE, NOT APPROVED |
+| Buy today? | NO |
+| Add on dip? | RESEARCH_FIRST |
+| Sell / exit? | NO, unless invalidation triggers |
+| Hedge required? | YES, via sizing/no-action discipline |
+| Main risk today | End-market dilution, cyclicality, and ambiguity of SA put exposure. |
+| Main upside driver today | Optical communications demand, datacenter fiber, and margin recovery. |
+| Next review trigger | Scheduled scan or new primary-source event |
 
 ## 1. Role in Bottleneck Capital
-TBD.
+
+Sleeve: `ai_networking_optical`
+
+Why this asset belongs here: AI optical/fiber beneficiary with put-signal caution.
+
+What this asset is actually a bet on:
+
+1. Optical communications demand, datacenter fiber, and margin recovery.
+2. The SA/public-filing signal being informative for the bottleneck thesis.
+3. Long-only discipline being stricter than SA's reported options exposure.
+
+What this asset is not a bet on:
+
+- The AI link may be too diluted by consumer, display, or telecom cycles.
+- No puts, shorts, or technical indicators under the current mandate.
 
 ## 2. Thesis Stack
-TBD.
+
+### Thesis A - Primary thesis
+
+Status: ACTIVE WATCH  
+Confidence: 38  
+Time horizon: multi-year  
+Importance: HIGH
+
+Claim: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.
+
+Evidence for:
+- Situational Awareness LP public 13F-HR, 2026-03-31 period, filed 2026-05-18; configs/watchlist.yaml; configs/sa_universe.yaml; research/agent_packets/wave_2/GLW.md; wave execution memo.
+- Sleeve thesis: `ai_networking_optical`.
+
+Evidence against:
+- The AI link may be too diluted by consumer, display, or telecom cycles.
+- End-market dilution, cyclicality, and ambiguity of SA put exposure.
+
+What would break it:
+- AI/datacenter optical demand does not become material enough to change earnings power.
+
+Decision impact:
+HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
+valuation, and sizing.
+
+Hedge implication:
+No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
+
+### Thesis B - Valuation thesis
+
+Status: UNPROVEN FOR NEW CAPITAL  
+Claim: segment recovery and AI optical contribution scenario value. Current baseline does not approve a buy.
+
+### Thesis C - Catalyst thesis
+
+Status: EVENT-DRIVEN  
+Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
+change, or detected dip can reopen the decision.
 
 ## 3. Market-Implied View vs Variant View
-TBD.
+
+What the market seems to believe:
+- AI infrastructure scarcity matters, but quality, timing, and valuation vary by ticker.
+- Crowded AI beta and financing risk can overwhelm a correct high-level theme.
+
+Our variant view:
+- The SA signal is useful for prioritization, not a trade instruction.
+- HOLD is the right baseline until valuation and primary-source evidence justify a stronger action.
+
+Why we may be wrong:
+- The company may already be a cleaner bottleneck expression than the baseline allows.
+- The risk signal may be stale or purely hedge-related.
+
+Is the variant view big enough to matter?
+UNCLEAR until a scheduled scan updates primary evidence and valuation.
 
 ## 4. Long-Term Ownership Quality
-TBD.
+
+| Dimension | Score | Notes |
+|---|---:|---|
+| Thesis purity | 3 | AI optical/fiber beneficiary with put-signal caution. |
+| Durability | 3 | Requires scheduled evidence refresh. |
+| Balance sheet resilience | 3 | Main risk: End-market dilution, cyclicality, and ambiguity of SA put exposure. |
+| Management / execution | 3 | Execution still matters. |
+| Strategic scarcity | 3 | Upside: Optical communications demand, datacenter fiber, and margin recovery. |
+| Contract quality | 3 | Needs source-event verification. |
+| Customer quality | 3 | Needs source-event verification. |
+| Pricing power | 3 | Valuation frame: segment recovery and AI optical contribution scenario value. |
+| Downside survivability | 2 | Invalidation: AI/datacenter optical demand does not become material enough to change earnings power. |
+| Hedgeability | 2 | Long-only hedge is sizing/no action. |
+
+Long-term owner score: 28 / 50
 
 ## 5. Valuation and Entry Discipline
-TBD.
+
+Valuation frame: segment recovery and AI optical contribution scenario value
+
+| Zone | Meaning | Action |
+|---|---|---|
+| Approved entry | Not armed in this baseline | No buy |
+| Dip investigation | Material drop with no thesis damage | Run `bcap dip-investigate --ticker GLW` |
+| Do-not-buy | Thesis, valuation, or sizing not explicit | Hold/watch |
 
 ## 6. Dip Protocol
-TBD.
+
+Dip status: RESEARCH_FIRST
+
+A dip is buyable only if the cause is bounded, no thesis damage is found, valuation improves,
+and portfolio risk allows adding.
 
 ## 7. Sell / Exit Protocol
-TBD.
+
+Sell is not triggered. Exit review is triggered by:
+
+- AI/datacenter optical demand does not become material enough to change earnings power.
+- Future SA full exit from a tracked current/public evidence name.
+- Material SA reduction that weakens thesis weight.
+- Unacceptable financing, customer, regulatory, or governance risk.
 
 ## 8. Failure Modes
-TBD.
+
+- End-market dilution, cyclicality, and ambiguity of SA put exposure.
+- The AI link may be too diluted by consumer, display, or telecom cycles.
+- Overpaying for a correct bottleneck theme.
 
 ## 9. Hedge Map
-TBD.
+
+No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 
 ## 10. Latest Signals
-Reported SA put exposure is signal-only for this mandate.
+
+- Wave: 2
+- Source classification: `sa_reported_current_13f`
+- Instrument role: `common_equity_with_put_signal`
+- Trade policy: `long_only_after_research`
 
 ## 11. Source Register
-- SA Q1 2026 public 13F information table.
+
+- Situational Awareness LP public 13F-HR, 2026-03-31 period, filed 2026-05-18
+- `configs/sa_universe.yaml`
+- `configs/watchlist.yaml`
+- `research/agent_packets/wave_2/GLW.md`
+- `reports/initialization/2026-06-20-wave-2-execution.md`
+
+Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
+before the next scheduled process.
 
 ## 12. Open Questions
-- Is GLW an optical bottleneck long thesis or an AI-cycle downside signal?
+
+- None blocking before the next scheduled scan. Future work is event/schedule-driven.
 
 ## 13. Latest Agent Notes
-No agent notes yet.
 
+All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
+SELL action authorized.

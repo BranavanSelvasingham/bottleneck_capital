@@ -2,73 +2,215 @@
 ticker: LITE
 name: Lumentum
 sleeve: ai_networking_optical
-asset_role: adjacent_optical_networking_proxy
-default_holding_period: multi_year
-current_decision: RESEARCH_REQUIRED
-dip_decision: RESEARCH_FIRST
-sell_decision: NOT_TRIGGERED
-research_priority: MEDIUM
 last_updated: 2026-06-20
-thesis_health_score: 0
-confidence_score: 0
-valuation_attractiveness_score: 0
-urgency_score: 75
 source_classification: sa_adjacent_historical_or_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
-approved_entry_zone: TBD
-do_not_buy_zone: TBD
-sell_trigger_status: false
-hedge_required: true
-main_hedge: TBD
-open_questions_count: 1
 thesis_damage: false
 unresolved_material_event: false
-broken_thesis:
-invalidation_trigger:
-one_line_rationale: SA-adjacent optical/networking proxy; not latest-current SA holding.
+evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+thesis_expressed: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.
+anti_thesis: Telecom cyclicality may dominate any datacenter optical upside.
+hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+invalidation_trigger: AI/datacom demand fails to offset telecom cyclicality.
+next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
+one_line_rationale: "Hold/watch only: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy."
+asset_role: Adjacent optical/networking proxy.
+default_holding_period: multi_year
+current_decision: HOLD
+dip_decision: RESEARCH_FIRST
+sell_decision: NOT_TRIGGERED
+research_priority: MEDIUM
+last_primary_source_check: 2026-06-20
+thesis_health_score: 42
+confidence_score: 34
+valuation_attractiveness_score: 24
+urgency_score: 60
+max_position_weight_pct: 0
+current_position_weight_pct: 0
+approved_entry_zone: No new capital until scheduled scan validates valuation.
+do_not_buy_zone: Any price without thesis, valuation, sizing, and invalidation.
+sell_trigger_status: false
+hedge_required: true
+main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+open_questions_count: 0
+broken_thesis: ""
 ---
 # LITE - Lumentum
 
 ## 0. Current Decision
-Current action: RESEARCH_REQUIRED
+
+### Simple decision
+
+Current action: HOLD
+
+### One-line decision
+
+Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.
+
+### Decision table
+
+| Field | Status |
+|---|---|
+| Long-term ownership candidate? | POSSIBLE, NOT APPROVED |
+| Buy today? | NO |
+| Add on dip? | RESEARCH_FIRST |
+| Sell / exit? | NO, unless invalidation triggers |
+| Hedge required? | YES, via sizing/no-action discipline |
+| Main risk today | Telecom weakness, customer concentration, and non-SA status. |
+| Main upside driver today | AI transceiver/optical demand and datacom mix improvement. |
+| Next review trigger | Scheduled scan or new primary-source event |
 
 ## 1. Role in Bottleneck Capital
-Adjacent or historical SA optical/networking proxy.
+
+Sleeve: `ai_networking_optical`
+
+Why this asset belongs here: Adjacent optical/networking proxy.
+
+What this asset is actually a bet on:
+
+1. AI transceiver/optical demand and datacom mix improvement.
+2. The SA/public-filing signal being informative for the bottleneck thesis.
+3. Long-only discipline being stricter than SA's reported options exposure.
+
+What this asset is not a bet on:
+
+- Telecom cyclicality may dominate any datacenter optical upside.
+- No puts, shorts, or technical indicators under the current mandate.
 
 ## 2. Thesis Stack
-TBD.
+
+### Thesis A - Primary thesis
+
+Status: ACTIVE WATCH  
+Confidence: 34  
+Time horizon: multi-year  
+Importance: HIGH
+
+Claim: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.
+
+Evidence for:
+- Situational Awareness LP public 13F-HR, 2026-03-31 period, filed 2026-05-18; configs/watchlist.yaml; configs/sa_universe.yaml; research/agent_packets/wave_3/LITE.md; wave execution memo.
+- Sleeve thesis: `ai_networking_optical`.
+
+Evidence against:
+- Telecom cyclicality may dominate any datacenter optical upside.
+- Telecom weakness, customer concentration, and non-SA status.
+
+What would break it:
+- AI/datacom demand fails to offset telecom cyclicality.
+
+Decision impact:
+HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
+valuation, and sizing.
+
+Hedge implication:
+No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+
+### Thesis B - Valuation thesis
+
+Status: UNPROVEN FOR NEW CAPITAL  
+Claim: datacom recovery and optical component scenario value. Current baseline does not approve a buy.
+
+### Thesis C - Catalyst thesis
+
+Status: EVENT-DRIVEN  
+Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
+change, or detected dip can reopen the decision.
 
 ## 3. Market-Implied View vs Variant View
-TBD.
+
+What the market seems to believe:
+- AI infrastructure scarcity matters, but quality, timing, and valuation vary by ticker.
+- Crowded AI beta and financing risk can overwhelm a correct high-level theme.
+
+Our variant view:
+- The SA signal is useful for prioritization, not a trade instruction.
+- HOLD is the right baseline until valuation and primary-source evidence justify a stronger action.
+
+Why we may be wrong:
+- The company may already be a cleaner bottleneck expression than the baseline allows.
+- The risk signal may be stale or purely hedge-related.
+
+Is the variant view big enough to matter?
+UNCLEAR until a scheduled scan updates primary evidence and valuation.
 
 ## 4. Long-Term Ownership Quality
-TBD.
+
+| Dimension | Score | Notes |
+|---|---:|---|
+| Thesis purity | 3 | Adjacent optical/networking proxy. |
+| Durability | 3 | Requires scheduled evidence refresh. |
+| Balance sheet resilience | 3 | Main risk: Telecom weakness, customer concentration, and non-SA status. |
+| Management / execution | 3 | Execution still matters. |
+| Strategic scarcity | 3 | Upside: AI transceiver/optical demand and datacom mix improvement. |
+| Contract quality | 2 | Needs source-event verification. |
+| Customer quality | 2 | Needs source-event verification. |
+| Pricing power | 2 | Valuation frame: datacom recovery and optical component scenario value. |
+| Downside survivability | 2 | Invalidation: AI/datacom demand fails to offset telecom cyclicality. |
+| Hedgeability | 2 | Long-only hedge is sizing/no action. |
+
+Long-term owner score: 25 / 50
 
 ## 5. Valuation and Entry Discipline
-TBD.
+
+Valuation frame: datacom recovery and optical component scenario value
+
+| Zone | Meaning | Action |
+|---|---|---|
+| Approved entry | Not armed in this baseline | No buy |
+| Dip investigation | Material drop with no thesis damage | Run `bcap dip-investigate --ticker LITE` |
+| Do-not-buy | Thesis, valuation, or sizing not explicit | Hold/watch |
 
 ## 6. Dip Protocol
-TBD.
+
+Dip status: RESEARCH_FIRST
+
+A dip is buyable only if the cause is bounded, no thesis damage is found, valuation improves,
+and portfolio risk allows adding.
 
 ## 7. Sell / Exit Protocol
-TBD.
+
+Sell is not triggered. Exit review is triggered by:
+
+- AI/datacom demand fails to offset telecom cyclicality.
+- Future SA full exit from a tracked current/public evidence name.
+- Material SA reduction that weakens thesis weight.
+- Unacceptable financing, customer, regulatory, or governance risk.
 
 ## 8. Failure Modes
-TBD.
+
+- Telecom weakness, customer concentration, and non-SA status.
+- Telecom cyclicality may dominate any datacenter optical upside.
+- Overpaying for a correct bottleneck theme.
 
 ## 9. Hedge Map
-TBD.
+
+No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 
 ## 10. Latest Signals
-TBD.
+
+- Wave: 3
+- Source classification: `sa_adjacent_historical_or_thesis_proxy`
+- Instrument role: `common_equity`
+- Trade policy: `long_only_after_research`
 
 ## 11. Source Register
-- SA-adjacent / historical thesis proxy list.
+
+- Situational Awareness LP public 13F-HR, 2026-03-31 period, filed 2026-05-18
+- `configs/sa_universe.yaml`
+- `configs/watchlist.yaml`
+- `research/agent_packets/wave_3/LITE.md`
+- `reports/initialization/2026-06-20-wave-3-execution.md`
+
+Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
+before the next scheduled process.
 
 ## 12. Open Questions
-- How much direct AI networking bottleneck exposure exists?
+
+- None blocking before the next scheduled scan. Future work is event/schedule-driven.
 
 ## 13. Latest Agent Notes
-No agent notes yet.
 
+All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
+SELL action authorized.

@@ -1,6 +1,6 @@
 # Bottleneck Capital Decision Index
 
-Updated: 2026-06-20T20:18-04:00
+Updated: 2026-06-20T21:32-04:00
 
 ## Buy Now
 
@@ -18,10 +18,44 @@ Updated: 2026-06-20T20:18-04:00
 
 | Ticker | Why | What Would Change It |
 |---|---|---|
+| ASML | Hold/watch only: ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA put signal makes valuation and China/export-control risk central. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| AMD | Hold/watch only: AMD is a second-source AI accelerator candidate, but SA put exposure says the long case must clear high valuation and execution hurdles. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| APLD | Hold/watch only: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| BW | Hold/watch only: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| BTDR | Hold/watch only: Bitdeer offers power and infrastructure optionality, but the thesis is mixed across mining, ASICs, and possible HPC capacity. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| BITF | Hold/watch only: Bitfarms is a power/site option that could benefit from AI conversion, but current evidence is not strong enough for new capital. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| BE | Hold/watch only: Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 | AVGO | Signal-only SA put/hedge exposure; no puts or shorts in the current mandate. | Monitor as SA risk signal; act only if a separate long-only thesis emerges. |
+| CLSK | Hold/watch only: CleanSpark may own useful power/site optionality, but current posture is watch-only until AI datacenter economics become primary-source visible. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| CORZ | Hold/watch only: Core Scientific is one of the cleaner miner-to-HPC conversion candidates because contracted hosting can separate value from Bitcoin beta. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| CRWV | Hold/watch only: CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| GLW | Hold/watch only: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| HIVE | Hold/watch only: HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| IREN | Hold/watch only: IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 | INFY | Signal-only SA put/hedge exposure; no puts or shorts in the current mandate. | Monitor as SA risk signal; act only if a separate long-only thesis emerges. |
+| INTC | Hold/watch only: Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| MU | Hold/watch only: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| NVDA | Hold/watch only: NVIDIA remains the highest-quality AI accelerator bottleneck, but SA put exposure flags valuation/crowding risk. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 | ORCL | Signal-only SA put/hedge exposure; no puts or shorts in the current mandate. | Monitor as SA risk signal; act only if a separate long-only thesis emerges. |
+| PSIX | Hold/watch only: Power Solutions International may supply engines/gensets into power scarcity, but the proof point is durable datacenter/customer backlog. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| PUMP | Hold/watch only: ProPetro requires caution because the AI power link is less direct than other sleeve names and may be oilfield-services exposure. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| RIOT | Hold/watch only: Riot has power and site optionality, but the current long-only case is not clean enough without stronger AI conversion evidence. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| SNDK | Hold/watch only: SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| SHAZ | Hold/watch only: SharonAI is tracked because it appears in current public SA exposure, but liquidity, governance, and asset verification keep it hold-only. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| SEI | Hold/watch only: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| TE | Hold/watch only: T1 Energy is tracked as a current SA holding, but business-model and financing clarity are not strong enough for new capital. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| TSM | Hold/watch only: TSMC is a core foundry/advanced packaging scarcity asset, but geopolitics, customer concentration, and SA put exposure require sizing discipline. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 | SMH | Signal-only SA put/hedge exposure; no puts or shorts in the current mandate. | Monitor as SA risk signal; act only if a separate long-only thesis emerges. |
+| WYFI | Hold/watch only: WhiteFiber is tracked because it appears in current public SA exposure, but public evidence, liquidity, and financing quality need caution. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| NBIS | Hold/watch only: Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jurisdiction, customer, and financing risk keep it hold-only. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| VST | Hold/watch only: Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| CEG | Hold/watch only: Constellation is a high-quality power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only absent promotion or a priced entry. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| TLNE | Hold/watch only: Talen is a power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only pending promotion or better entry evidence. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| VRT | Hold/watch only: Vertiv is a clear datacenter power/thermal equipment beneficiary, but it is not latest-current SA exposure in this system. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| WTS | Hold/watch only: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| LITE | Hold/watch only: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| MRVL | Hold/watch only: Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| ONTO | Hold/watch only: Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 
 ## Trim / Sell Watch
 
@@ -39,38 +73,5 @@ Updated: 2026-06-20T20:18-04:00
 
 | Ticker | Question | Deadline |
 |---|---|---|
-| ASML | SA reports common equity plus put exposure; resolve long thesis versus hedge signal before any action. | Next review |
-| AMD | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| APLD | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| BW | Current SA public holding; needs first-pass thesis and valuation work before action. | Next review |
-| BTDR | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| BITF | Current SA public holding; research whether this is an AI-infra conversion bet or miner beta. | Next review |
-| BE | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| CLSK | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| CORZ | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| CRWV | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| GLW | SA reports common equity plus put exposure; resolve whether this is long thesis, hedge signal, or both. | Next review |
-| HIVE | Current SA public holding; research AI datacenter conversion quality before action. | Next review |
-| IREN | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| INTC | SA reports small common equity plus put exposure; research before any long-only action. | Next review |
-| MU | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| NVDA | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| PSIX | Current SA public holding; research power-bottleneck purity and valuation before action. | Next review |
-| PUMP | Current SA public holding; research thesis purity before action. | Next review |
-| RIOT | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| SNDK | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| SHAZ | Current SA public holding; likely needs high-scrutiny research before any action. | Next review |
-| SEI | Current SA public holding; research power-bottleneck thesis and valuation before action. | Next review |
-| TE | Current SA public holding; research thesis quality before action. | Next review |
-| TSM | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| WYFI | Current SA public holding; needs first-pass thesis and valuation work before action. | Next review |
-| NBIS | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| VST | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| CEG | Initial scaffold; complete primary-source underwriting before action. | Next review |
-| TLNE | SA-adjacent power proxy; research only after strict current SA names are triaged. | Next review |
-| VRT | SA-adjacent equipment proxy; not latest-current SA holding. | Next review |
-| WTS | Adjacent thesis proxy; not latest-current SA holding. | Next review |
-| LITE | SA-adjacent optical/networking proxy; not latest-current SA holding. | Next review |
-| MRVL | SA-adjacent networking proxy; not latest-current SA holding. | Next review |
-| ONTO | SA-adjacent semicap proxy; not latest-current SA holding. | Next review |
+| - | - | - |
 

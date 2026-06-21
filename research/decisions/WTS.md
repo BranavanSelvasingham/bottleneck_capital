@@ -2,10 +2,10 @@
 ticker: WTS
 name: Watts Water Technologies
 sleeve: ai_power_equipment
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
-confidence_score: 0
+confidence_score: 28
 urgency: LOW
 last_updated: 2026-06-20
 source_classification: sa_adjacent_thesis_proxy
@@ -16,26 +16,44 @@ unresolved_material_event: false
 dip_approved: false
 valuation_improved: false
 portfolio_risk_allows_add: true
-buy_thesis: ""
-valuation_case: ""
-hedge_or_sizing: ""
-invalidation_trigger: ""
+buy_thesis: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action.
+thesis_expressed: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action.
+anti_thesis: Core business exposure may be too far from the AI bottleneck thesis.
+evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+valuation_case: end-market mix and datacenter contribution scenario value
+hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+invalidation_trigger: No evidence that datacenter infrastructure materially changes earnings power.
 broken_thesis: ""
-next_trigger: Treat as low-priority adjacent proxy unless new SA evidence emerges.
-one_line_rationale: Adjacent thesis proxy; not latest-current SA holding.
+next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
+one_line_rationale: "Hold/watch only: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action."
 ---
 # WTS Decision
 
 Updated: 2026-06-20
 
-Decision: RESEARCH_REQUIRED  
+Decision: HOLD  
 Dip decision: RESEARCH_FIRST  
 Sell status: NOT_TRIGGERED  
-Confidence: 0 / 100  
+Confidence: 28 / 100  
 Urgency: LOW  
 
 One-line rationale:
-Adjacent thesis proxy; not latest-current SA holding.
+Hold/watch only: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action.
+
+Thesis expressed:
+Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action.
+
+Anti-thesis:
+Core business exposure may be too far from the AI bottleneck thesis.
+
+Evidence quality:
+SA_FILING_AND_LOCAL_BASELINE
+
+Hedge or sizing:
+No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+
+Invalidation trigger:
+No evidence that datacenter infrastructure materially changes earnings power.
 
 Buy now?
 NO
@@ -47,7 +65,7 @@ Sell?
 NO
 
 Next trigger:
-Treat as low-priority adjacent proxy unless new SA evidence emerges.
+Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

@@ -2,11 +2,11 @@
 ticker: HIVE
 name: HIVE Digital Technologies
 sleeve: miner_to_datacenter
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
-confidence_score: 0
-urgency: HIGH
+confidence_score: 34
+urgency: MEDIUM
 last_updated: 2026-06-20
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
@@ -16,26 +16,44 @@ unresolved_material_event: false
 dip_approved: false
 valuation_improved: false
 portfolio_risk_allows_add: true
-buy_thesis: ""
-valuation_case: ""
-hedge_or_sizing: ""
-invalidation_trigger: ""
+buy_thesis: HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer.
+thesis_expressed: HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer.
+anti_thesis: The company may remain crypto beta with small AI optionality.
+evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+valuation_case: mining NAV plus verified HPC revenue option value
+hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+invalidation_trigger: HPC revenue remains immaterial and mining economics dominate value.
 broken_thesis: ""
-next_trigger: Underwrite AI/HPC conversion evidence versus crypto exposure.
-one_line_rationale: Current SA public holding; research AI datacenter conversion quality before action.
+next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
+one_line_rationale: "Hold/watch only: HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer."
 ---
 # HIVE Decision
 
 Updated: 2026-06-20
 
-Decision: RESEARCH_REQUIRED  
+Decision: HOLD  
 Dip decision: RESEARCH_FIRST  
 Sell status: NOT_TRIGGERED  
-Confidence: 0 / 100  
-Urgency: HIGH  
+Confidence: 34 / 100  
+Urgency: MEDIUM  
 
 One-line rationale:
-Current SA public holding; research AI datacenter conversion quality before action.
+Hold/watch only: HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer.
+
+Thesis expressed:
+HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer.
+
+Anti-thesis:
+The company may remain crypto beta with small AI optionality.
+
+Evidence quality:
+SA_FILING_AND_LOCAL_BASELINE
+
+Hedge or sizing:
+No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+
+Invalidation trigger:
+HPC revenue remains immaterial and mining economics dominate value.
 
 Buy now?
 NO
@@ -47,7 +65,7 @@ Sell?
 NO
 
 Next trigger:
-Underwrite AI/HPC conversion evidence versus crypto exposure.
+Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

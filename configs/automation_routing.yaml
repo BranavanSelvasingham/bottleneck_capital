@@ -1,0 +1,35 @@
+event_routes:
+  dip_trigger:
+    - asset_analyst.{ticker}
+    - sleeve_analyst.{sleeve}
+  thesis_damage_candidate:
+    - asset_analyst.{ticker}
+    - sleeve_analyst.{sleeve}
+    - portfolio_pm
+  sa_exit_update:
+    - asset_analyst.{ticker}
+    - sleeve_analyst.{sleeve}
+    - portfolio_pm
+  sa_position_reduction_update:
+    - asset_analyst.{ticker}
+    - sleeve_analyst.{sleeve}
+  filing_update:
+    - filing_analyst
+    - asset_analyst.{ticker}
+  hedge_risk_update:
+    - hedge_analyst
+    - portfolio_pm
+  catalyst_update:
+    - asset_analyst.{ticker}
+limits:
+  max_concurrent_asset_agents: 6
+  max_concurrent_write_agents: 3
+  default_task_timeout_minutes: 45
+write_discipline:
+  asset_agent_write_scope:
+    - research/assets/{ticker}.md
+    - research/decisions/{ticker}.md
+    - research/memos/{date}-{ticker}-*.md
+  portfolio_pm_write_scope:
+    - research/decisions/index.md
+    - reports/daily_decision_boards/{date}.md
