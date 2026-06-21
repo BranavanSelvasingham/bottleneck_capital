@@ -3,4 +3,5 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 .ruff_cache/
-
+state/local_positions.yaml
+reports/local_exposure.md

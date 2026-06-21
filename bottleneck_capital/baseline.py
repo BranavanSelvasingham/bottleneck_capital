@@ -476,6 +476,23 @@ TICKER_BASELINES: dict[str, BaselineNote] = {
         38,
         27,
     ),
+    "SPCX": BaselineNote(
+        "Space infrastructure adjacent proxy and local-position tracker.",
+        "SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, "
+        "connectivity, and defense infrastructure scarcity, not as current public SA exposure.",
+        "The ticker/listing path, liquidity, valuation, and actual instrument exposure may be "
+        "unclear or non-actionable.",
+        "Reusable launch, satellite communications, defense demand, and space logistics scarcity.",
+        "Private-market access, listing uncertainty, liquidity, valuation, custody, and "
+        "headline risk.",
+        "SPCX does not represent investable SpaceX/space-infra exposure or listing/liquidity risk "
+        "becomes unacceptable.",
+        "private-market infrastructure scarcity and listing/liquidity-adjusted scenario value",
+        24,
+        42,
+        28,
+        18,
+    ),
     "TE": BaselineNote(
         "Power supply/manufacturing thesis candidate.",
         "T1 Energy is tracked as a current SA holding, but business-model and financing "
@@ -611,6 +628,7 @@ def write_all_wave_baseline(root: Path) -> list[Path]:
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text("\n".join(report_lines) + "\n", encoding="utf-8")
     written.append(report_path)
+    written.extend(_write_wave_execution_reports(root, ranked))
     return written
 
 
@@ -700,6 +718,63 @@ def _write_ticker(
         _decision_body(item, note, decision, dip_decision, urgency, hedge, next_trigger),
     )
     return [asset_path, decision_path]
+
+
+def _write_wave_execution_reports(root: Path, ranked: list[Any]) -> list[Path]:
+    paths: list[Path] = []
+    wave_titles = {
+        1: "core / highest-signal names",
+        2: "remaining strict public 13F names",
+        3: "adjacent proxies",
+    }
+    for wave in (1, 2, 3):
+        items = [item for item in ranked if item.wave == wave]
+        lines = [
+            f"# Wave {wave} Execution Memo - Baseline Applied",
+            "",
+            f"Date: {_today()}",
+            "",
+            f"Scope: {wave_titles[wave]}. The earlier triage questions have been resolved "
+            "into the all-wave baseline decision files.",
+            "",
+            "Current posture: HOLD/watch for every ticker. No BUY_NOW, ADD_ON_DIP, TRIM, or "
+            "SELL action is authorized before the next scheduled market/filing process or a "
+            "material event.",
+            "",
+            "| Ticker | Agent id | Decision | Baseline rationale | Next trigger |",
+            "|---|---|---|---|---|",
+        ]
+        for item in items:
+            note = _baseline_for(item.ticker)
+            lines.append(
+                f"| {item.ticker} | `asset_analyst.{item.ticker}` | HOLD | "
+                f"{note.thesis} | Scheduled scan, SA filing change, company filing/IR "
+                "update, financing/customer contract, guidance change, or detected "
+                "valuation dip. |"
+            )
+        lines.extend(
+            [
+                "",
+                "## Controls",
+                "",
+                "- Long-only mandate remains active.",
+                "- Reported puts remain signal-only, not trade instructions.",
+                "- A future SA full exit forces exit/thesis-correction review.",
+                "- A material SA reduction forces high-priority thesis-weight review.",
+                "- No technical indicators are used.",
+                "",
+                "## Output Files",
+                "",
+                f"- Ticker packets: `research/agent_packets/wave_{wave}/`",
+                "- Asset files: `research/assets/{TICKER}.md`",
+                "- Decision files: `research/decisions/{TICKER}.md`",
+                f"- Baseline summary: `reports/initialization/{_today()}-all-wave-baseline.md`",
+            ]
+        )
+        path = root / "reports" / "initialization" / f"{_today()}-wave-{wave}-execution.md"
+        path.write_text("\n".join(lines) + "\n", encoding="utf-8")
+        paths.append(path)
+    return paths
 
 
 def _asset_body(item: dict[str, Any], note: BaselineNote, wave: int) -> str:

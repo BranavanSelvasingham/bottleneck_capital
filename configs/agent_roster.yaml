@@ -161,6 +161,10 @@ ticker_owners:
     owner_agent: asset_analyst.MRVL
     sleeve_agent: sleeve_analyst.ai_networking_optical
   -
+    ticker: SPCX
+    owner_agent: asset_analyst.SPCX
+    sleeve_agent: sleeve_analyst.space_infra
+  -
     ticker: ONTO
     owner_agent: asset_analyst.ONTO
     sleeve_agent: sleeve_analyst.semicap_equipment

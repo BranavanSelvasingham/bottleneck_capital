@@ -1,0 +1,16 @@
+# Copy this file to state/local_positions.yaml.
+# state/local_positions.yaml is gitignored and should hold your private position data.
+
+as_of: YYYY-MM-DD
+base_currency: CAD
+cash:
+  CAD: 0
+  USD: 0
+positions:
+  - ticker: CRWV
+    quantity: 0
+    average_cost: 0
+    current_price: 0
+    currency: USD
+    account: taxable
+    notes:

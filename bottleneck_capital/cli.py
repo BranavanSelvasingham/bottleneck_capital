@@ -10,6 +10,10 @@ from bottleneck_capital.decision_engine import (
     write_daily_board,
 )
 from bottleneck_capital.initialize import run_initialization
+from bottleneck_capital.positions import (
+    initialize_local_positions,
+    write_exposure_report,
+)
 from bottleneck_capital.sentinel import run_sentinel
 
 
@@ -32,6 +36,19 @@ def main(argv: list[str] | None = None) -> int:
     subparsers.add_parser("daily-board", help="Write the daily decision board.")
     subparsers.add_parser("initialize-run", help="Write initialization baseline and agent packets.")
     subparsers.add_parser("baseline-decisions", help="Write all-wave baseline ticker decisions.")
+    positions_init = subparsers.add_parser(
+        "positions-init", help="Create the gitignored local positions ledger."
+    )
+    positions_init.add_argument("--overwrite", action="store_true", help="Replace existing ledger.")
+    exposure_parser = subparsers.add_parser(
+        "exposure", help="Write a local exposure report from gitignored positions."
+    )
+    exposure_parser.add_argument(
+        "--positions",
+        type=Path,
+        default=None,
+        help="Optional positions YAML path.",
+    )
 
     dip_parser = subparsers.add_parser("dip-investigate", help="Create a dip investigation memo.")
     dip_parser.add_argument("--ticker", required=True, help="Ticker to investigate.")
@@ -59,6 +76,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "baseline-decisions":
         paths = write_all_wave_baseline(root)
         print(f"Wrote {len(paths)} baseline file(s).")
+        return 0
+    if args.command == "positions-init":
+        path = initialize_local_positions(root, overwrite=args.overwrite)
+        print(path)
+        return 0
+    if args.command == "exposure":
+        path = write_exposure_report(root, positions_path=args.positions)
+        print(path)
         return 0
     if args.command == "dip-investigate":
         path = create_dip_investigation(root, args.ticker)

@@ -154,7 +154,7 @@ def _parse_yaml_block(lines: list[tuple[int, str]], index: int, indent: int) -> 
     current_indent, content = lines[index]
     if current_indent < indent:
         return {}, index
-    if content.startswith("- "):
+    if content == "-" or content.startswith("- "):
         return _parse_yaml_sequence(lines, index, current_indent)
     return _parse_yaml_mapping(lines, index, current_indent)
 
@@ -192,9 +192,9 @@ def _parse_yaml_sequence(
         current_indent, content = lines[index]
         if current_indent < indent:
             break
-        if current_indent != indent or not content.startswith("- "):
+        if current_indent != indent or not (content == "-" or content.startswith("- ")):
             break
-        item_text = content[2:].strip()
+        item_text = "" if content == "-" else content[2:].strip()
         index += 1
         if item_text == "":
             if index < len(lines) and lines[index][0] > current_indent:
