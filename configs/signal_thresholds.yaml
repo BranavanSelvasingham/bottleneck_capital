@@ -1,0 +1,39 @@
+sentinel:
+  timezone: America/Toronto
+
+  market_hours:
+    enabled: true
+    check_interval_minutes: 15
+
+  price_triggers:
+    intraday_drop_pct: 5
+    one_day_drop_pct: 7
+    five_day_drop_pct: 12
+    twenty_day_drop_pct: 20
+    gap_down_pct: 4
+    post_earnings_move_pct: 8
+
+  source_triggers:
+    new_sec_filing: true
+    situational_awareness_full_exit: true
+    situational_awareness_material_reduction_pct: 50
+    sec_filings:
+      - 8-K
+      - 10-Q
+      - 10-K
+      - S-1
+      - 424B
+      - 13D
+      - 13G
+      - Form 4
+    company_ir_update: true
+    financing_announcement: true
+    customer_contract_announcement: true
+    guidance_change: true
+
+  codex_wake_rules:
+    wake_on_buyable_dip_candidate: true
+    wake_on_unknown_large_move: true
+    wake_on_thesis_damage_candidate: true
+    wake_on_new_primary_source: true
+    wake_on_decision_change_candidate: true

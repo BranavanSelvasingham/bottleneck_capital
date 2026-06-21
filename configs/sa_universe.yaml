@@ -1,0 +1,69 @@
+source:
+  manager: Situational Awareness LP
+  notable_person: Leopold Aschenbrenner
+  latest_public_13f_period: 2026-03-31
+  latest_public_13f_filed: 2026-05-18
+  filing_id: "000204572426000008"
+  note: Form 13F does not disclose shorts or written options; puts are tracked as signal only.
+
+sa_reported_current_13f:
+  common_or_reported_equity:
+    - ASML
+    - AMD
+    - APLD
+    - BW
+    - BTDR
+    - BITF
+    - BE
+    - CLSK
+    - CORZ
+    - CRWV
+    - GLW
+    - HIVE
+    - IREN
+    - INTC
+    - MU
+    - NVDA
+    - PSIX
+    - PUMP
+    - RIOT
+    - SNDK
+    - SHAZ
+    - SEI
+    - TE
+    - TSM
+    - SMH
+    - WYFI
+
+  call_signals:
+    - BE
+    - CRWV
+    - MU
+    - SNDK
+    - TSM
+
+  put_signals:
+    - ASML
+    - AMD
+    - AVGO
+    - GLW
+    - INFY
+    - INTC
+    - MU
+    - NVDA
+    - ORCL
+    - SMH
+    - TSM
+
+sa_post_quarter_filings:
+  - NBIS
+
+sa_adjacent_thesis_proxies:
+  - VST
+  - CEG
+  - TLNE
+  - VRT
+  - WTS
+  - LITE
+  - MRVL
+  - ONTO
