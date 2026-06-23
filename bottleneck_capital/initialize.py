@@ -251,6 +251,24 @@ def _rank_one(item: dict[str, Any]) -> RankedTicker:
 
 def _write_agent_roster(root: Path, watchlist: list[dict[str, Any]]) -> Path:
     roster = {
+        "runtime_policy": {
+            "model": "best_available",
+            "preferred_model": "GPT-5.5_or_newer_when_selectable",
+            "reasoning_effort": "extra_high",
+            "applies_to": [
+                "asset_analyst subagents",
+                "sleeve_analyst subagents",
+                "hedge_analyst subagents",
+                "portfolio_pm subagents",
+                "filing_analyst subagents",
+                "spawned Codex threads",
+                "automation-created research threads",
+            ],
+            "fallback": (
+                "If explicit model or effort selection is unavailable, state the limitation "
+                "in the handoff and use the strongest available equivalent."
+            ),
+        },
         "agent_types": {
             "asset_analyst": {
                 "purpose": "Ticker-scoped research and decision-file updates.",
@@ -286,6 +304,17 @@ def _write_agent_roster(root: Path, watchlist: list[dict[str, Any]]) -> Path:
 
 def _write_automation_routing(root: Path) -> Path:
     routing = {
+        "runtime_policy": {
+            "model": "best_available",
+            "preferred_model": "GPT-5.5_or_newer_when_selectable",
+            "reasoning_effort": "extra_high",
+            "spawned_threads": "same_policy",
+            "subagents": "same_policy",
+            "fallback": (
+                "If explicit model or effort selection is unavailable, record that limitation "
+                "and use the strongest available equivalent."
+            ),
+        },
         "event_routes": {
             "dip_trigger": ["asset_analyst.{ticker}", "sleeve_analyst.{sleeve}"],
             "thesis_damage_candidate": [
@@ -393,17 +422,19 @@ def _task_packet(item: RankedTicker) -> str:
     )
     return f"""# {item.ticker} Agent Task Packet
 
-Ticker: `{item.ticker}`  
-Name: {item.name}  
-Wave: {item.wave}  
-Owner agent: `asset_analyst.{item.ticker}`  
-Sleeve agent: `sleeve_analyst.{item.sleeve}`  
-Sleeve: `{item.sleeve}`  
-Source classification: `{item.source_classification}`  
-Instrument role: `{item.instrument_role}`  
-Trade policy: `{item.trade_policy}`  
-Priority: `{item.priority}`  
-Initialization score: {item.score}  
+Ticker: `{item.ticker}`
+Name: {item.name}
+Wave: {item.wave}
+Owner agent: `asset_analyst.{item.ticker}`
+Sleeve agent: `sleeve_analyst.{item.sleeve}`
+Sleeve: `{item.sleeve}`
+Source classification: `{item.source_classification}`
+Instrument role: `{item.instrument_role}`
+Trade policy: `{item.trade_policy}`
+Priority: `{item.priority}`
+Initialization score: {item.score}
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

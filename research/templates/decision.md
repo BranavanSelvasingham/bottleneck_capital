@@ -7,6 +7,10 @@ dip_decision: NOT_ARMED
 sell_status: NOT_TRIGGERED
 confidence_score:
 urgency: HIGH
+action_tier:
+bottleneck_upside_score:
+bottleneck_upside_case:
+promotion_trigger:
 last_updated:
 thesis_damage: false
 unresolved_material_event: false
@@ -20,13 +24,19 @@ next_trigger:
 
 Updated: YYYY-MM-DD
 
-Decision: BUY_NOW / ADD_ON_DIP / HOLD / TRIM / SELL / RESEARCH_REQUIRED  
-Dip decision: ADD_ON_DIP / NOT_ARMED / RESEARCH_FIRST  
-Sell status: NOT_TRIGGERED / WATCH / TRIGGERED  
-Confidence: __ / 100  
-Urgency: LOW / MEDIUM / HIGH  
+Decision: BUY_NOW / ADD_ON_DIP / HOLD / TRIM / SELL / RESEARCH_REQUIRED
+Dip decision: ADD_ON_DIP / NOT_ARMED / RESEARCH_FIRST
+Sell status: NOT_TRIGGERED / WATCH / TRIGGERED
+Confidence: __ / 100
+Urgency: LOW / MEDIUM / HIGH
 
 One-line rationale:
+
+Action tier:
+
+Bottleneck upside:
+
+Promotion trigger:
 
 Buy now?
 YES / NO
@@ -40,4 +50,3 @@ YES / NO
 Next trigger:
 
 Human action:
-

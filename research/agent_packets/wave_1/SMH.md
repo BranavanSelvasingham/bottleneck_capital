@@ -1,16 +1,18 @@
 # SMH Agent Task Packet
 
-Ticker: `SMH`  
-Name: VanEck Semiconductor ETF  
-Wave: 1  
-Owner agent: `asset_analyst.SMH`  
-Sleeve agent: `sleeve_analyst.crowded_ai_beta_hedge`  
-Sleeve: `crowded_ai_beta_hedge`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity_with_put_signal`  
-Trade policy: `signal_only_no_puts_or_shorts`  
-Priority: `high`  
-Initialization score: 97  
+Ticker: `SMH`
+Name: VanEck Semiconductor ETF
+Wave: 1
+Owner agent: `asset_analyst.SMH`
+Sleeve agent: `sleeve_analyst.crowded_ai_beta_hedge`
+Sleeve: `crowded_ai_beta_hedge`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity_with_put_signal`
+Trade policy: `signal_only_no_puts_or_shorts`
+Priority: `high`
+Initialization score: 97
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

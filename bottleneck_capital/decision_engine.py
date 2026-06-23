@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -15,6 +16,7 @@ from bottleneck_capital.io import (
     scalar_text,
     write_markdown_with_frontmatter,
 )
+from bottleneck_capital.signal_events import active_signal_events, event_id_for_record
 
 ALLOWED_DECISIONS = {
     "BUY_NOW",
@@ -42,6 +44,8 @@ MATERIAL_EVENT_CLASSES = {
     "hedge_risk_update",
     "sa_exit_update",
     "sa_position_reduction_update",
+    "market_data_gap",
+    "filing_data_gap",
 }
 
 
@@ -68,6 +72,11 @@ class DecisionResult:
     instrument_role: str = ""
     trade_policy: str = ""
     broken_thesis: str = ""
+    action_tier: str = ""
+    bottleneck_upside_score: str = ""
+    bottleneck_upside_case: str = ""
+    promotion_trigger: str = ""
+    max_add: str = ""
 
 
 def load_watchlist(root: Path) -> list[dict[str, Any]]:
@@ -86,7 +95,7 @@ def load_watchlist(root: Path) -> list[dict[str, Any]]:
 
 
 def evaluate_all(root: Path) -> list[DecisionResult]:
-    events = read_jsonl(root / "state" / "signal_events.jsonl")
+    events = active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
     return [evaluate_ticker(root, item, events) for item in load_watchlist(root)]
 
 
@@ -295,6 +304,16 @@ def write_daily_board(root: Path) -> Path:
     return report_path
 
 
+def write_action_board(root: Path) -> Path:
+    results = evaluate_all(root)
+    events = active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
+    now = _now()
+    report_path = root / "reports" / "action_boards" / f"{now[:10]}.md"
+    report_path.parent.mkdir(parents=True, exist_ok=True)
+    report_path.write_text(render_action_board(results, events, now), encoding="utf-8")
+    return report_path
+
+
 def write_decision_index(
     root: Path,
     results: list[DecisionResult],
@@ -328,6 +347,90 @@ def render_daily_board(results: list[DecisionResult], now: str) -> str:
     return "\n".join(lines) + "\n"
 
 
+def render_action_board(
+    results: list[DecisionResult],
+    signal_events: list[dict[str, Any]],
+    now: str,
+) -> str:
+    actionable = [
+        result
+        for result in results
+        if result.action in {"BUY_NOW", "ADD_ON_DIP", "TRIM", "SELL", "RESEARCH_REQUIRED"}
+    ]
+    high_events = [
+        event
+        for event in signal_events
+        if scalar_text(event.get("priority")) in {"high", "critical"}
+        and scalar_text(event.get("event_class")) != "noise"
+    ]
+    source_gap_events = [
+        event
+        for event in high_events
+        if scalar_text(event.get("event_class")) in {"market_data_gap", "filing_data_gap"}
+    ]
+    lines = [
+        "# Bottleneck Capital Action Board",
+        "",
+        f"Date: {now}",
+        "",
+    ]
+    if source_gap_events:
+        lines.extend(
+            [
+                "## Operational Source Gaps",
+                "",
+                (
+                    "Do not treat action rows as fully cleared while these source gaps are active; "
+                    "recover the source or explicitly accept the blind spot for scheduled "
+                    "monitoring."
+                ),
+                "",
+                "| Event ID | Ticker | Class | Summary |",
+                "|---|---|---|---|",
+            ]
+        )
+        for event in source_gap_events:
+            lines.append(
+                f"| {event_id_for_record(event)} | "
+                f"{_table(scalar_text(event.get('ticker')).upper())} | "
+                f"{_table(scalar_text(event.get('event_class')))} | "
+                f"{_table(scalar_text(event.get('summary')))} |"
+            )
+        lines.append("")
+    lines.extend(
+        [
+            "## Actions",
+            "",
+        ]
+    )
+    lines.extend([
+        "| Ticker | Decision | Urgency | Max Add | Why |",
+        "|---|---|---:|---:|---|",
+    ])
+    if actionable:
+        for result in actionable:
+            lines.append(
+                f"| {result.ticker} | {result.action} | {result.urgency} | "
+                f"{_table(result.max_add)} | {_table(result.rationale)} |"
+            )
+    else:
+        lines.append("| - | - | - | - | No actionable decision changes. |")
+
+    lines.extend(["", "## Active High-Priority Signals", ""])
+    lines.extend(["| Event ID | Ticker | Class | Summary |", "|---|---|---|---|"])
+    if high_events:
+        for event in high_events:
+            lines.append(
+                f"| {event_id_for_record(event)} | "
+                f"{_table(scalar_text(event.get('ticker')).upper())} | "
+                f"{_table(scalar_text(event.get('event_class')))} | "
+                f"{_table(scalar_text(event.get('summary')))} |"
+            )
+    else:
+        lines.append("| - | - | - | - |")
+    return "\n".join(lines) + "\n"
+
+
 def render_decision_index(results: list[DecisionResult], now: str) -> str:
     lines = ["# Bottleneck Capital Decision Index", "", f"Updated: {now}", ""]
     lines.extend(_render_board_sections(results))
@@ -338,7 +441,7 @@ def create_dip_investigation(root: Path, ticker: str) -> Path:
     ticker = ticker.upper()
     events = [
         event
-        for event in read_jsonl(root / "state" / "signal_events.jsonl")
+        for event in active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
         if scalar_text(event.get("ticker")).upper() == ticker
     ]
     decision_data, _ = read_markdown_frontmatter(root / "research" / "decisions" / f"{ticker}.md")
@@ -425,9 +528,11 @@ def _is_unresolved_material(event: dict[str, Any]) -> bool:
 def _missing_buy_requirements(data: dict[str, Any]) -> list[str]:
     requirements = {
         "thesis": data.get("buy_thesis") or data.get("thesis_expressed"),
+        "anti_thesis": data.get("anti_thesis"),
         "valuation": data.get("valuation_case") or data.get("approved_entry_zone"),
         "hedge": data.get("hedge_or_sizing") or data.get("main_hedge"),
         "invalidation": data.get("invalidation_trigger"),
+        "evidence_quality": data.get("evidence_quality"),
     }
     return [key for key, value in requirements.items() if not scalar_text(value)]
 
@@ -471,6 +576,11 @@ def _research_required(
         source_classification=scalar_text(data.get("source_classification")),
         instrument_role=scalar_text(data.get("instrument_role")),
         trade_policy=scalar_text(data.get("trade_policy")),
+        action_tier=scalar_text(data.get("action_tier")) or "RESEARCH_REQUIRED",
+        bottleneck_upside_score=_score_text(data.get("bottleneck_upside_score")),
+        bottleneck_upside_case=scalar_text(data.get("bottleneck_upside_case")),
+        promotion_trigger=scalar_text(data.get("promotion_trigger")),
+        max_add=_max_add_text(data),
     )
 
 
@@ -505,6 +615,11 @@ def _result(
         instrument_role=scalar_text(data.get("instrument_role")),
         trade_policy=scalar_text(data.get("trade_policy")),
         broken_thesis=broken_thesis,
+        action_tier=scalar_text(data.get("action_tier")) or action,
+        bottleneck_upside_score=_score_text(data.get("bottleneck_upside_score")),
+        bottleneck_upside_case=scalar_text(data.get("bottleneck_upside_case")),
+        promotion_trigger=scalar_text(data.get("promotion_trigger")),
+        max_add=_max_add_text(data),
     )
 
 
@@ -551,6 +666,12 @@ def _decision_frontmatter(
         "broken_thesis": result.broken_thesis or existing.get("broken_thesis", ""),
         "next_trigger": result.next_trigger,
         "one_line_rationale": result.rationale,
+        "action_tier": result.action_tier or existing.get("action_tier", result.action),
+        "bottleneck_upside_score": result.bottleneck_upside_score
+        or existing.get("bottleneck_upside_score", ""),
+        "bottleneck_upside_case": result.bottleneck_upside_case
+        or existing.get("bottleneck_upside_case", ""),
+        "promotion_trigger": result.promotion_trigger or existing.get("promotion_trigger", ""),
     }
 
 
@@ -573,11 +694,11 @@ def _decision_body(result: DecisionResult, existing: dict[str, Any]) -> str:
 
 Updated: {_now()[:10]}
 
-Decision: {result.action}  
-Dip decision: {dip_answer}  
-Sell status: {"TRIGGERED" if result.action == "SELL" else "NOT_TRIGGERED"}  
-Confidence: {result.confidence or "TBD"} / 100  
-Urgency: {result.urgency}  
+Decision: {result.action}
+Dip decision: {dip_answer}
+Sell status: {"TRIGGERED" if result.action == "SELL" else "NOT_TRIGGERED"}
+Confidence: {result.confidence or "TBD"} / 100
+Urgency: {result.urgency}
 
 One-line rationale:
 {result.rationale}
@@ -653,7 +774,7 @@ def _render_board_sections(results: list[DecisionResult]) -> list[str]:
                 for result in section:
                     lines.append(
                         f"| {result.ticker} | {_table(result.rationale)} | "
-                        f"TBD | {result.hedge} |"
+                        f"{_table(result.max_add)} | {result.hedge} |"
                     )
             else:
                 lines.append("| - | - | - | - |")
@@ -673,15 +794,29 @@ def _render_board_sections(results: list[DecisionResult]) -> list[str]:
             else:
                 lines.append("| - | - | - | - |")
         elif action == "HOLD":
-            lines.extend(["| Ticker | Why | What Would Change It |", "|---|---|---|"])
+            lines.extend(
+                [
+                    "| Ticker | Tier | Why | Bottleneck Upside | Promotion Trigger |",
+                    "|---|---|---|---|---|",
+                ]
+            )
             if section:
                 for result in section:
+                    upside = result.bottleneck_upside_case
+                    if result.bottleneck_upside_score:
+                        upside = (
+                            f"{result.bottleneck_upside_score}: {upside}"
+                            if upside
+                            else result.bottleneck_upside_score
+                        )
                     lines.append(
-                        f"| {result.ticker} | {_table(result.rationale)} | "
-                        f"{_table(result.next_trigger)} |"
+                        f"| {result.ticker} | {_table(result.action_tier or result.action)} | "
+                        f"{_table(result.rationale)} | "
+                        f"{_table(upside or 'Not scored')} | "
+                        f"{_table(result.promotion_trigger or result.next_trigger)} |"
                     )
             else:
-                lines.append("| - | - | - |")
+                lines.append("| - | - | - | - | - |")
         elif action == "TRIM":
             lines.extend(["| Ticker | Risk | Trigger |", "|---|---|---|"])
             if section:
@@ -718,6 +853,32 @@ def _render_board_sections(results: list[DecisionResult]) -> list[str]:
 
 def _table(value: str) -> str:
     return value.replace("|", "/").replace("\n", " ").strip()
+
+
+def _score_text(value: Any) -> str:
+    if value is None or value == "":
+        return ""
+    return scalar_text(value)
+
+
+def _max_add_text(data: dict[str, Any]) -> str:
+    for key in ("max_add", "approved_entry_size", "starter_position_weight_pct", "starter_size"):
+        value = scalar_text(data.get(key))
+        if value:
+            return _pct_text(value)
+    entry_zone = scalar_text(data.get("approved_entry_zone"))
+    match = re.search(r"(?:starter|up to|add)\D{0,24}(\d+(?:\.\d+)?\s*%)", entry_zone, re.I)
+    if match:
+        return match.group(1).replace(" ", "")
+    max_position = scalar_text(data.get("max_position_weight_pct"))
+    if max_position:
+        return f"cap {_pct_text(max_position)}"
+    return "TBD"
+
+
+def _pct_text(value: str) -> str:
+    text = value.strip()
+    return text if text.endswith("%") else f"{text}%"
 
 
 def _now() -> str:

@@ -1,16 +1,18 @@
 # SHAZ Agent Task Packet
 
-Ticker: `SHAZ`  
-Name: SharonAI Holdings  
-Wave: 2  
-Owner agent: `asset_analyst.SHAZ`  
-Sleeve agent: `sleeve_analyst.compute_infra`  
-Sleeve: `compute_infra`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity`  
-Trade policy: `long_only_after_research`  
-Priority: `medium`  
-Initialization score: 58  
+Ticker: `SHAZ`
+Name: SharonAI Holdings
+Wave: 2
+Owner agent: `asset_analyst.SHAZ`
+Sleeve agent: `sleeve_analyst.compute_infra`
+Sleeve: `compute_infra`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity`
+Trade policy: `long_only_after_research`
+Priority: `medium`
+Initialization score: 58
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

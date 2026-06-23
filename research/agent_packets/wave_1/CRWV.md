@@ -1,16 +1,18 @@
 # CRWV Agent Task Packet
 
-Ticker: `CRWV`  
-Name: CoreWeave  
-Wave: 1  
-Owner agent: `asset_analyst.CRWV`  
-Sleeve agent: `sleeve_analyst.compute_infra`  
-Sleeve: `compute_infra`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity_and_call_signal`  
-Trade policy: `long_only_after_research`  
-Priority: `high`  
-Initialization score: 113  
+Ticker: `CRWV`
+Name: CoreWeave
+Wave: 1
+Owner agent: `asset_analyst.CRWV`
+Sleeve agent: `sleeve_analyst.compute_infra`
+Sleeve: `compute_infra`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity_and_call_signal`
+Trade policy: `long_only_after_research`
+Priority: `high`
+Initialization score: 113
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

@@ -1,16 +1,18 @@
 # GLW Agent Task Packet
 
-Ticker: `GLW`  
-Name: Corning  
-Wave: 2  
-Owner agent: `asset_analyst.GLW`  
-Sleeve agent: `sleeve_analyst.ai_networking_optical`  
-Sleeve: `ai_networking_optical`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity_with_put_signal`  
-Trade policy: `long_only_after_research`  
-Priority: `medium`  
-Initialization score: 62  
+Ticker: `GLW`
+Name: Corning
+Wave: 2
+Owner agent: `asset_analyst.GLW`
+Sleeve agent: `sleeve_analyst.ai_networking_optical`
+Sleeve: `ai_networking_optical`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity_with_put_signal`
+Trade policy: `long_only_after_research`
+Priority: `medium`
+Initialization score: 62
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

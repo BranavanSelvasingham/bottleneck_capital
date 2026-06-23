@@ -2,26 +2,26 @@
 ticker: MU
 name: Micron
 sleeve: memory_storage_networking
-last_updated: 2026-06-20
+last_updated: 2026-06-22
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_call_signal_and_put_signal
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: MARKET_NEWS_AND_LOCAL_BASELINE_NEEDS_PRIMARY_SOURCE
 thesis_expressed: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
 anti_thesis: The upside may be cyclical pricing rather than durable structural scarcity.
 hedge_or_sizing: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 invalidation_trigger: HBM leadership or memory pricing breaks while valuation remains elevated.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial."
+next_trigger: Resolve the June 22 Anthropic partnership economics and June 24 earnings setup before any new capital.
+one_line_rationale: "RESEARCH_REQUIRED: Micron's reported Anthropic memory/storage partnership and 5-6% move reopen the HBM scarcity thesis, but contract economics, June 24 earnings, valuation, and sizing are unresolved."
 asset_role: HBM and AI memory bottleneck.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-20
+last_primary_source_check: 2026-06-21
 thesis_health_score: 60
 confidence_score: 48
 valuation_attractiveness_score: 34
@@ -42,11 +42,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
+Micron is a direct HBM/memory scarcity expression, but today's reported Anthropic partnership and share move require research before any capital change.
 
 ### Decision table
 
@@ -57,9 +57,9 @@ Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA p
 | Add on dip? | RESEARCH_FIRST |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
-| Main risk today | Memory cycle reversal, oversupply, capex response, and customer concentration. |
+| Main risk today | Chasing an unresolved customer/AI demand signal into a crowded memory-cycle move before June 24 earnings. |
 | Main upside driver today | HBM demand, DRAM/NAND recovery, supply discipline, and AI server content growth. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Partnership terms, primary-source confirmation, and June 24 earnings |
 
 ## 1. Role in Bottleneck Capital
 
@@ -82,9 +82,9 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: ACTIVE WATCH  
-Confidence: 48  
-Time horizon: multi-year  
+Status: RESEARCH_REQUIRED
+Confidence: 48
+Time horizon: multi-year
 Importance: HIGH
 
 Claim: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
@@ -92,29 +92,31 @@ Claim: Micron is a direct HBM/memory scarcity expression, but the memory cycle a
 Evidence for:
 - Situational Awareness LP public 13F-HR, 2026-03-31 period, filed 2026-05-18; configs/watchlist.yaml; configs/sa_universe.yaml; research/agent_packets/wave_1/MU.md; wave execution memo.
 - Sleeve thesis: `memory_storage_networking`.
+- June 22, 2026 market reports describe an Anthropic partnership spanning HBM, DRAM, and SSDs, with MU up roughly 5-6% ahead of June 24 earnings.
 
 Evidence against:
 - The upside may be cyclical pricing rather than durable structural scarcity.
 - Memory cycle reversal, oversupply, capex response, and customer concentration.
+- Reported deal economics, duration, margin impact, and valuation support are not yet underwritten.
 
 What would break it:
 - HBM leadership or memory pricing breaks while valuation remains elevated.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the partnership economics, June 24 earnings setup,
+valuation, and sizing are reviewed.
 
 Hedge implication:
 No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 
 ### Thesis B - Valuation thesis
 
-Status: UNPROVEN FOR NEW CAPITAL  
-Claim: cycle-normalized earnings plus HBM scarcity scenario value. Current baseline does not approve a buy.
+Status: UNPROVEN FOR NEW CAPITAL
+Claim: cycle-normalized earnings plus HBM scarcity scenario value. The June 22 move may improve the structural demand case, but current evidence does not approve a buy.
 
 ### Thesis C - Catalyst thesis
 
-Status: EVENT-DRIVEN  
+Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
 change, or detected dip can reopen the decision.
 
@@ -190,6 +192,7 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 
 ## 10. Latest Signals
 
+- June 22, 2026: Market reports describe a Micron-Anthropic AI memory/storage partnership and a 5-6% MU share move ahead of June 24 earnings. Treat as unresolved material event until economics and valuation are underwritten.
 - Wave: 1
 - Source classification: `sa_reported_current_13f`
 - Instrument role: `common_equity_call_signal_and_put_signal`
@@ -203,14 +206,16 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 - `research/agent_packets/wave_1/MU.md`
 - `reports/initialization/2026-06-20-wave-1-execution.md`
 
-Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
-before the next scheduled process.
+Evidence quality: market-news update plus SA filing and local baseline. No unscheduled market
+action is authorized until primary-source terms, earnings, valuation, and sizing are reviewed.
 
 ## 12. Open Questions
 
-- None blocking before the next scheduled scan. Future work is event/schedule-driven.
+- What are the Anthropic partnership term, volume, margin, prepayment, and duration economics?
+- Does June 24 earnings confirm structural HBM/DRAM scarcity or only peak-cycle pricing?
+- Is valuation still acceptable after the reported 5-6% move and large year-to-date run?
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+June 22 material news moved current action to RESEARCH_REQUIRED, with no BUY_NOW, ADD_ON_DIP,
+TRIM, or SELL action authorized.

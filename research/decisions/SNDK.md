@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 38
 urgency: HIGH
-last_updated: 2026-06-20
+last_updated: 2026-06-22
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_and_call_signal
 trade_policy: long_only_after_research
@@ -26,16 +26,20 @@ invalidation_trigger: NAND/storage recovery fails or balance sheet risk overwhel
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 one_line_rationale: "Hold/watch only: SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline."
+action_tier: HOLD
+bottleneck_upside_score: ""
+bottleneck_upside_case: ""
+promotion_trigger: ""
 ---
 # SNDK Decision
 
-Updated: 2026-06-20
+Updated: 2026-06-22
 
-Decision: HOLD  
-Dip decision: RESEARCH_FIRST  
-Sell status: NOT_TRIGGERED  
-Confidence: 38 / 100  
-Urgency: HIGH  
+Decision: HOLD
+Dip decision: RESEARCH_FIRST
+Sell status: NOT_TRIGGERED
+Confidence: 38 / 100
+Urgency: HIGH
 
 One-line rationale:
 Hold/watch only: SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline.

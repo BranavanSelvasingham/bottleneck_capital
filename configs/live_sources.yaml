@@ -1,0 +1,15 @@
+market:
+  max_snapshot_age_days: 7
+  symbol_overrides:
+    BITF: KEEL
+    TLNE: TLN
+
+filings:
+  feed_url_env: BCAP_FILING_EVENTS_URL
+  auth_header_env: BCAP_FILING_EVENTS_AUTH_HEADER
+  coverage_contract: feed should return covered_tickers plus events, or represent full-watchlist coverage
+  symbol_overrides:
+    BITF: KEEL
+    TLNE: TLN
+  exempt_tickers:
+    SMH: Signal-only ETF/put exposure; monitor SA filings, holdings, and market data rather than company 8-K/10-Q coverage.

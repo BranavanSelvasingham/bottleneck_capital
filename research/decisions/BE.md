@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 45
 urgency: HIGH
-last_updated: 2026-06-20
+last_updated: 2026-06-22
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_and_call_signal
 trade_policy: long_only_after_research
@@ -26,16 +26,20 @@ invalidation_trigger: Datacenter backlog fails to convert or financing/product r
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 one_line_rationale: "Hold/watch only: Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment."
+action_tier: HOLD
+bottleneck_upside_score: ""
+bottleneck_upside_case: ""
+promotion_trigger: ""
 ---
 # BE Decision
 
-Updated: 2026-06-20
+Updated: 2026-06-22
 
-Decision: HOLD  
-Dip decision: RESEARCH_FIRST  
-Sell status: NOT_TRIGGERED  
-Confidence: 45 / 100  
-Urgency: HIGH  
+Decision: HOLD
+Dip decision: RESEARCH_FIRST
+Sell status: NOT_TRIGGERED
+Confidence: 45 / 100
+Urgency: HIGH
 
 One-line rationale:
 Hold/watch only: Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment.

@@ -1,16 +1,18 @@
 # TSM Agent Task Packet
 
-Ticker: `TSM`  
-Name: Taiwan Semiconductor Manufacturing  
-Wave: 1  
-Owner agent: `asset_analyst.TSM`  
-Sleeve agent: `sleeve_analyst.memory_storage_networking`  
-Sleeve: `memory_storage_networking`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity_call_signal_and_put_signal`  
-Trade policy: `long_only_after_research`  
-Priority: `high`  
-Initialization score: 117  
+Ticker: `TSM`
+Name: Taiwan Semiconductor Manufacturing
+Wave: 1
+Owner agent: `asset_analyst.TSM`
+Sleeve agent: `sleeve_analyst.memory_storage_networking`
+Sleeve: `memory_storage_networking`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity_call_signal_and_put_signal`
+Trade policy: `long_only_after_research`
+Priority: `high`
+Initialization score: 117
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 36
 urgency: MEDIUM
-last_updated: 2026-06-20
+last_updated: 2026-06-22
 source_classification: sa_adjacent_historical_or_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -26,16 +26,20 @@ invalidation_trigger: Advanced packaging/process-control demand fails to create 
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 one_line_rationale: "Hold/watch only: Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure."
+action_tier: HOLD
+bottleneck_upside_score: ""
+bottleneck_upside_case: ""
+promotion_trigger: ""
 ---
 # ONTO Decision
 
-Updated: 2026-06-20
+Updated: 2026-06-22
 
-Decision: HOLD  
-Dip decision: RESEARCH_FIRST  
-Sell status: NOT_TRIGGERED  
-Confidence: 36 / 100  
-Urgency: MEDIUM  
+Decision: HOLD
+Dip decision: RESEARCH_FIRST
+Sell status: NOT_TRIGGERED
+Confidence: 36 / 100
+Urgency: MEDIUM
 
 One-line rationale:
 Hold/watch only: Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure.

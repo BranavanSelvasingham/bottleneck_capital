@@ -1,16 +1,18 @@
 # LITE Agent Task Packet
 
-Ticker: `LITE`  
-Name: Lumentum  
-Wave: 3  
-Owner agent: `asset_analyst.LITE`  
-Sleeve agent: `sleeve_analyst.ai_networking_optical`  
-Sleeve: `ai_networking_optical`  
-Source classification: `sa_adjacent_historical_or_thesis_proxy`  
-Instrument role: `common_equity`  
-Trade policy: `long_only_after_research`  
-Priority: `medium`  
-Initialization score: 28  
+Ticker: `LITE`
+Name: Lumentum
+Wave: 3
+Owner agent: `asset_analyst.LITE`
+Sleeve agent: `sleeve_analyst.ai_networking_optical`
+Sleeve: `ai_networking_optical`
+Source classification: `sa_adjacent_historical_or_thesis_proxy`
+Instrument role: `common_equity`
+Trade policy: `long_only_after_research`
+Priority: `medium`
+Initialization score: 28
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

@@ -1,16 +1,18 @@
 # BW Agent Task Packet
 
-Ticker: `BW`  
-Name: Babcock & Wilcox Enterprises  
-Wave: 2  
-Owner agent: `asset_analyst.BW`  
-Sleeve agent: `sleeve_analyst.power_bottleneck`  
-Sleeve: `power_bottleneck`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity`  
-Trade policy: `long_only_after_research`  
-Priority: `medium`  
-Initialization score: 58  
+Ticker: `BW`
+Name: Babcock & Wilcox Enterprises
+Wave: 2
+Owner agent: `asset_analyst.BW`
+Sleeve agent: `sleeve_analyst.power_bottleneck`
+Sleeve: `power_bottleneck`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity`
+Trade policy: `long_only_after_research`
+Priority: `medium`
+Initialization score: 58
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

@@ -1,3 +1,10 @@
+runtime_policy:
+  model: best_available
+  preferred_model: GPT-5.5_or_newer_when_selectable
+  reasoning_effort: extra_high
+  spawned_threads: same_policy
+  subagents: same_policy
+  fallback: If explicit model or effort selection is unavailable, record that limitation and use the strongest available equivalent.
 event_routes:
   dip_trigger:
     - asset_analyst.{ticker}

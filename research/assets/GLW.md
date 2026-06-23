@@ -2,7 +2,7 @@
 ticker: GLW
 name: Corning
 sleeve: ai_networking_optical
-last_updated: 2026-06-20
+last_updated: 2026-06-21
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: long_only_after_research
@@ -21,7 +21,7 @@ current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-06-20
+last_primary_source_check: 2026-06-21
 thesis_health_score: 48
 confidence_score: 38
 valuation_attractiveness_score: 27
@@ -82,9 +82,9 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: ACTIVE WATCH  
-Confidence: 38  
-Time horizon: multi-year  
+Status: ACTIVE WATCH
+Confidence: 38
+Time horizon: multi-year
 Importance: HIGH
 
 Claim: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.
@@ -109,12 +109,12 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 
 ### Thesis B - Valuation thesis
 
-Status: UNPROVEN FOR NEW CAPITAL  
+Status: UNPROVEN FOR NEW CAPITAL
 Claim: segment recovery and AI optical contribution scenario value. Current baseline does not approve a buy.
 
 ### Thesis C - Catalyst thesis
 
-Status: EVENT-DRIVEN  
+Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
 change, or detected dip can reopen the decision.
 

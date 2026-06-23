@@ -1,0 +1,24 @@
+{
+  "filings": {
+    "event_count": 1,
+    "expected_item_count": 40,
+    "item_count": 40,
+    "last_success_at": "2026-06-22T14:32:37-04:00",
+    "missing_tickers": [],
+    "source": "sec_submissions",
+    "warnings": [
+      "Filing coverage exempt for SMH: Signal-only ETF/put exposure; monitor SA filings, holdings, and market data rather than company 8-K/10-Q coverage."
+    ]
+  },
+  "market": {
+    "event_count": 14,
+    "expected_item_count": 40,
+    "item_count": 40,
+    "last_success_at": "2026-06-23T07:16:18-04:00",
+    "missing_tickers": [],
+    "source": "market_yahoo",
+    "warnings": [
+      "Alpaca credentials missing; using Yahoo fallback."
+    ]
+  }
+}

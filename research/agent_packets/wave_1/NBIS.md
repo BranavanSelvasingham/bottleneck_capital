@@ -1,16 +1,18 @@
 # NBIS Agent Task Packet
 
-Ticker: `NBIS`  
-Name: Nebius  
-Wave: 1  
-Owner agent: `asset_analyst.NBIS`  
-Sleeve agent: `sleeve_analyst.compute_infra`  
-Sleeve: `compute_infra`  
-Source classification: `sa_post_quarter_13g`  
-Instrument role: `common_equity`  
-Trade policy: `long_only_after_research`  
-Priority: `high`  
-Initialization score: 100  
+Ticker: `NBIS`
+Name: Nebius
+Wave: 1
+Owner agent: `asset_analyst.NBIS`
+Sleeve agent: `sleeve_analyst.compute_infra`
+Sleeve: `compute_infra`
+Source classification: `sa_post_quarter_13g`
+Instrument role: `common_equity`
+Trade policy: `long_only_after_research`
+Priority: `high`
+Initialization score: 100
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

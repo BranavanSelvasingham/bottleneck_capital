@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 30
 urgency: MEDIUM
-last_updated: 2026-06-20
+last_updated: 2026-06-22
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -26,16 +26,20 @@ invalidation_trigger: No primary-source evidence ties the business to durable AI
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 one_line_rationale: "Hold/watch only: ProPetro requires caution because the AI power link is less direct than other sleeve names and may be oilfield-services exposure."
+action_tier: HOLD
+bottleneck_upside_score: ""
+bottleneck_upside_case: ""
+promotion_trigger: ""
 ---
 # PUMP Decision
 
-Updated: 2026-06-20
+Updated: 2026-06-22
 
-Decision: HOLD  
-Dip decision: RESEARCH_FIRST  
-Sell status: NOT_TRIGGERED  
-Confidence: 30 / 100  
-Urgency: MEDIUM  
+Decision: HOLD
+Dip decision: RESEARCH_FIRST
+Sell status: NOT_TRIGGERED
+Confidence: 30 / 100
+Urgency: MEDIUM
 
 One-line rationale:
 Hold/watch only: ProPetro requires caution because the AI power link is less direct than other sleeve names and may be oilfield-services exposure.

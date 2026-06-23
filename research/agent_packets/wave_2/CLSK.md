@@ -1,16 +1,18 @@
 # CLSK Agent Task Packet
 
-Ticker: `CLSK`  
-Name: CleanSpark  
-Wave: 2  
-Owner agent: `asset_analyst.CLSK`  
-Sleeve agent: `sleeve_analyst.miner_to_datacenter`  
-Sleeve: `miner_to_datacenter`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity`  
-Trade policy: `long_only_after_research`  
-Priority: `medium`  
-Initialization score: 58  
+Ticker: `CLSK`
+Name: CleanSpark
+Wave: 2
+Owner agent: `asset_analyst.CLSK`
+Sleeve agent: `sleeve_analyst.miner_to_datacenter`
+Sleeve: `miner_to_datacenter`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity`
+Trade policy: `long_only_after_research`
+Priority: `medium`
+Initialization score: 58
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

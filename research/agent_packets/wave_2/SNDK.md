@@ -1,16 +1,18 @@
 # SNDK Agent Task Packet
 
-Ticker: `SNDK`  
-Name: SanDisk  
-Wave: 2  
-Owner agent: `asset_analyst.SNDK`  
-Sleeve agent: `sleeve_analyst.memory_storage_networking`  
-Sleeve: `memory_storage_networking`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity_and_call_signal`  
-Trade policy: `long_only_after_research`  
-Priority: `high`  
-Initialization score: 78  
+Ticker: `SNDK`
+Name: SanDisk
+Wave: 2
+Owner agent: `asset_analyst.SNDK`
+Sleeve agent: `sleeve_analyst.memory_storage_networking`
+Sleeve: `memory_storage_networking`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity_and_call_signal`
+Trade policy: `long_only_after_research`
+Priority: `high`
+Initialization score: 78
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

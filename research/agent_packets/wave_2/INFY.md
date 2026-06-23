@@ -1,16 +1,18 @@
 # INFY Agent Task Packet
 
-Ticker: `INFY`  
-Name: Infosys  
-Wave: 2  
-Owner agent: `asset_analyst.INFY`  
-Sleeve agent: `sleeve_analyst.ai_services_put_signal`  
-Sleeve: `ai_services_put_signal`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `reported_put_signal`  
-Trade policy: `signal_only_no_puts_or_shorts`  
-Priority: `medium`  
-Initialization score: 50  
+Ticker: `INFY`
+Name: Infosys
+Wave: 2
+Owner agent: `asset_analyst.INFY`
+Sleeve agent: `sleeve_analyst.ai_services_put_signal`
+Sleeve: `ai_services_put_signal`
+Source classification: `sa_reported_current_13f`
+Instrument role: `reported_put_signal`
+Trade policy: `signal_only_no_puts_or_shorts`
+Priority: `medium`
+Initialization score: 50
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

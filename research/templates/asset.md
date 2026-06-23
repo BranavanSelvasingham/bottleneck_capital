@@ -14,6 +14,15 @@ thesis_health_score:
 confidence_score:
 valuation_attractiveness_score:
 urgency_score:
+action_tier:
+bottleneck_upside_score:
+bottleneck_upside_case:
+base_case_return_band:
+bull_case_return_band:
+downside_case_return_band:
+promotion_trigger:
+first_tranche_rule:
+opportunity_rank:
 max_position_weight_pct:
 current_position_weight_pct:
 approved_entry_zone:
@@ -51,6 +60,8 @@ Write one sentence that says exactly what to do and why.
 | Hedge required? | YES / NO |
 | Main risk today |  |
 | Main upside driver today |  |
+| Action tier | BUY_NOW / WATCH_TOP / HOLD_CORE / HOLD_SPECULATIVE / WATCH_LOW / AVOID_FOR_NOW |
+| Bottleneck upside | Score, scenario return band, and what has to happen |
 | Next review trigger |  |
 
 ### Action rules
@@ -69,6 +80,7 @@ HOLD if:
 - Thesis remains intact.
 - Valuation or uncertainty does not justify new capital.
 - Sell triggers are not active.
+- The action tier still records whether it is a top opportunity, owned core hold, speculative hold, or low-priority watch.
 
 TRIM if:
 - Valuation outruns thesis.
@@ -115,9 +127,9 @@ Clarify hidden assumptions you do not want.
 
 ### Thesis A - Primary thesis
 
-Status: ACTIVE / FRAGILE / BROKEN / UNPROVEN  
-Confidence: 0-100  
-Time horizon:  
+Status: ACTIVE / FRAGILE / BROKEN / UNPROVEN
+Confidence: 0-100
+Time horizon:
 Importance: CRITICAL / HIGH / MEDIUM / LOW
 
 Claim:
@@ -194,7 +206,31 @@ Explanation:
 
 ---
 
-## 4. Long-Term Ownership Quality
+## 4. Bottleneck Upside Map
+
+This section prevents HOLD from becoming passive. Estimate how much equity value the bottleneck can create if the thesis is right.
+
+| Field | Status |
+|---|---|
+| Action tier |  |
+| Bottleneck upside score | __ / 100 |
+| Base-case return band |  |
+| Bull-case return band |  |
+| Downside return band |  |
+| Bottleneck mechanism | What scarce resource reprices the equity? |
+| Market-implied ceiling | What does the market already price? |
+| Variant upside | What does the market miss? |
+| Promotion trigger | What changes this from HOLD to BUY_NOW or ADD_ON_DIP? |
+| First tranche rule | Max initial size and required evidence |
+
+Decision rule:
+- Promote from HOLD to ADD_ON_DIP only when the return band is wide enough, the dip cause is bounded, and thesis damage is absent.
+- Promote from HOLD to BUY_NOW only when base-case upside is attractive without needing heroic bull-case assumptions.
+- Keep as HOLD when upside exists but depends on uncertain terms, financing, customer proof, or governance.
+
+---
+
+## 5. Long-Term Ownership Quality
 
 Score each 0-5.
 
@@ -329,13 +365,13 @@ If price falls sharply, answer:
 
 ### Dip memo template
 
-Date:  
-Move:  
-Cause:  
-Thesis damage? YES / NO / UNCLEAR  
-Evidence checked:  
-Decision:  
-Reason:  
+Date:
+Move:
+Cause:
+Thesis damage? YES / NO / UNCLEAR
+Evidence checked:
+Decision:
+Reason:
 Review window:
 
 ---
@@ -492,4 +528,3 @@ Hedge changes:
 New open questions:
 
 Next action:
-

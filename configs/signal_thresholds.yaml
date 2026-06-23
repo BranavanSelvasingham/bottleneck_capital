@@ -5,6 +5,10 @@ sentinel:
     enabled: true
     check_interval_minutes: 15
 
+  freshness:
+    market_data_max_age_minutes: 20
+    filing_data_max_age_minutes: 240
+
   price_triggers:
     intraday_drop_pct: 5
     one_day_drop_pct: 7
@@ -21,6 +25,8 @@ sentinel:
       - 8-K
       - 10-Q
       - 10-K
+      - 6-K
+      - 20-F
       - S-1
       - 424B
       - 13D

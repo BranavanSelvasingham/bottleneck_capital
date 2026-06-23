@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 42
 urgency: MEDIUM
-last_updated: 2026-06-20
+last_updated: 2026-06-22
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -26,16 +26,20 @@ invalidation_trigger: Datacenter/power thesis weakens or SA/current evidence doe
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 one_line_rationale: "Hold/watch only: Constellation is a high-quality power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only absent promotion or a priced entry."
+action_tier: WATCH_TOP
+bottleneck_upside_score: 72
+bottleneck_upside_case: Reliable nuclear power reprices as scarce datacenter capacity; long-term PPAs and fleet scarcity expand the equity value beyond normal utility multiples.
+promotion_trigger: Promote to ADD_ON_DIP if valuation work shows at least 50% plausible upside, the pullback cause is bounded, no regulatory/thesis damage is found, and a starter-size cap is set.
 ---
 # CEG Decision
 
-Updated: 2026-06-20
+Updated: 2026-06-22
 
-Decision: HOLD  
-Dip decision: RESEARCH_FIRST  
-Sell status: NOT_TRIGGERED  
-Confidence: 42 / 100  
-Urgency: MEDIUM  
+Decision: HOLD
+Dip decision: RESEARCH_FIRST
+Sell status: NOT_TRIGGERED
+Confidence: 42 / 100
+Urgency: MEDIUM
 
 One-line rationale:
 Hold/watch only: Constellation is a high-quality power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only absent promotion or a priced entry.
