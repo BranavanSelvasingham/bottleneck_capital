@@ -305,12 +305,15 @@ def write_daily_board(root: Path) -> Path:
 
 
 def write_action_board(root: Path) -> Path:
+    from bottleneck_capital.dip_review import review_active_dips
+
     results = evaluate_all(root)
     events = active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
+    dip_reviews = review_active_dips(root)
     now = _now()
     report_path = root / "reports" / "action_boards" / f"{now[:10]}.md"
     report_path.parent.mkdir(parents=True, exist_ok=True)
-    report_path.write_text(render_action_board(results, events, now), encoding="utf-8")
+    report_path.write_text(render_action_board(results, events, now, dip_reviews), encoding="utf-8")
     return report_path
 
 
@@ -351,7 +354,10 @@ def render_action_board(
     results: list[DecisionResult],
     signal_events: list[dict[str, Any]],
     now: str,
+    dip_reviews: list[Any] | None = None,
 ) -> str:
+    from bottleneck_capital.dip_review import render_action_board_dip_reviews
+
     actionable = [
         result
         for result in results
@@ -397,6 +403,8 @@ def render_action_board(
                 f"{_table(scalar_text(event.get('summary')))} |"
             )
         lines.append("")
+    lines.extend(render_action_board_dip_reviews(dip_reviews or []))
+    lines.append("")
     lines.extend(
         [
             "## Actions",

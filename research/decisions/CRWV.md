@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 43
 urgency: HIGH
-last_updated: 2026-06-22
+last_updated: 2026-06-26
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_and_call_signal
 trade_policy: long_only_after_research
@@ -25,7 +25,7 @@ hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and
 invalidation_trigger: Large customer demand weakens, refinancing risk rises, or contracted utilization breaks.
 broken_thesis: ""
 next_trigger: Review whether the June 22 CRWV dip is valuation opportunity or financing/crowding risk once cause, valuation, and customer demand evidence are bounded.
-one_line_rationale: "RESEARCH_REQUIRED: CRWV triggered a June 22 live price-dislocation review, but no primary filing/news thesis break was found; do not add until dip cause, valuation, and financing risk are bounded."
+one_line_rationale: Unresolved material event requires research before changing capital.
 action_tier: HOLD
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
@@ -33,7 +33,7 @@ promotion_trigger: ""
 ---
 # CRWV Decision
 
-Updated: 2026-06-22
+Updated: 2026-06-26
 
 Decision: RESEARCH_REQUIRED
 Dip decision: RESEARCH_FIRST
@@ -42,7 +42,7 @@ Confidence: 43 / 100
 Urgency: HIGH
 
 One-line rationale:
-RESEARCH_REQUIRED: CRWV triggered a June 22 live price-dislocation review, but no primary filing/news thesis break was found; do not add until dip cause, valuation, and financing risk are bounded.
+Unresolved material event requires research before changing capital.
 
 Thesis expressed:
 CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory.

@@ -1,0 +1,218 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1660" viewBox="0 0 2600 1660">
+<defs><marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#334155"/></marker></defs>
+<rect width="2600" height="1660" fill="#ffffff"/>
+<text x="70" y="86" font-family="Arial, sans-serif" font-size="44" font-weight="700" text-anchor="start" fill="#0f172a">Bottleneck Capital System Map</text>
+<text x="72" y="114" font-family="Arial, sans-serif" font-size="18" font-weight="400" text-anchor="start" fill="#475569">Drawn from local repo + 10 Bottleneck Codex threads. Latest local boards read: 2026-06-26. Excalidraw MCP was not exposed, so this is a native .excalidraw scene file.</text>
+<rect x="40" y="140" width="440" height="1050" rx="18" fill="#f8fafc" stroke="#64748b" stroke-width="2" opacity="0.45"/>
+<text x="62" y="186" font-family="Arial, sans-serif" font-size="28" font-weight="700" text-anchor="start" fill="#64748b">Source Of Truth</text>
+<rect x="520" y="140" width="720" height="1050" rx="18" fill="#f0fdf4" stroke="#15803d" stroke-width="2" opacity="0.45"/>
+<text x="542" y="186" font-family="Arial, sans-serif" font-size="28" font-weight="700" text-anchor="start" fill="#15803d">Live Signal Pipeline</text>
+<rect x="1290" y="140" width="590" height="1050" rx="18" fill="#fff7ed" stroke="#c2410c" stroke-width="2" opacity="0.45"/>
+<text x="1312" y="186" font-family="Arial, sans-serif" font-size="28" font-weight="700" text-anchor="start" fill="#c2410c">Decision Core</text>
+<rect x="1930" y="140" width="600" height="1050" rx="18" fill="#eff6ff" stroke="#2563eb" stroke-width="2" opacity="0.45"/>
+<text x="1952" y="186" font-family="Arial, sans-serif" font-size="28" font-weight="700" text-anchor="start" fill="#2563eb">Outputs And Interfaces</text>
+<rect x="40" y="1230" width="2490" height="390" rx="18" fill="#faf5ff" stroke="#7e22ce" stroke-width="2" opacity="0.45"/>
+<text x="62" y="1276" font-family="Arial, sans-serif" font-size="28" font-weight="700" text-anchor="start" fill="#7e22ce">Codex Thread Layer</text>
+<rect x="80" y="220" width="360" height="116" rx="12" fill="#e2e8f0" stroke="#475569" stroke-width="2" opacity="1"/>
+<text x="98" y="255" font-family="Arial, sans-serif" font-size="19" font-weight="400" text-anchor="start" fill="#0f172a">AGENTS.md</text>
+<text x="98" y="279" font-family="Arial, sans-serif" font-size="19" font-weight="400" text-anchor="start" fill="#0f172a">Decision discipline, operating loop hardening, SA mirroring, long-only policy.</text>
+<rect x="80" y="372" width="360" height="150" rx="12" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2" opacity="1"/>
+<text x="98" y="405" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">configs/watchlist.yaml</text>
+<text x="98" y="426" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">40 tickers across 12 sleeves</text>
+<text x="98" y="447" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">29 current SA 13F, 1 post-quarter 13G, 10 adjacent proxies</text>
+<text x="98" y="468" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">36 long-only after research, 4 signal-only</text>
+<rect x="80" y="558" width="360" height="150" rx="12" fill="#dcfce7" stroke="#15803d" stroke-width="2" opacity="1"/>
+<text x="98" y="591" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">configs/schedule.yaml</text>
+<text x="98" y="612" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Market-day windows, weekly sleeve rotation, weekend rebuild.</text>
+<text x="98" y="633" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a"></text>
+<text x="98" y="654" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">configs/signal_thresholds.yaml</text>
+<text x="98" y="675" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Dip, filing, SA exit/reduction, catalyst rules.</text>
+<rect x="80" y="744" width="360" height="132" rx="12" fill="#ecfeff" stroke="#0e7490" stroke-width="2" opacity="1"/>
+<text x="98" y="777" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">configs/live_sources.yaml</text>
+<text x="98" y="798" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Provider symbol overrides and filing-source contracts.</text>
+<text x="98" y="819" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a"></text>
+<text x="98" y="840" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">configs/automation_routing.yaml</text>
+<text x="98" y="861" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Event -&gt; agent routing + write scopes.</text>
+<rect x="80" y="912" width="360" height="122" rx="12" fill="#fef9c3" stroke="#a16207" stroke-width="2" opacity="1"/>
+<text x="98" y="945" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">research/theses/*.md</text>
+<text x="98" y="966" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Sleeve thesis library: power, compute, miners, memory/networking, semicap, optical, services, space, autonomy.</text>
+<rect x="80" y="1064" width="360" height="92" rx="12" fill="#ffedd5" stroke="#c2410c" stroke-width="2" opacity="1"/>
+<text x="98" y="1097" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">research/assets/*.md + decisions/*.md</text>
+<text x="98" y="1118" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Ticker thesis, anti-thesis, hedge/sizing, invalidation, evidence quality.</text>
+<rect x="560" y="225" width="195" height="112" rx="12" fill="#dcfce7" stroke="#15803d" stroke-width="2" opacity="1"/>
+<text x="578" y="257" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Market data</text>
+<text x="578" y="277" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Alpaca -&gt; Yahoo -&gt; Stooq</text>
+<text x="578" y="297" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">price dislocations + coverage gaps</text>
+<rect x="782" y="225" width="205" height="112" rx="12" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2" opacity="1"/>
+<text x="800" y="257" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Filings / IR</text>
+<text x="800" y="277" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">SEC submissions, Atom, proxy/vendor feed</text>
+<text x="800" y="297" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">13F/13G/8-K/10-Q/10-K/6-K/20-F</text>
+<rect x="1014" y="225" width="180" height="112" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="2" opacity="1"/>
+<text x="1032" y="257" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Manual / company events</text>
+<text x="1032" y="277" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">contracts, financing, guidance, source changes</text>
+<rect x="690" y="390" width="380" height="108" rx="12" fill="#f8fafc" stroke="#475569" stroke-width="2" opacity="1"/>
+<text x="708" y="423" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">state/latest_*_events.jsonl</text>
+<text x="708" y="444" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Channel files aggregate into state/latest_events.jsonl.</text>
+<text x="708" y="465" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Sentinel prefers state/latest_events over mock fallback.</text>
+<rect x="560" y="550" width="290" height="222" rx="12" fill="#bbf7d0" stroke="#15803d" stroke-width="2" opacity="1"/>
+<text x="578" y="584" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">bcap live-check</text>
+<text x="578" y="607" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">1 ingest market</text>
+<text x="578" y="630" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">2 ingest filings</text>
+<text x="578" y="653" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">3 refresh local prices</text>
+<text x="578" y="676" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">4 run sentinel</text>
+<text x="578" y="699" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">5 write action board</text>
+<text x="578" y="722" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">6 validate</text>
+<rect x="925" y="545" width="255" height="142" rx="12" fill="#dcfce7" stroke="#15803d" stroke-width="2" opacity="1"/>
+<text x="943" y="577" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">sentinel.py</text>
+<text x="943" y="597" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Classifies events:</text>
+<text x="943" y="617" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">dip_trigger, thesis_damage, filings, catalysts, hedge risk, SA exit/reduction, noise.</text>
+<rect x="925" y="730" width="255" height="128" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="2" opacity="1"/>
+<text x="943" y="762" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">state/signal_events.jsonl</text>
+<text x="943" y="782" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Append-only active/resolved signal stream.</text>
+<text x="943" y="802" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Active snapshot: 110 events; 108 high priority; 104 dip triggers.</text>
+<rect x="925" y="905" width="255" height="116" rx="12" fill="#fde68a" stroke="#b45309" stroke-width="2" opacity="1"/>
+<text x="943" y="937" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">dip_review.py</text>
+<text x="943" y="957" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Bounded-cause review: market/crowding, company-specific, financing, thesis damage, unknown.</text>
+<text x="943" y="977" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Prerequisite for ADD_ON_DIP.</text>
+<rect x="560" y="815" width="290" height="124" rx="12" fill="#e0f2fe" stroke="#0369a1" stroke-width="2" opacity="1"/>
+<text x="578" y="848" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">runtime.py</text>
+<text x="578" y="869" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Per-process run locks and run ledger.</text>
+<text x="578" y="890" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Dirty worktree is not a stop condition unless writes conflict.</text>
+<rect x="560" y="980" width="290" height="122" rx="12" fill="#ede9fe" stroke="#6d28d9" stroke-width="2" opacity="1"/>
+<text x="578" y="1013" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">validation.py + readiness.py</text>
+<text x="578" y="1034" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">validate, strict-live, live-readiness, resume-check.</text>
+<text x="578" y="1055" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Blocks automation resume on live/source/position gaps.</text>
+<rect x="1330" y="230" width="500" height="325" rx="12" fill="#ffedd5" stroke="#c2410c" stroke-width="2" opacity="1"/>
+<text x="1348" y="263" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#0f172a">decision_engine.py</text>
+<text x="1348" y="284" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#0f172a">Reads watchlist + asset/decision frontmatter + active signals.</text>
+<text x="1348" y="305" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#0f172a"></text>
+<text x="1348" y="326" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#0f172a">Hard gates:</text>
+<text x="1348" y="347" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#0f172a">- unresolved material event -&gt; RESEARCH_REQUIRED</text>
+<text x="1348" y="368" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#0f172a">- BUY_NOW requires thesis, valuation, sizing, anti-thesis, hedge, invalidation</text>
+<text x="1348" y="389" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#0f172a">- ADD_ON_DIP requires bounded cause, approved dip protocol, improved valuation, no thesis damage</text>
+<text x="1348" y="410" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#0f172a">- SELL requires named broken thesis or unacceptable risk</text>
+<text x="1348" y="431" font-family="Arial, sans-serif" font-size="17" font-weight="700" text-anchor="start" fill="#0f172a">- reported puts stay signal-only / no shorts</text>
+<rect x="1330" y="600" width="238" height="136" rx="12" fill="#f5f3ff" stroke="#7e22ce" stroke-width="2" opacity="1"/>
+<text x="1348" y="632" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">SA mirroring policy</text>
+<text x="1348" y="652" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Do not label adjacent proxies as current holdings.</text>
+<text x="1348" y="672" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Full SA exit -&gt; RESEARCH_REQUIRED review.</text>
+<text x="1348" y="692" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Material reduction -&gt; thesis-weight review.</text>
+<rect x="1592" y="600" width="238" height="136" rx="12" fill="#fef9c3" stroke="#a16207" stroke-width="2" opacity="1"/>
+<text x="1610" y="632" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Bottleneck upside framework</text>
+<text x="1610" y="652" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Clean expression, scarcity, valuation, promotion discipline, max-add sizing.</text>
+<rect x="1330" y="790" width="500" height="128" rx="12" fill="#ccfbf1" stroke="#0f766e" stroke-width="2" opacity="1"/>
+<text x="1348" y="823" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">value_chain.py</text>
+<text x="1348" y="844" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Maps tracked universe onto Jensen five-layer AI stack: energy, chips, infrastructure, models/platforms, applications.</text>
+<text x="1348" y="865" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Generates HTML visualizer with Update server mode.</text>
+<rect x="1330" y="970" width="500" height="96" rx="12" fill="#e0f2fe" stroke="#0369a1" stroke-width="2" opacity="1"/>
+<text x="1348" y="1003" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">positions.py</text>
+<text x="1348" y="1024" font-family="Arial, sans-serif" font-size="17" font-weight="400" text-anchor="start" fill="#0f172a">Gitignored exact local book, current price refresh from snapshots, exposure by sleeve and decision.</text>
+<rect x="1970" y="225" width="250" height="138" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2" opacity="1"/>
+<text x="1988" y="257" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">research/decisions/index.md</text>
+<text x="1988" y="277" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Daily-readable decision dashboard.</text>
+<text x="1988" y="297" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Current decision files: 35 RESEARCH_REQUIRED, 5 HOLD.</text>
+<rect x="2250" y="225" width="238" height="138" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="2" opacity="1"/>
+<text x="2268" y="257" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">reports/action_boards/YYYY-MM-DD.md</text>
+<text x="2268" y="277" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Compact current action surface: actions, source gaps, dip-cause reviews, high-priority signals.</text>
+<rect x="1970" y="430" width="250" height="118" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2" opacity="1"/>
+<text x="1988" y="462" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">reports/daily_decision_boards/YYYY-MM-DD.md</text>
+<text x="1988" y="482" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Close-board full ticker view.</text>
+<rect x="2250" y="430" width="238" height="118" rx="12" fill="#f8fafc" stroke="#475569" stroke-width="2" opacity="1"/>
+<text x="2268" y="462" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">state/decision_ledger.jsonl</text>
+<text x="2268" y="482" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Append-only decision evidence.</text>
+<text x="2268" y="502" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">84 rows read locally.</text>
+<rect x="1970" y="615" width="250" height="122" rx="12" fill="#ede9fe" stroke="#6d28d9" stroke-width="2" opacity="1"/>
+<text x="1988" y="647" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">reports/live_readiness/YYYY-MM-DD.md</text>
+<text x="1988" y="667" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Resume checklist + recovery actions.</text>
+<text x="1988" y="687" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">resume-check exits non-zero until ready.</text>
+<rect x="2250" y="615" width="238" height="122" rx="12" fill="#ccfbf1" stroke="#0f766e" stroke-width="2" opacity="1"/>
+<text x="2268" y="647" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">reports/value_chain_visualizer.html</text>
+<text x="2268" y="667" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Interactive five-layer map with local Update button via bcap value-chain --serve.</text>
+<rect x="2060" y="850" width="350" height="145" rx="12" fill="#fff7ed" stroke="#c2410c" stroke-width="2" opacity="1"/>
+<text x="2078" y="884" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">Branavan / Codex interface</text>
+<text x="2078" y="907" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">Needs concise actions, thesis decisions, unresolved signals, watch items, and validation gaps.</text>
+<text x="2078" y="930" font-family="Arial, sans-serif" font-size="18" font-weight="700" text-anchor="start" fill="#0f172a">No generic research without a decision.</text>
+<rect x="80" y="1310" width="275" height="120" rx="12" fill="#f3e8ff" stroke="#7e22ce" stroke-width="2" opacity="1"/>
+<text x="98" y="1342" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Main Runner</text>
+<text x="98" y="1362" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Scheduled orchestrator.</text>
+<text x="98" y="1382" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Uses live-check for sentinel windows and daily-board for close board.</text>
+<rect x="385" y="1310" width="275" height="120" rx="12" fill="#f3e8ff" stroke="#7e22ce" stroke-width="2" opacity="1"/>
+<text x="403" y="1342" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Main Interface</text>
+<text x="403" y="1362" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Read-only action surface.</text>
+<text x="403" y="1382" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">No scheduled loop; lead with actions and unresolved events.</text>
+<rect x="690" y="1310" width="275" height="120" rx="12" fill="#fae8ff" stroke="#a21caf" stroke-width="2" opacity="1"/>
+<text x="708" y="1342" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Consultant</text>
+<text x="708" y="1362" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Active improvement thread.</text>
+<text x="708" y="1382" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Adds deterministic dip-cause review into action boards.</text>
+<rect x="995" y="1310" width="275" height="120" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="2" opacity="1"/>
+<text x="1013" y="1342" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Ticker research</text>
+<text x="1013" y="1362" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">CEG heartbeat, IREN education, MU material event review, TSM starter-buy search.</text>
+<rect x="1300" y="1310" width="275" height="120" rx="12" fill="#ccfbf1" stroke="#0f766e" stroke-width="2" opacity="1"/>
+<text x="1318" y="1342" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Value-chain thread</text>
+<text x="1318" y="1362" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Built reports/value_chain_visualizer.html and local Update server mode.</text>
+<rect x="1605" y="1310" width="275" height="120" rx="12" fill="#e0f2fe" stroke="#0369a1" stroke-width="2" opacity="1"/>
+<text x="1623" y="1342" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Publish thread</text>
+<text x="1623" y="1362" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Committed live-ops/readiness work and opened draft PR #4.</text>
+<rect x="1910" y="1310" width="275" height="120" rx="12" fill="#f8fafc" stroke="#475569" stroke-width="2" opacity="1"/>
+<text x="1928" y="1342" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Current diagram thread</text>
+<text x="1928" y="1362" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Read all Bottleneck threads surfaced by app + repo; writes this Excalidraw artifact only.</text>
+<rect x="2215" y="1310" width="275" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2" opacity="1"/>
+<text x="2233" y="1342" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Operating snapshot</text>
+<text x="2233" y="1362" font-family="Arial, sans-serif" font-size="16" font-weight="400" text-anchor="start" fill="#0f172a">Latest board: 2026-06-26. Worktree already dirty; preserve unrelated research/state changes.</text>
+<line x1="755" y1="337" x2="775" y2="390" stroke="#15803d" stroke-width="3" marker-end="url(#arrowhead)"/>
+<line x1="885" y1="337" x2="880" y2="390" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowhead)"/>
+<line x1="1104" y1="337" x2="985" y2="390" stroke="#b45309" stroke-width="3" marker-end="url(#arrowhead)"/>
+<line x1="850" y1="444" x2="925" y2="585" stroke="#15803d" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="887.5" y="507.5" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">latest events</text>
+<line x1="850" y1="640" x2="925" y2="616" stroke="#15803d" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="887.5" y="621" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">run sentinel</text>
+<line x1="1052" y1="687" x2="1052" y2="730" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="1052" y="701.5" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">append</text>
+<line x1="1052" y1="858" x2="1052" y2="905" stroke="#b45309" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="1052" y="874.5" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">review dips</text>
+<line x1="1180" y1="792" x2="1330" y2="360" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="1255" y="569" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">active signals</text>
+<line x1="1180" y1="962" x2="1330" y2="465" stroke="#b45309" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="1255" y="706.5" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">bounded-cause input</text>
+<line x1="440" y1="1110" x2="1330" y2="330" stroke="#c2410c" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="885" y="713" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">research frontmatter</text>
+<line x1="440" y1="446" x2="1330" y2="315" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="885" y="373.5" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">universe metadata</text>
+<line x1="440" y1="626" x2="560" y2="608" stroke="#15803d" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="500" y="610" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">schedule + thresholds</text>
+<line x1="440" y1="284" x2="1330" y2="245" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="885" y="257.5" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">discipline gates</text>
+<line x1="850" y1="1040" x2="1970" y2="668" stroke="#6d28d9" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="1410" y="847" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">readiness outputs</text>
+<line x1="1830" y1="340" x2="1970" y2="294" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="1900" y="310" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">render index</text>
+<line x1="1830" y1="390" x2="2250" y2="294" stroke="#0284c7" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="2040" y="335" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">render action board</text>
+<line x1="1830" y1="460" x2="1970" y2="490" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="1900" y="468" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">daily board</text>
+<line x1="1830" y1="510" x2="2250" y2="490" stroke="#475569" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="2040" y="493" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">ledger rows</text>
+<line x1="1830" y1="854" x2="2250" y2="676" stroke="#0f766e" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="2040" y="758" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">HTML visualizer</text>
+<line x1="1830" y1="1018" x2="2060" y2="900" stroke="#0369a1" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="1945" y="952" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">exposure context</text>
+<line x1="2220" y1="363" x2="2205" y2="850" stroke="#0284c7" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="2212.5" y="599.5" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">actions</text>
+<line x1="2095" y1="548" x2="2165" y2="850" stroke="#2563eb" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="2130" y="692" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">daily context</text>
+<line x1="2369" y1="737" x2="2315" y2="850" stroke="#0f766e" stroke-width="3" marker-end="url(#arrowhead)"/>
+<text x="2342" y="786.5" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">value-chain view</text>
+<line x1="2170" y1="995" x2="520" y2="1505" stroke="#7e22ce" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arrowhead)"/>
+<text x="1345" y="1243" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">user questions and scheduled wakes feed Codex threads</text>
+<line x1="827" y1="1310" x2="925" y2="1021" stroke="#a21caf" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arrowhead)"/>
+<text x="876" y="1158.5" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">dip-review code path</text>
+<line x1="1132" y1="1310" x2="1330" y2="414" stroke="#b45309" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arrowhead)"/>
+<text x="1231" y="855" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">ticker decisions</text>
+<line x1="1438" y1="1310" x2="1580" y2="918" stroke="#0f766e" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arrowhead)"/>
+<text x="1509" y="1107" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">visualizer</text>
+<line x1="1742" y1="1310" x2="1970" y2="700" stroke="#0369a1" stroke-width="3" stroke-dasharray="10 8" marker-end="url(#arrowhead)"/>
+<text x="1856" y="998" font-family="Arial, sans-serif" font-size="15" font-weight="400" text-anchor="middle" fill="#475569">PR #4 context</text>
+<text x="70" y="1504" font-family="Arial, sans-serif" font-size="24" font-weight="700" text-anchor="start" fill="#7e22ce">Current State Notes</text>
+<text x="370" y="1496" font-family="Arial, sans-serif" font-size="18" font-weight="400" text-anchor="start" fill="#334155">Decision files currently reflect active-signal pressure: most names are RESEARCH_REQUIRED until dip causes and material events are reviewed or resolved append-only. Asset frontmatter still carries baseline house views, including one older BUY_NOW baseline, so the board/decision engine is the operational truth surface.</text>
+<text x="1580" y="1496" font-family="Arial, sans-serif" font-size="18" font-weight="400" text-anchor="start" fill="#334155">Validation rule of thumb: after process/universe changes run bcap validate; before resuming market-day automation run bcap validate --strict-live or bcap resume-check.</text>
+</svg>

@@ -2,12 +2,12 @@
 ticker: TSM
 name: Taiwan Semiconductor Manufacturing
 sleeve: memory_storage_networking
-current_decision: BUY_NOW
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 78
 urgency: HIGH
-last_updated: 2026-06-22
+last_updated: 2026-06-26
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_call_signal_and_put_signal
 trade_policy: long_only_after_research
@@ -25,7 +25,7 @@ hedge_or_sizing: No puts or shorts; approve a starter up to 1.5% now and cap tot
 invalidation_trigger: Move to RESEARCH_REQUIRED or SELL review if advanced technologies fall below 65% of wafer revenue for two quarters, HPC falls below 50% of revenue without offsetting packaging growth, 2026 revenue growth guidance falls below 20%, gross margin guidance falls below 58%, customer concentration or geopolitical risk materially worsens, or SA fully exits.
 broken_thesis: ""
 next_trigger: Next TSM quarterly filing or revenue release, SA filing change, customer-concentration update, guidance change, geopolitical escalation, or a valuation move above the approved entry band.
-one_line_rationale: "BUY_NOW: TSMC is the cleanest upstream AI compute bottleneck; Q1 2026 ADR EPS grew 58.3% YoY, advanced nodes were 74% of wafer revenue, HPC was 61% of revenue, May revenue grew 30.1% YoY, and valuation near 33x run-rate ADR EPS is acceptable with strict sizing."
+one_line_rationale: Unresolved material event requires research before changing capital.
 action_tier: BUY_NOW
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
@@ -33,16 +33,16 @@ promotion_trigger: ""
 ---
 # TSM Decision
 
-Updated: 2026-06-22
+Updated: 2026-06-26
 
-Decision: BUY_NOW
+Decision: RESEARCH_REQUIRED
 Dip decision: RESEARCH_FIRST
 Sell status: NOT_TRIGGERED
 Confidence: 78 / 100
 Urgency: HIGH
 
 One-line rationale:
-BUY_NOW: TSMC is the cleanest upstream AI compute bottleneck; Q1 2026 ADR EPS grew 58.3% YoY, advanced nodes were 74% of wafer revenue, HPC was 61% of revenue, May revenue grew 30.1% YoY, and valuation near 33x run-rate ADR EPS is acceptable with strict sizing.
+Unresolved material event requires research before changing capital.
 
 Thesis expressed:
 TSMC is the cleanest upstream AI compute bottleneck: leading-edge foundry plus advanced packaging capacity, with current revenue and margin evidence showing AI/HPC demand is already material.
@@ -60,7 +60,7 @@ Invalidation trigger:
 Move to RESEARCH_REQUIRED or SELL review if advanced technologies fall below 65% of wafer revenue for two quarters, HPC falls below 50% of revenue without offsetting packaging growth, 2026 revenue growth guidance falls below 20%, gross margin guidance falls below 58%, customer concentration or geopolitical risk materially worsens, or SA fully exits.
 
 Buy now?
-YES
+NO
 
 Buy on dip?
 RESEARCH_FIRST
@@ -72,4 +72,4 @@ Next trigger:
 Next TSM quarterly filing or revenue release, SA filing change, customer-concentration update, guidance change, geopolitical escalation, or a valuation move above the approved entry band.
 
 Human action:
-Position opened. Keep the 2-share TFSA starter inside the 1.5% starter rule and 4% total cap; update portfolio weight when total portfolio value is available.
+Research before acting.

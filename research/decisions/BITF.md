@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 20
 urgency: HIGH
-last_updated: 2026-06-22
+last_updated: 2026-06-26
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -33,7 +33,7 @@ promotion_trigger: ""
 ---
 # BITF Decision
 
-Updated: 2026-06-22
+Updated: 2026-06-26
 
 Decision: RESEARCH_REQUIRED
 Dip decision: RESEARCH_FIRST

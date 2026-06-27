@@ -12,6 +12,7 @@ from bottleneck_capital.decision_engine import (
     write_action_board,
     write_daily_board,
 )
+from bottleneck_capital.dip_review import write_dip_review
 from bottleneck_capital.ingest import IngestError, ingest_filings, ingest_market
 from bottleneck_capital.initialize import run_initialization
 from bottleneck_capital.io import read_jsonl
@@ -224,6 +225,10 @@ def main(argv: list[str] | None = None) -> int:
 
     dip_parser = subparsers.add_parser("dip-investigate", help="Create a dip investigation memo.")
     dip_parser.add_argument("--ticker", required=True, help="Ticker to investigate.")
+    subparsers.add_parser(
+        "dip-review",
+        help="Write a bounded-cause review for active dip triggers.",
+    )
 
     args = parser.parse_args(argv)
     root = args.root.resolve()
@@ -446,6 +451,10 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.command == "dip-investigate":
         path = create_dip_investigation(root, args.ticker)
+        print(path)
+        return 0
+    if args.command == "dip-review":
+        path = write_dip_review(root)
         print(path)
         return 0
     parser.error(f"Unknown command: {args.command}")

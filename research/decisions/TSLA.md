@@ -2,12 +2,12 @@
 ticker: TSLA
 name: Tesla
 sleeve: autonomy_energy
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: NOT_ARMED
 sell_status: NOT_TRIGGERED
 confidence_score: 25
 urgency: HIGH
-last_updated: 2026-06-22
+last_updated: 2026-06-26
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: local_position_adjacent_proxy
 trade_policy: long_only_after_research
@@ -25,7 +25,7 @@ hedge_or_sizing: Hold existing exposure only; do not add until merger terms, exa
 invalidation_trigger: SpaceX merger optionality disappears, transaction terms would dilute TSLA holders badly, or Tesla fails to express a durable AI/autonomy/energy/platform-consolidation thesis.
 broken_thesis: ""
 next_trigger: Confirm exact shares and cost basis, then underwrite TSLA as a SpaceX merger/platform-consolidation option with explicit dilution and governance risk.
-one_line_rationale: "Hold/watch only: TSLA now has plausible SpaceX merger/platform-consolidation optionality, but no new capital until transaction odds, terms, sizing, and valuation are underwritten."
+one_line_rationale: Unresolved material event requires research before changing capital.
 action_tier: HOLD_SPECULATIVE
 bottleneck_upside_score: 65
 bottleneck_upside_case: A favorable Tesla-SpaceX transaction or Musk-platform consolidation gives public TSLA holders exposure to launch, satellite, autonomy, robotics, and energy infrastructure scarcity.
@@ -33,16 +33,16 @@ promotion_trigger: Promote only if transaction odds and exchange-ratio math beco
 ---
 # TSLA Decision
 
-Updated: 2026-06-22
+Updated: 2026-06-26
 
-Decision: HOLD
+Decision: RESEARCH_REQUIRED
 Dip decision: NOT_ARMED
 Sell status: NOT_TRIGGERED
 Confidence: 25 / 100
 Urgency: HIGH
 
 One-line rationale:
-Hold/watch only: TSLA now has plausible SpaceX merger/platform-consolidation optionality, but no new capital until transaction odds, terms, sizing, and valuation are underwritten.
+Unresolved material event requires research before changing capital.
 
 Thesis expressed:
 Tesla may express AI autonomy, robotics, battery/storage, and energy infrastructure optionality, but its fit to the Bottleneck Capital sleeve is unvalidated.
@@ -72,4 +72,4 @@ Next trigger:
 Confirm exact shares and cost basis, then underwrite TSLA as a SpaceX merger/platform-consolidation option with explicit dilution and governance risk.
 
 Human action:
-Follow sizing and hedge discipline before any trade.
+Research before acting.

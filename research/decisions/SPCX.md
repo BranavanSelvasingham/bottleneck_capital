@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 28
 urgency: MEDIUM
-last_updated: 2026-06-22
+last_updated: 2026-06-26
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: local_position_adjacent_proxy
 trade_policy: long_only_after_research
@@ -25,7 +25,7 @@ hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and
 invalidation_trigger: Senior-note terms, bridge-loan refinancing, customer demand, or liquidity risk show the post-IPO equity is overlevered or no longer a clean space/AI infrastructure expression.
 broken_thesis: ""
 next_trigger: Review June 22 senior-note pricing/use of proceeds, bridge-loan repayment, post-IPO valuation, and local cost basis before any add/sell decision.
-one_line_rationale: "RESEARCH_REQUIRED: SPCX June 22 8-K launched senior unsecured notes to repay bridge-loan borrowings while the stock fell sharply; no buy or sell until financing terms, valuation, and local cost basis are reviewed."
+one_line_rationale: Unresolved material event requires research before changing capital.
 action_tier: HOLD
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
@@ -33,7 +33,7 @@ promotion_trigger: ""
 ---
 # SPCX Decision
 
-Updated: 2026-06-22
+Updated: 2026-06-26
 
 Decision: RESEARCH_REQUIRED
 Dip decision: RESEARCH_FIRST
@@ -42,7 +42,7 @@ Confidence: 28 / 100
 Urgency: MEDIUM
 
 One-line rationale:
-RESEARCH_REQUIRED: SPCX June 22 8-K launched senior unsecured notes to repay bridge-loan borrowings while the stock fell sharply; no buy or sell until financing terms, valuation, and local cost basis are reviewed.
+Unresolved material event requires research before changing capital.
 
 Thesis expressed:
 SPCX is tracked as Space Exploration Technologies Corp. live public equity exposure and a user-held adjacent proxy for launch, satellite, connectivity, defense infrastructure, and AI-infrastructure scarcity.
