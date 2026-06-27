@@ -10,8 +10,10 @@ from bottleneck_capital.decision_engine import (
     MissingDecisionFile,
     evaluate_all,
     evaluate_ticker,
+    write_action_board,
     write_daily_board,
 )
+from bottleneck_capital.signal_events import resolve_signal_events
 
 
 def test_missing_decision_file_fails_validation(tmp_path: Path) -> None:
@@ -58,6 +60,52 @@ def test_unresolved_material_event_becomes_research_required(tmp_path: Path) -> 
 
     assert result.action == "RESEARCH_REQUIRED"
     assert "Unresolved material event" in result.rationale
+
+
+def test_resolved_material_event_no_longer_blocks_decision(tmp_path: Path) -> None:
+    _write_project(tmp_path, "AAA", decision={"current_decision": "HOLD"})
+    _write_jsonl(
+        tmp_path / "state" / "signal_events.jsonl",
+        [
+            {
+                "ticker": "AAA",
+                "event_class": "filing_update",
+                "priority": "medium",
+                "requires_codex": True,
+                "resolved": False,
+                "raw_event": {
+                    "ticker": "AAA",
+                    "filing_type": "8-K",
+                    "summary": "New customer contract.",
+                },
+            }
+        ],
+    )
+
+    resolve_signal_events(tmp_path, ticker="AAA", reason="Reviewed; no thesis damage.")
+    result = evaluate_all(tmp_path)[0]
+
+    assert result.action == "HOLD"
+
+
+def test_directly_resolved_material_event_no_longer_blocks_decision(tmp_path: Path) -> None:
+    _write_project(tmp_path, "AAA", decision={"current_decision": "HOLD"})
+    _write_jsonl(
+        tmp_path / "state" / "signal_events.jsonl",
+        [
+            {
+                "ticker": "AAA",
+                "event_class": "filing_update",
+                "priority": "medium",
+                "requires_codex": True,
+                "resolved": True,
+            }
+        ],
+    )
+
+    result = evaluate_all(tmp_path)[0]
+
+    assert result.action == "HOLD"
 
 
 def test_sa_full_exit_event_becomes_research_required(tmp_path: Path) -> None:
@@ -129,6 +177,26 @@ def test_sell_requires_named_broken_thesis(tmp_path: Path) -> None:
     assert "SELL requires" in result.rationale
 
 
+def test_buy_now_requires_full_decision_discipline(tmp_path: Path) -> None:
+    _write_project(
+        tmp_path,
+        "AAA",
+        decision={
+            "current_decision": "BUY_NOW",
+            "buy_thesis": "Clean bottleneck exposure.",
+            "valuation_case": "Acceptable valuation.",
+            "hedge_or_sizing": "Starter only.",
+            "invalidation_trigger": "Named thesis break.",
+        },
+    )
+
+    result = evaluate_ticker(tmp_path, {"ticker": "AAA"})
+
+    assert result.action == "RESEARCH_REQUIRED"
+    assert "anti_thesis" in result.rationale
+    assert "evidence_quality" in result.rationale
+
+
 def test_daily_decision_board_renders_all_tickers(tmp_path: Path) -> None:
     _write_watchlist(tmp_path, ["AAA", "BBB"])
     _write_decision(tmp_path, "AAA", {"current_decision": "HOLD"})
@@ -145,6 +213,30 @@ def test_daily_decision_board_renders_all_tickers(tmp_path: Path) -> None:
     assert "BBB" in index
 
 
+def test_daily_decision_board_renders_buy_now_size(tmp_path: Path) -> None:
+    _write_watchlist(tmp_path, ["AAA"])
+    _write_decision(
+        tmp_path,
+        "AAA",
+        {
+            "current_decision": "BUY_NOW",
+            "buy_thesis": "Clean bottleneck exposure.",
+            "anti_thesis": "Customer concentration.",
+            "evidence_quality": "PRIMARY",
+            "valuation_case": "Acceptable valuation.",
+            "hedge_or_sizing": "Starter only.",
+            "invalidation_trigger": "Named thesis break.",
+            "approved_entry_zone": "BUY_NOW up to a 1.5% starter.",
+        },
+    )
+
+    report_path = write_daily_board(tmp_path)
+    report = report_path.read_text(encoding="utf-8")
+
+    assert "| AAA |" in report
+    assert "1.5%" in report
+
+
 def test_daily_decision_board_ledger_is_idempotent(tmp_path: Path) -> None:
     _write_watchlist(tmp_path, ["AAA", "BBB"])
     _write_decision(tmp_path, "AAA", {"current_decision": "HOLD"})
@@ -155,6 +247,75 @@ def test_daily_decision_board_ledger_is_idempotent(tmp_path: Path) -> None:
 
     ledger = (tmp_path / "state" / "decision_ledger.jsonl").read_text(encoding="utf-8")
     assert len(ledger.splitlines()) == 2
+
+
+def test_action_board_surfaces_only_actionable_decisions(tmp_path: Path) -> None:
+    _write_watchlist(tmp_path, ["AAA", "BBB"])
+    _write_decision(tmp_path, "AAA", {"current_decision": "HOLD"})
+    _write_decision(
+        tmp_path,
+        "BBB",
+        {
+            "current_decision": "BUY_NOW",
+            "buy_thesis": "Clean bottleneck exposure.",
+            "anti_thesis": "Customer concentration.",
+            "evidence_quality": "PRIMARY",
+            "valuation_case": "Acceptable valuation.",
+            "hedge_or_sizing": "Starter only.",
+            "invalidation_trigger": "Named thesis break.",
+            "approved_entry_zone": "BUY_NOW up to a 1.5% starter.",
+        },
+    )
+
+    report_path = write_action_board(tmp_path)
+    report = report_path.read_text(encoding="utf-8")
+
+    assert "| BBB | BUY_NOW |" in report
+    assert "| AAA | HOLD |" not in report
+
+
+def test_action_board_places_source_gaps_before_actions(tmp_path: Path) -> None:
+    _write_watchlist(tmp_path, ["AAA"])
+    _write_decision(
+        tmp_path,
+        "AAA",
+        {
+            "current_decision": "BUY_NOW",
+            "buy_thesis": "Clean bottleneck exposure.",
+            "anti_thesis": "Customer concentration.",
+            "evidence_quality": "PRIMARY",
+            "valuation_case": "Acceptable valuation.",
+            "hedge_or_sizing": "Starter only.",
+            "invalidation_trigger": "Named thesis break.",
+            "approved_entry_zone": "BUY_NOW up to a 1.5% starter.",
+        },
+    )
+    signals = tmp_path / "state" / "signal_events.jsonl"
+    signals.parent.mkdir(parents=True, exist_ok=True)
+    signals.write_text(
+        json.dumps(
+            {
+                "detected_at": "2026-06-22T13:00:00-04:00",
+                "ticker": "BCAP",
+                "event_class": "filing_data_gap",
+                "priority": "high",
+                "requires_codex": True,
+                "resolved": False,
+                "source": "filing_ingest",
+                "summary": "Filing source unavailable.",
+            },
+            sort_keys=True,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    report_path = write_action_board(tmp_path)
+    report = report_path.read_text(encoding="utf-8")
+
+    assert report.index("## Operational Source Gaps") < report.index("## Actions")
+    assert "Do not treat action rows as fully cleared" in report
+    assert "| AAA | BUY_NOW |" in report
 
 
 def _write_project(

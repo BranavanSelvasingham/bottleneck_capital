@@ -2,26 +2,26 @@
 ticker: SPCX
 name: SpaceX / SPCX ticker signal
 sleeve: space_infra
-last_updated: 2026-06-20
+last_updated: 2026-06-22
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: local_position_adjacent_proxy
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
-thesis_expressed: SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure.
-anti_thesis: The ticker/listing path, liquidity, valuation, and actual instrument exposure may be unclear or non-actionable.
+evidence_quality: LIVE_SEC_8K_AND_PRICE_DISLOCATION_REVIEWED
+thesis_expressed: SPCX is tracked as Space Exploration Technologies Corp. live public equity exposure and a user-held adjacent proxy for launch, satellite, connectivity, defense infrastructure, and AI-infrastructure scarcity.
+anti_thesis: The June 22 senior unsecured notes filing and price dislocation highlight debt, bridge-loan refinancing, valuation, and post-IPO volatility risk.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
-invalidation_trigger: SPCX does not represent investable SpaceX/space-infra exposure or listing/liquidity risk becomes unacceptable.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure."
+invalidation_trigger: Senior-note terms, bridge-loan refinancing, customer demand, or liquidity risk show the post-IPO equity is overlevered or no longer a clean space/AI infrastructure expression.
+next_trigger: Review June 22 senior-note pricing/use of proceeds, bridge-loan repayment, post-IPO valuation, and local cost basis before any add/sell decision.
+one_line_rationale: "RESEARCH_REQUIRED: SPCX June 22 8-K launched senior unsecured notes to repay bridge-loan borrowings while the stock fell sharply; no buy or sell until financing terms, valuation, and local cost basis are reviewed."
 asset_role: Space infrastructure adjacent proxy and local-position tracker.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-06-20
+last_primary_source_check: 2026-06-21
 thesis_health_score: 42
 confidence_score: 28
 valuation_attractiveness_score: 18
@@ -33,7 +33,7 @@ do_not_buy_zone: Any price without thesis, valuation, sizing, and invalidation.
 sell_trigger_status: false
 hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
-open_questions_count: 0
+open_questions_count: 3
 broken_thesis: ""
 ---
 # SPCX - SpaceX / SPCX ticker signal
@@ -82,9 +82,9 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: ACTIVE WATCH  
-Confidence: 28  
-Time horizon: multi-year  
+Status: ACTIVE WATCH
+Confidence: 28
+Time horizon: multi-year
 Importance: HIGH
 
 Claim: SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure.
@@ -109,12 +109,12 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 
 ### Thesis B - Valuation thesis
 
-Status: UNPROVEN FOR NEW CAPITAL  
+Status: UNPROVEN FOR NEW CAPITAL
 Claim: private-market infrastructure scarcity and listing/liquidity-adjusted scenario value. Current baseline does not approve a buy.
 
 ### Thesis C - Catalyst thesis
 
-Status: EVENT-DRIVEN  
+Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
 change, or detected dip can reopen the decision.
 

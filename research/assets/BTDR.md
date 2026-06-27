@@ -2,7 +2,7 @@
 ticker: BTDR
 name: Bitdeer
 sleeve: miner_to_datacenter
-last_updated: 2026-06-20
+last_updated: 2026-06-21
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -21,7 +21,7 @@ current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-20
+last_primary_source_check: 2026-06-21
 thesis_health_score: 42
 confidence_score: 35
 valuation_attractiveness_score: 24
@@ -82,9 +82,9 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: ACTIVE WATCH  
-Confidence: 35  
-Time horizon: multi-year  
+Status: ACTIVE WATCH
+Confidence: 35
+Time horizon: multi-year
 Importance: HIGH
 
 Claim: Bitdeer offers power and infrastructure optionality, but the thesis is mixed across mining, ASICs, and possible HPC capacity.
@@ -109,12 +109,12 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 
 ### Thesis B - Valuation thesis
 
-Status: UNPROVEN FOR NEW CAPITAL  
+Status: UNPROVEN FOR NEW CAPITAL
 Claim: power-site value plus mining/hardware scenario value. Current baseline does not approve a buy.
 
 ### Thesis C - Catalyst thesis
 
-Status: EVENT-DRIVEN  
+Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
 change, or detected dip can reopen the decision.
 

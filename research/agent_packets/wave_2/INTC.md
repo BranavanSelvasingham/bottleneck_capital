@@ -1,16 +1,18 @@
 # INTC Agent Task Packet
 
-Ticker: `INTC`  
-Name: Intel  
-Wave: 2  
-Owner agent: `asset_analyst.INTC`  
-Sleeve agent: `sleeve_analyst.semicap_equipment`  
-Sleeve: `semicap_equipment`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity_with_put_signal`  
-Trade policy: `long_only_after_research`  
-Priority: `high`  
-Initialization score: 74  
+Ticker: `INTC`
+Name: Intel
+Wave: 2
+Owner agent: `asset_analyst.INTC`
+Sleeve agent: `sleeve_analyst.semicap_equipment`
+Sleeve: `semicap_equipment`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity_with_put_signal`
+Trade policy: `long_only_after_research`
+Priority: `high`
+Initialization score: 74
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

@@ -1,16 +1,18 @@
 # SPCX Agent Task Packet
 
-Ticker: `SPCX`  
-Name: SpaceX / SPCX ticker signal  
-Wave: 3  
-Owner agent: `asset_analyst.SPCX`  
-Sleeve agent: `sleeve_analyst.space_infra`  
-Sleeve: `space_infra`  
-Source classification: `sa_adjacent_thesis_proxy`  
-Instrument role: `local_position_adjacent_proxy`  
-Trade policy: `long_only_after_research`  
-Priority: `medium`  
-Initialization score: 28  
+Ticker: `SPCX`
+Name: SpaceX / SPCX ticker signal
+Wave: 3
+Owner agent: `asset_analyst.SPCX`
+Sleeve agent: `sleeve_analyst.space_infra`
+Sleeve: `space_infra`
+Source classification: `sa_adjacent_thesis_proxy`
+Instrument role: `local_position_adjacent_proxy`
+Trade policy: `long_only_after_research`
+Priority: `medium`
+Initialization score: 28
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

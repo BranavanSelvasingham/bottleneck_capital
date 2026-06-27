@@ -1,0 +1,3308 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bottleneck Capital Visualizer</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --panel-soft: #eef3f7;
+      --text: #17202a;
+      --muted: #5d6875;
+      --border: #d7e0e8;
+      --strong-border: #9fb0bf;
+      --shadow: 0 18px 46px rgba(39, 54, 71, 0.10);
+      --buy: #0f7a55;
+      --hold: #586575;
+      --research: #a2641d;
+      --sell: #a23b3b;
+      --signal: #4d5d8c;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(246, 248, 251, 0.98)),
+        repeating-linear-gradient(90deg, transparent 0, transparent 31px, rgba(130, 151, 171, 0.08) 32px),
+        repeating-linear-gradient(0deg, transparent 0, transparent 31px, rgba(130, 151, 171, 0.08) 32px);
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .shell {
+      max-width: 1680px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: grid;
+      grid-template-columns: minmax(280px, 1fr) minmax(320px, 680px);
+      gap: 16px;
+      align-items: end;
+      padding: 18px 0 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .title h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.1;
+      font-weight: 760;
+      letter-spacing: 0;
+    }
+
+    .title p {
+      max-width: 940px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 0.8fr auto auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .control {
+      width: 100%;
+      height: 38px;
+      padding: 0 11px;
+      color: var(--text);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .control:focus {
+      border-color: #6686a5;
+      box-shadow: 0 0 0 3px rgba(47, 108, 158, 0.13);
+    }
+
+    .icon-button {
+      width: 38px;
+      height: 38px;
+      display: inline-grid;
+      place-items: center;
+      color: var(--text);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .icon-button:hover {
+      border-color: var(--strong-border);
+      background: #f9fbfd;
+    }
+
+    .update-button {
+      height: 38px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 12px;
+      color: #ffffff;
+      background: #244c6d;
+      border: 1px solid #244c6d;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 740;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .update-button:hover {
+      background: #1d405d;
+      border-color: #1d405d;
+    }
+
+    .update-button:disabled {
+      cursor: wait;
+      opacity: 0.72;
+    }
+
+    .update-button svg {
+      flex: 0 0 auto;
+    }
+
+    .status-line {
+      min-height: 18px;
+      grid-column: 1 / -1;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .status-line.error {
+      color: #8f3f1c;
+    }
+
+    .summary-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(120px, 1fr));
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .metric {
+      min-height: 74px;
+      padding: 13px 14px;
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 720;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 25px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .workspace > *,
+    .cake,
+    .layer,
+    .ticker-zone,
+    .inspector {
+      min-width: 0;
+    }
+
+    .cake {
+      display: grid;
+      gap: 10px;
+    }
+
+    .layer {
+      --layer-color: #3f725f;
+      position: relative;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 12px;
+      min-height: 156px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 1px solid var(--border);
+      border-left: 7px solid var(--layer-color);
+      border-radius: 8px;
+      box-shadow: 0 1px 0 rgba(255,255,255,0.9) inset;
+    }
+
+    .layer::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: -10px;
+      bottom: -10px;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, rgba(95, 114, 132, 0.38), transparent);
+      pointer-events: none;
+    }
+
+    .layer:first-child::before { top: 18px; }
+    .layer:last-child::before { bottom: 18px; }
+
+    .layer-meta {
+      padding-left: 18px;
+    }
+
+    .layer-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--layer-color);
+      font-size: 11px;
+      font-weight: 760;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .layer-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: var(--layer-color);
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.9);
+    }
+
+    .layer h2 {
+      margin: 9px 0 0;
+      font-size: 21px;
+      line-height: 1.12;
+      font-weight: 740;
+      letter-spacing: 0;
+    }
+
+    .layer p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.42;
+    }
+
+    .layer-question {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(110, 128, 145, 0.22);
+      color: #374454;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .ticker-zone {
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .sleeve-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .sleeve-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      color: #324051;
+      font-size: 12px;
+      font-weight: 720;
+      line-height: 1.2;
+    }
+
+    .sleeve-title code {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 620;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(138px, 1fr));
+      gap: 8px;
+    }
+
+    .ticker-card {
+      min-width: 0;
+      min-height: 82px;
+      padding: 10px;
+      text-align: left;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    .ticker-card:hover,
+    .ticker-card.selected {
+      transform: translateY(-1px);
+      border-color: var(--layer-color);
+      box-shadow: 0 8px 24px rgba(39, 54, 71, 0.12);
+    }
+
+    .ticker-card.hidden {
+      display: none;
+    }
+
+    .ticker-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: start;
+    }
+
+    .ticker-symbol {
+      font-size: 16px;
+      line-height: 1;
+      font-weight: 780;
+      letter-spacing: 0;
+    }
+
+    .ticker-name {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.25;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .ticker-tags {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+    }
+
+    .tag {
+      display: inline-flex;
+      max-width: 100%;
+      align-items: center;
+      height: 20px;
+      padding: 0 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(102, 118, 135, 0.22);
+      background: #f7fafc;
+      color: #425064;
+      font-size: 10px;
+      font-weight: 720;
+      white-space: nowrap;
+    }
+
+    .tag.decision-HOLD { color: var(--hold); }
+    .tag.decision-BUY_NOW,
+    .tag.decision-ADD_ON_DIP { color: var(--buy); }
+    .tag.decision-RESEARCH_REQUIRED { color: var(--research); }
+    .tag.decision-SELL,
+    .tag.decision-TRIM { color: var(--sell); }
+    .tag.signal { color: var(--signal); }
+
+    .empty-layer {
+      display: grid;
+      min-height: 76px;
+      place-items: center;
+      padding: 14px;
+      color: var(--muted);
+      background: rgba(246, 248, 251, 0.84);
+      border: 1px dashed var(--strong-border);
+      border-radius: 8px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .inspector {
+      position: sticky;
+      top: 16px;
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .inspector-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .inspector h2 {
+      margin: 0;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: 0;
+    }
+
+    .inspector .name {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .decision-pill {
+      display: inline-flex;
+      align-items: center;
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 999px;
+      background: #f2f5f8;
+      color: var(--hold);
+      font-size: 11px;
+      font-weight: 780;
+      white-space: nowrap;
+    }
+
+    .decision-pill.BUY_NOW,
+    .decision-pill.ADD_ON_DIP { color: var(--buy); }
+    .decision-pill.RESEARCH_REQUIRED { color: var(--research); }
+    .decision-pill.SELL,
+    .decision-pill.TRIM { color: var(--sell); }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .detail {
+      padding: 10px;
+      background: var(--panel-soft);
+      border-radius: 8px;
+      min-width: 0;
+    }
+
+    .detail span {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 760;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .detail strong {
+      display: block;
+      margin-top: 5px;
+      font-size: 12px;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .narrative {
+      display: grid;
+      gap: 10px;
+    }
+
+    .narrative section {
+      display: grid;
+      gap: 4px;
+    }
+
+    .narrative h3 {
+      margin: 0;
+      color: #334255;
+      font-size: 12px;
+      line-height: 1.2;
+      font-weight: 760;
+    }
+
+    .narrative p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.42;
+    }
+
+    .table-wrap {
+      width: 100%;
+      max-width: 100%;
+      margin-top: 16px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 920px;
+    }
+
+    th,
+    td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      font-size: 12px;
+      line-height: 1.3;
+      vertical-align: top;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: #f7fafc;
+      color: #38475a;
+      font-size: 11px;
+      font-weight: 780;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    tbody tr {
+      cursor: pointer;
+    }
+
+    tbody tr:hover {
+      background: #f8fbfd;
+    }
+
+    .footer {
+      margin: 18px 0 10px;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .footer a {
+      color: #285f90;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 1180px) {
+      .topbar,
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .inspector {
+        position: static;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app {
+        padding: 12px;
+      }
+
+      .topbar {
+        padding-top: 10px;
+      }
+
+      .controls,
+      .summary-strip,
+      .layer,
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .layer-meta {
+        padding-left: 14px;
+      }
+
+      .title h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="shell">
+      <header class="topbar">
+        <div class="title">
+          <h1>Bottleneck Capital Visualizer</h1>
+          <p id="frameworkSummary"></p>
+        </div>
+        <div class="controls" aria-label="Visualizer filters">
+          <input id="searchInput" class="control" type="search" placeholder="Search ticker, company, sleeve">
+          <select id="decisionFilter" class="control" aria-label="Decision filter"></select>
+          <select id="sourceFilter" class="control" aria-label="Source filter"></select>
+          <select id="layerFilter" class="control" aria-label="Layer filter"></select>
+          <button id="updateButton" class="update-button" type="button">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20 6v5h-5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M4 18v-5h5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17.8 9a6.8 6.8 0 0 0-11-2M6.2 15a6.8 6.8 0 0 0 11 2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+            </svg>
+            Update
+          </button>
+          <button id="resetButton" class="icon-button" type="button" title="Reset filters" aria-label="Reset filters">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 6v5h5M20 18v-5h-5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M7.2 9.1a6.8 6.8 0 0 1 11 2M16.8 14.9a6.8 6.8 0 0 1-11-2" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <div id="updateStatus" class="status-line" role="status" aria-live="polite"></div>
+        </div>
+      </header>
+
+      <section id="summaryStrip" class="summary-strip" aria-label="Portfolio summary"></section>
+
+      <section class="workspace">
+        <div>
+          <div id="cake" class="cake" aria-label="Five-layer value chain"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Company</th>
+                  <th>Layer</th>
+                  <th>Sleeve</th>
+                  <th>Decision</th>
+                  <th>Source</th>
+                  <th>Role</th>
+                </tr>
+              </thead>
+              <tbody id="tickerRows"></tbody>
+            </table>
+          </div>
+        </div>
+        <aside id="inspector" class="inspector" aria-live="polite"></aside>
+      </section>
+
+      <footer class="footer">
+        Generated from <code>configs/watchlist.yaml</code> and <code>research/decisions/*.md</code>.
+        Five-layer source framing: <a href="https://www.axios.com/2026/03/10/jensen-huang-ais-biggest-buildout-is-still-ahead">Axios</a>
+        and <a href="https://www.techradar.com/pro/nvidia-wants-to-have-your-cake-and-eat-it-jensen-described-the-ai-layered-stack-and-hints-at-what-worlds-most-valuable-firm-will-do-next">TechRadar</a>.
+      </footer>
+    </div>
+  </main>
+
+  <script id="valueChainData" type="application/json">{
+  "flow_links": [
+    {
+      "from": "energy",
+      "label": "Power and cooling enable fabs, packaging, and AI factories.",
+      "to": "chips"
+    },
+    {
+      "from": "chips",
+      "label": "Silicon becomes deployed clusters, clouds, and interconnect fabric.",
+      "to": "infrastructure"
+    },
+    {
+      "from": "infrastructure",
+      "label": "Clusters train and serve models; model demand feeds back into capex.",
+      "to": "models"
+    },
+    {
+      "from": "models",
+      "label": "Models become workflows, autonomy, robotics, and enterprise disruption.",
+      "to": "applications"
+    }
+  ],
+  "generated_at": "2026-06-21T22:55:54-04:00",
+  "layers": [
+    {
+      "color": "#9a6a2d",
+      "description": "End-market expressions that pull demand through the whole stack and reveal whether AI capex is turning into economic value.",
+      "empty_note": "",
+      "headline": "Where intelligence becomes products, labor, autonomy, and services",
+      "id": "applications",
+      "name": "Applications",
+      "order": 5,
+      "sleeves": [
+        "ai_services_put_signal",
+        "autonomy_energy"
+      ],
+      "tickers": [
+        {
+          "anti_thesis": "EV cyclicality, competition, governance/key-person risk, valuation, and unclear AI monetization could dominate the bottleneck thesis.",
+          "bridge_to": [
+            "energy",
+            "models"
+          ],
+          "confidence_score": "25",
+          "current_decision": "HOLD",
+          "dip_decision": "NOT_ARMED",
+          "evidence_quality": "LOCAL_POSITION_AND_RECENT_PUBLIC_MERGER_CHATTER",
+          "hedge_or_sizing": "Hold existing exposure only; do not add until merger terms, exact TSLA sizing, valuation, and thesis fit are validated.",
+          "instrument_role": "local_position_adjacent_proxy",
+          "invalidation_trigger": "SpaceX merger optionality disappears, transaction terms would dilute TSLA holders badly, or Tesla fails to express a durable AI/autonomy/energy/platform-consolidation thesis.",
+          "layer_id": "applications",
+          "layer_role": "Autonomy, robotics, embodied AI, and energy adjacency",
+          "name": "Tesla",
+          "next_trigger": "Confirm exact shares and cost basis, then underwrite TSLA as a SpaceX merger/platform-consolidation option with explicit dilution and governance risk.",
+          "one_line_rationale": "Hold/watch only: TSLA now has plausible SpaceX merger/platform-consolidation optionality, but no new capital until transaction odds, terms, sizing, and valuation are underwritten.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "autonomy_energy",
+          "source_classification": "sa_adjacent_thesis_proxy",
+          "thesis_expressed": "Tesla may express AI autonomy, robotics, battery/storage, and energy infrastructure optionality, but its fit to the Bottleneck Capital sleeve is unvalidated.",
+          "ticker": "TSLA",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "A defensive services business does not matter if the signal is AI disruption risk.",
+          "bridge_to": [
+            "models"
+          ],
+          "confidence_score": "32",
+          "current_decision": "HOLD",
+          "dip_decision": "NOT_ARMED",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use as risk signal only and do not allocate capital.",
+          "instrument_role": "reported_put_signal",
+          "invalidation_trigger": "Separate long-only thesis documented with valuation, sizing, and invalidation.",
+          "layer_id": "applications",
+          "layer_role": "AI disruption signal in services/application labor",
+          "name": "Infosys",
+          "next_trigger": "Monitor as SA risk signal; act only if a separate long-only thesis emerges.",
+          "one_line_rationale": "Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "ai_services_put_signal",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Infosys is tracked as SA reported put exposure and should inform AI services disruption risk, not long-only action.",
+          "ticker": "INFY",
+          "trade_policy": "signal_only_no_puts_or_shorts",
+          "urgency": "MEDIUM"
+        }
+      ],
+      "watch_question": "Is the application layer creating durable demand or just narrative pull?"
+    },
+    {
+      "color": "#6f5f91",
+      "description": "Model labs and platform signals. This system currently tracks this layer mostly through demand pull and hedge pressure rather than pure-play model equities.",
+      "empty_note": "No pure-play model lab ticker is currently tracked; model risk is inferred.",
+      "headline": "The capability layer that consumes compute and creates frontier pressure",
+      "id": "models",
+      "name": "Models",
+      "order": 4,
+      "sleeves": [],
+      "tickers": [],
+      "watch_question": "Does model progress justify the next unit of infrastructure spend?"
+    },
+    {
+      "color": "#3f725f",
+      "description": "The built layer that turns power and silicon into contracted compute capacity.",
+      "empty_note": "",
+      "headline": "AI factories: sites, clusters, networking, clouds, and conversion assets",
+      "id": "infrastructure",
+      "name": "Infrastructure",
+      "order": 3,
+      "sleeves": [
+        "ai_networking_optical",
+        "compute_infra",
+        "enterprise_ai_infra",
+        "miner_to_datacenter",
+        "space_infra"
+      ],
+      "tickers": [
+        {
+          "anti_thesis": "It may be a highly financed GPU-capacity trade rather than durable infrastructure value.",
+          "bridge_to": [
+            "models"
+          ],
+          "confidence_score": "43",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity_and_call_signal",
+          "invalidation_trigger": "Large customer demand weakens, refinancing risk rises, or contracted utilization breaks.",
+          "layer_id": "infrastructure",
+          "layer_role": "Contracted compute and AI cloud capacity",
+          "name": "CoreWeave",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "compute_infra",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory.",
+          "ticker": "CRWV",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "AI cloud ambition may require capital faster than contracts and utilization mature.",
+          "bridge_to": [
+            "models"
+          ],
+          "confidence_score": "40",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "AI cloud utilization, funding, or jurisdiction risk invalidates durable infrastructure value.",
+          "layer_id": "infrastructure",
+          "layer_role": "Contracted compute and AI cloud capacity",
+          "name": "Nebius",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jurisdiction, customer, and financing risk keep it hold-only.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "compute_infra",
+          "source_classification": "sa_post_quarter_13g",
+          "thesis_expressed": "Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jurisdiction, customer, and financing risk keep it hold-only.",
+          "ticker": "NBIS",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "OCI growth can be real while equity risk remains valuation/debt/capex sensitive.",
+          "bridge_to": [
+            "models",
+            "applications"
+          ],
+          "confidence_score": "34",
+          "current_decision": "HOLD",
+          "dip_decision": "NOT_ARMED",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use as risk signal only and do not allocate capital.",
+          "instrument_role": "reported_put_signal",
+          "invalidation_trigger": "Separate long-only thesis documented with valuation, sizing, and invalidation.",
+          "layer_id": "infrastructure",
+          "layer_role": "Enterprise AI cloud/capex duration signal",
+          "name": "Oracle",
+          "next_trigger": "Monitor as SA risk signal; act only if a separate long-only thesis emerges.",
+          "one_line_rationale": "Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "enterprise_ai_infra",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Oracle is tracked as SA reported put exposure; it informs capex duration and AI infrastructure risk, not long-only action.",
+          "ticker": "ORCL",
+          "trade_policy": "signal_only_no_puts_or_shorts",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "The company may be more financing-sensitive development exposure than durable infrastructure scarcity.",
+          "bridge_to": [
+            "energy"
+          ],
+          "confidence_score": "40",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Major customer/financing failure or evidence that sites cannot support contracted AI load.",
+          "layer_id": "infrastructure",
+          "layer_role": "Power/site conversion into AI or HPC datacenters",
+          "name": "Applied Digital",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "miner_to_datacenter",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.",
+          "ticker": "APLD",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "The business may be too exposed to crypto cycles and hardware execution to be a clean AI bottleneck.",
+          "bridge_to": [
+            "energy"
+          ],
+          "confidence_score": "35",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "AI/HPC conversion remains immaterial while mining/hardware cyclicality drives value.",
+          "layer_id": "infrastructure",
+          "layer_role": "Power/site conversion into AI or HPC datacenters",
+          "name": "Bitdeer",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Bitdeer offers power and infrastructure optionality, but the thesis is mixed across mining, ASICs, and possible HPC capacity.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "miner_to_datacenter",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Bitdeer offers power and infrastructure optionality, but the thesis is mixed across mining, ASICs, and possible HPC capacity.",
+          "ticker": "BTDR",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "Customer concentration, post-restructuring capital needs, or power delivery risk can still make the equity fragile.",
+          "bridge_to": [
+            "energy"
+          ],
+          "confidence_score": "42",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "HPC contracts weaken or financing prevents profitable conversion of sites.",
+          "layer_id": "infrastructure",
+          "layer_role": "Power/site conversion into AI or HPC datacenters",
+          "name": "Core Scientific",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Core Scientific is one of the cleaner miner-to-HPC conversion candidates because contracted hosting can separate value from Bitcoin beta.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "miner_to_datacenter",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Core Scientific is one of the cleaner miner-to-HPC conversion candidates because contracted hosting can separate value from Bitcoin beta.",
+          "ticker": "CORZ",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "The stock may still be a Bitcoin miner with expensive AI optionality.",
+          "bridge_to": [
+            "energy"
+          ],
+          "confidence_score": "40",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "AI/HPC conversion fails to become material or financing dilutes away site value.",
+          "layer_id": "infrastructure",
+          "layer_role": "Power/site conversion into AI or HPC datacenters",
+          "name": "IREN",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "miner_to_datacenter",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta.",
+          "ticker": "IREN",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "The AI link may be too diluted by consumer, display, or telecom cycles.",
+          "bridge_to": [
+            "chips"
+          ],
+          "confidence_score": "38",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+          "instrument_role": "common_equity_with_put_signal",
+          "invalidation_trigger": "AI/datacenter optical demand does not become material enough to change earnings power.",
+          "layer_id": "infrastructure",
+          "layer_role": "Cluster fabric, optical, and data movement",
+          "name": "Corning",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "ai_networking_optical",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.",
+          "ticker": "GLW",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "Telecom cyclicality may dominate any datacenter optical upside.",
+          "bridge_to": [
+            "chips"
+          ],
+          "confidence_score": "34",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "AI/datacom demand fails to offset telecom cyclicality.",
+          "layer_id": "infrastructure",
+          "layer_role": "Cluster fabric, optical, and data movement",
+          "name": "Lumentum",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "ai_networking_optical",
+          "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+          "thesis_expressed": "Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.",
+          "ticker": "LITE",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "Custom silicon wins may be lumpy and valuation may already discount AI upside.",
+          "bridge_to": [
+            "chips"
+          ],
+          "confidence_score": "38",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "AI custom silicon/networking fails to drive durable earnings growth.",
+          "layer_id": "infrastructure",
+          "layer_role": "Cluster fabric, optical, and data movement",
+          "name": "Marvell Technology",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "ai_networking_optical",
+          "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+          "thesis_expressed": "Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system.",
+          "ticker": "MRVL",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "It may be an illiquid/speculative proxy without enough public evidence for capital.",
+          "bridge_to": [
+            "models"
+          ],
+          "confidence_score": "25",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Public evidence fails to verify durable compute assets or customer economics.",
+          "layer_id": "infrastructure",
+          "layer_role": "Contracted compute and AI cloud capacity",
+          "name": "SharonAI Holdings",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: SharonAI is tracked because it appears in current public SA exposure, but liquidity, governance, and asset verification keep it hold-only.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "compute_infra",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "SharonAI is tracked because it appears in current public SA exposure, but liquidity, governance, and asset verification keep it hold-only.",
+          "ticker": "SHAZ",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "The asset may be a narrow/illiquid listing with financing sensitivity rather than durable compute infrastructure.",
+          "bridge_to": [
+            "models"
+          ],
+          "confidence_score": "26",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Public evidence fails to verify durable compute assets or contract economics.",
+          "layer_id": "infrastructure",
+          "layer_role": "Contracted compute and AI cloud capacity",
+          "name": "WhiteFiber",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: WhiteFiber is tracked because it appears in current public SA exposure, but public evidence, liquidity, and financing quality need caution.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "compute_infra",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "WhiteFiber is tracked because it appears in current public SA exposure, but public evidence, liquidity, and financing quality need caution.",
+          "ticker": "WYFI",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "The equity may remain mostly Bitcoin beta with dilution rather than datacenter scarcity.",
+          "bridge_to": [
+            "energy"
+          ],
+          "confidence_score": "35",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "No credible AI/HPC path emerges and economics remain dominated by mining exposure.",
+          "layer_id": "infrastructure",
+          "layer_role": "Power/site conversion into AI or HPC datacenters",
+          "name": "Bitfarms",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Bitfarms is a power/site option that could benefit from AI conversion, but current evidence is not strong enough for new capital.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "miner_to_datacenter",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Bitfarms is a power/site option that could benefit from AI conversion, but current evidence is not strong enough for new capital.",
+          "ticker": "BITF",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "The stock may remain a Bitcoin miner with limited AI conversion relevance.",
+          "bridge_to": [
+            "energy"
+          ],
+          "confidence_score": "34",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "No credible conversion route and mining economics remain the dominant value driver.",
+          "layer_id": "infrastructure",
+          "layer_role": "Power/site conversion into AI or HPC datacenters",
+          "name": "CleanSpark",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: CleanSpark may own useful power/site optionality, but current posture is watch-only until AI datacenter economics become primary-source visible.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "miner_to_datacenter",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "CleanSpark may own useful power/site optionality, but current posture is watch-only until AI datacenter economics become primary-source visible.",
+          "ticker": "CLSK",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "The company may remain crypto beta with small AI optionality.",
+          "bridge_to": [
+            "energy"
+          ],
+          "confidence_score": "34",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "HPC revenue remains immaterial and mining economics dominate value.",
+          "layer_id": "infrastructure",
+          "layer_role": "Power/site conversion into AI or HPC datacenters",
+          "name": "HIVE Digital Technologies",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "miner_to_datacenter",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer.",
+          "ticker": "HIVE",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "Bitcoin mining economics may remain the overwhelming driver of returns.",
+          "bridge_to": [
+            "energy"
+          ],
+          "confidence_score": "34",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "AI/datacenter conversion remains speculative and mining economics dominate value.",
+          "layer_id": "infrastructure",
+          "layer_role": "Power/site conversion into AI or HPC datacenters",
+          "name": "Riot Platforms",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Riot has power and site optionality, but the current long-only case is not clean enough without stronger AI conversion evidence.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "miner_to_datacenter",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Riot has power and site optionality, but the current long-only case is not clean enough without stronger AI conversion evidence.",
+          "ticker": "RIOT",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "The ticker/listing path, liquidity, valuation, and actual instrument exposure may be unclear or non-actionable.",
+          "bridge_to": [
+            "applications"
+          ],
+          "confidence_score": "28",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "local_position_adjacent_proxy",
+          "invalidation_trigger": "SPCX does not represent investable SpaceX/space-infra exposure or listing/liquidity risk becomes unacceptable.",
+          "layer_id": "infrastructure",
+          "layer_role": "Strategic connectivity and defense infrastructure proxy",
+          "name": "SpaceX / SPCX ticker signal",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "space_infra",
+          "source_classification": "sa_adjacent_thesis_proxy",
+          "thesis_expressed": "SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure.",
+          "ticker": "SPCX",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        }
+      ],
+      "watch_question": "Is capacity scarce, contracted, financed, and deliverable?"
+    },
+    {
+      "color": "#2f6c9e",
+      "description": "The semiconductor bottleneck layer, including scarce compute silicon and the equipment or foundry capacity needed to make it.",
+      "empty_note": "",
+      "headline": "Accelerators, memory, foundry, tooling, packaging, and chip beta",
+      "id": "chips",
+      "name": "Chips",
+      "order": 2,
+      "sleeves": [
+        "crowded_ai_beta_hedge",
+        "memory_storage_networking",
+        "semicap_equipment"
+      ],
+      "tickers": [
+        {
+          "anti_thesis": "NVIDIA ecosystem strength, software lock-in, or gross-margin pressure may keep AMD from becoming a true bottleneck.",
+          "bridge_to": [
+            "models",
+            "infrastructure"
+          ],
+          "confidence_score": "45",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+          "instrument_role": "common_equity_with_put_signal",
+          "invalidation_trigger": "AI accelerator roadmap fails to gain durable datacenter traction at acceptable margins.",
+          "layer_id": "chips",
+          "layer_role": "Crowded AI chip beta and hedge signal",
+          "name": "Advanced Micro Devices",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: AMD is a second-source AI accelerator candidate, but SA put exposure says the long case must clear high valuation and execution hurdles.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "crowded_ai_beta_hedge",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "AMD is a second-source AI accelerator candidate, but SA put exposure says the long case must clear high valuation and execution hurdles.",
+          "ticker": "AMD",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "A strong AI networking/custom-silicon business does not make a trade if the signal is only downside/crowding risk.",
+          "bridge_to": [
+            "models",
+            "infrastructure"
+          ],
+          "confidence_score": "35",
+          "current_decision": "HOLD",
+          "dip_decision": "NOT_ARMED",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use as risk signal only and do not allocate capital.",
+          "instrument_role": "reported_put_signal",
+          "invalidation_trigger": "Separate long-only thesis documented with valuation, sizing, and invalidation.",
+          "layer_id": "chips",
+          "layer_role": "Crowded AI chip beta and hedge signal",
+          "name": "Broadcom",
+          "next_trigger": "Monitor as SA risk signal; act only if a separate long-only thesis emerges.",
+          "one_line_rationale": "Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "crowded_ai_beta_hedge",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Broadcom is tracked as SA reported put exposure, not as a long candidate under the current mandate.",
+          "ticker": "AVGO",
+          "trade_policy": "signal_only_no_puts_or_shorts",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "Valuation, export controls, customer concentration, or accelerator competition may compress returns despite strong fundamentals.",
+          "bridge_to": [
+            "models",
+            "infrastructure"
+          ],
+          "confidence_score": "55",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+          "instrument_role": "common_equity_with_put_signal",
+          "invalidation_trigger": "Datacenter growth or platform margins break enough to impair the accelerator thesis.",
+          "layer_id": "chips",
+          "layer_role": "Crowded AI chip beta and hedge signal",
+          "name": "NVIDIA",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: NVIDIA remains the highest-quality AI accelerator bottleneck, but SA put exposure flags valuation/crowding risk.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "crowded_ai_beta_hedge",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "NVIDIA remains the highest-quality AI accelerator bottleneck, but SA put exposure flags valuation/crowding risk.",
+          "ticker": "NVDA",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "ETF exposure is too broad to express Bottleneck Capital's best single-name theses.",
+          "bridge_to": [
+            "models",
+            "infrastructure"
+          ],
+          "confidence_score": "34",
+          "current_decision": "HOLD",
+          "dip_decision": "NOT_ARMED",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use as risk signal only and do not allocate capital.",
+          "instrument_role": "common_equity_with_put_signal",
+          "invalidation_trigger": "Separate long-only ETF thesis documented with valuation, sizing, and invalidation.",
+          "layer_id": "chips",
+          "layer_role": "Crowded AI chip beta and hedge signal",
+          "name": "VanEck Semiconductor ETF",
+          "next_trigger": "Monitor as SA risk signal; act only if a separate long-only thesis emerges.",
+          "one_line_rationale": "Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "crowded_ai_beta_hedge",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "SMH is useful for interpreting SA semiconductor hedge/crowding risk, not for a long-only ETF trade right now.",
+          "ticker": "SMH",
+          "trade_policy": "signal_only_no_puts_or_shorts",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "The upside may be cyclical pricing rather than durable structural scarcity.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "48",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+          "instrument_role": "common_equity_call_signal_and_put_signal",
+          "invalidation_trigger": "HBM leadership or memory pricing breaks while valuation remains elevated.",
+          "layer_id": "chips",
+          "layer_role": "HBM, storage, foundry, and advanced packaging",
+          "name": "Micron",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "memory_storage_networking",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.",
+          "ticker": "MU",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "The case may be cyclical NAND beta rather than durable AI storage scarcity.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "38",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity_and_call_signal",
+          "invalidation_trigger": "NAND/storage recovery fails or balance sheet risk overwhelms AI storage upside.",
+          "layer_id": "chips",
+          "layer_role": "HBM, storage, foundry, and advanced packaging",
+          "name": "SanDisk",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "memory_storage_networking",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline.",
+          "ticker": "SNDK",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "Geopolitical risk or capex cyclicality can dominate even a strong structural moat.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "55",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+          "instrument_role": "common_equity_call_signal_and_put_signal",
+          "invalidation_trigger": "Leading-edge foundry/packaging share or geopolitical risk invalidates ownership quality.",
+          "layer_id": "chips",
+          "layer_role": "HBM, storage, foundry, and advanced packaging",
+          "name": "Taiwan Semiconductor Manufacturing",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: TSMC is a core foundry/advanced packaging scarcity asset, but geopolitics, customer concentration, and SA put exposure require sizing discipline.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "memory_storage_networking",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "TSMC is a core foundry/advanced packaging scarcity asset, but geopolitics, customer concentration, and SA put exposure require sizing discipline.",
+          "ticker": "TSM",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "Semicap cycle, export controls, or customer capex digestion can overpower monopoly quality for long periods.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "55",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+          "instrument_role": "common_equity_with_put_signal",
+          "invalidation_trigger": "Sustained leading-edge order/backlog deterioration or export controls that impair the core EUV growth runway.",
+          "layer_id": "chips",
+          "layer_role": "Semicap, lithography, foundry enablement",
+          "name": "ASML Holding",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA put signal makes valuation and China/export-control risk central.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "semicap_equipment",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA put signal makes valuation and China/export-control risk central.",
+          "ticker": "ASML",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "The turnaround may consume capital without proving process or foundry competitiveness.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "38",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+          "instrument_role": "common_equity_with_put_signal",
+          "invalidation_trigger": "Foundry roadmap slips further or capital needs overwhelm strategic value.",
+          "layer_id": "chips",
+          "layer_role": "Semicap, lithography, foundry enablement",
+          "name": "Intel",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "semicap_equipment",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold.",
+          "ticker": "INTC",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "The company may be a cyclical semicap beneficiary rather than a unique AI bottleneck.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "36",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Advanced packaging/process-control demand fails to create differentiated growth.",
+          "layer_id": "chips",
+          "layer_role": "Semicap, lithography, foundry enablement",
+          "name": "Onto Innovation",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "semicap_equipment",
+          "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+          "thesis_expressed": "Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure.",
+          "ticker": "ONTO",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        }
+      ],
+      "watch_question": "Is the scarcity structural enough to beat valuation and cycle risk?"
+    },
+    {
+      "color": "#b65b38",
+      "description": "The physical foundation. AI factories only scale when power and cooling arrive on useful timelines.",
+      "empty_note": "",
+      "headline": "Power, interconnection, onsite generation, thermal, and water constraints",
+      "id": "energy",
+      "name": "Energy",
+      "order": 1,
+      "sleeves": [
+        "ai_power_equipment",
+        "power_bottleneck"
+      ],
+      "tickers": [
+        {
+          "anti_thesis": "Fuel-cell economics, warranty risk, financing needs, or loose energy-transition exposure may swamp datacenter upside.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "45",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity_and_call_signal",
+          "invalidation_trigger": "Datacenter backlog fails to convert or financing/product risk impairs delivery economics.",
+          "layer_id": "energy",
+          "layer_role": "Power bottleneck",
+          "name": "Bloom Energy",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment.",
+          "priority": "high",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "power_bottleneck",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment.",
+          "ticker": "BE",
+          "trade_policy": "long_only_after_research",
+          "urgency": "HIGH"
+        },
+        {
+          "anti_thesis": "Valuation may already discount AI datacenter order strength.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "42",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "AI datacenter orders or margins normalize faster than expected.",
+          "layer_id": "energy",
+          "layer_role": "Power, thermal, and water equipment",
+          "name": "Vertiv",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Vertiv is a clear datacenter power/thermal equipment beneficiary, but it is not latest-current SA exposure in this system.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "ai_power_equipment",
+          "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+          "thesis_expressed": "Vertiv is a clear datacenter power/thermal equipment beneficiary, but it is not latest-current SA exposure in this system.",
+          "ticker": "VRT",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "This could be a levered industrial turnaround rather than an AI power solution.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "32",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Liquidity or backlog deterioration removes any credible power-bottleneck expression.",
+          "layer_id": "energy",
+          "layer_role": "Power bottleneck",
+          "name": "Babcock & Wilcox Enterprises",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "power_bottleneck",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.",
+          "ticker": "BW",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "Power scarcity may already be recognized, and utility/regulatory risk can limit upside.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "42",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Datacenter/power thesis weakens or SA/current evidence does not support promotion.",
+          "layer_id": "energy",
+          "layer_role": "Power bottleneck",
+          "name": "Constellation Energy",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Constellation is a high-quality power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only absent promotion or a priced entry.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "power_bottleneck",
+          "source_classification": "sa_adjacent_thesis_proxy",
+          "thesis_expressed": "Constellation is a high-quality power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only absent promotion or a priced entry.",
+          "ticker": "CEG",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "It may be a small industrial cyclical rather than a scalable AI power bottleneck.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "34",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Backlog or customer evidence fails to connect power equipment demand to AI load growth.",
+          "layer_id": "energy",
+          "layer_role": "Power bottleneck",
+          "name": "Power Solutions International",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Power Solutions International may supply engines/gensets into power scarcity, but the proof point is durable datacenter/customer backlog.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "power_bottleneck",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Power Solutions International may supply engines/gensets into power scarcity, but the proof point is durable datacenter/customer backlog.",
+          "ticker": "PSIX",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "Oilfield services cyclicality may dominate any power-equipment read-through.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "30",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "No primary-source evidence ties the business to durable AI power bottlenecks.",
+          "layer_id": "energy",
+          "layer_role": "Power bottleneck",
+          "name": "ProPetro Holding",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: ProPetro requires caution because the AI power link is less direct than other sleeve names and may be oilfield-services exposure.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "power_bottleneck",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "ProPetro requires caution because the AI power link is less direct than other sleeve names and may be oilfield-services exposure.",
+          "ticker": "PUMP",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "The company may remain energy-services cyclicality rather than durable datacenter power.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "34",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Contracted power demand fails to scale or margins do not support fleet expansion.",
+          "layer_id": "energy",
+          "layer_role": "Power bottleneck",
+          "name": "Solaris Energy Infrastructure",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "power_bottleneck",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.",
+          "ticker": "SEI",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "It may be policy/manufacturing cyclicality rather than an AI power bottleneck.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "30",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Business model, capacity funding, or customer demand fails to support power-bottleneck role.",
+          "layer_id": "energy",
+          "layer_role": "Power bottleneck",
+          "name": "T1 Energy",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: T1 Energy is tracked as a current SA holding, but business-model and financing clarity are not strong enough for new capital.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "power_bottleneck",
+          "source_classification": "sa_reported_current_13f",
+          "thesis_expressed": "T1 Energy is tracked as a current SA holding, but business-model and financing clarity are not strong enough for new capital.",
+          "ticker": "TE",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "Datacenter power upside may already be capitalized or limited by contract/regulatory risk.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "38",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Datacenter power contract thesis weakens or source evidence does not support promotion.",
+          "layer_id": "energy",
+          "layer_role": "Power bottleneck",
+          "name": "Talen Energy",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Talen is a power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only pending promotion or better entry evidence.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "power_bottleneck",
+          "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+          "thesis_expressed": "Talen is a power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only pending promotion or better entry evidence.",
+          "ticker": "TLNE",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "Power scarcity and nuclear/generation value may already be priced.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "42",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "Datacenter/generation scarcity thesis weakens or valuation offers no margin of safety.",
+          "layer_id": "energy",
+          "layer_role": "Power bottleneck",
+          "name": "Vistra",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy.",
+          "priority": "medium",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "power_bottleneck",
+          "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+          "thesis_expressed": "Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy.",
+          "ticker": "VST",
+          "trade_policy": "long_only_after_research",
+          "urgency": "MEDIUM"
+        },
+        {
+          "anti_thesis": "Core business exposure may be too far from the AI bottleneck thesis.",
+          "bridge_to": [
+            "infrastructure"
+          ],
+          "confidence_score": "28",
+          "current_decision": "HOLD",
+          "dip_decision": "RESEARCH_FIRST",
+          "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+          "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+          "instrument_role": "common_equity",
+          "invalidation_trigger": "No evidence that datacenter infrastructure materially changes earnings power.",
+          "layer_id": "energy",
+          "layer_role": "Power, thermal, and water equipment",
+          "name": "Watts Water Technologies",
+          "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+          "one_line_rationale": "Hold/watch only: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action.",
+          "priority": "low",
+          "sell_status": "NOT_TRIGGERED",
+          "sleeve": "ai_power_equipment",
+          "source_classification": "sa_adjacent_thesis_proxy",
+          "thesis_expressed": "Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action.",
+          "ticker": "WTS",
+          "trade_policy": "long_only_after_research",
+          "urgency": "LOW"
+        }
+      ],
+      "watch_question": "Who controls scarce power, interconnection, or equipment leverage?"
+    }
+  ],
+  "sleeve_layer_map": {
+    "ai_networking_optical": {
+      "bridge_to": [
+        "chips"
+      ],
+      "layer_id": "infrastructure",
+      "role": "Cluster fabric, optical, and data movement"
+    },
+    "ai_power_equipment": {
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "layer_id": "energy",
+      "role": "Power, thermal, and water equipment"
+    },
+    "ai_services_put_signal": {
+      "bridge_to": [
+        "models"
+      ],
+      "layer_id": "applications",
+      "role": "AI disruption signal in services/application labor"
+    },
+    "autonomy_energy": {
+      "bridge_to": [
+        "energy",
+        "models"
+      ],
+      "layer_id": "applications",
+      "role": "Autonomy, robotics, embodied AI, and energy adjacency"
+    },
+    "compute_infra": {
+      "bridge_to": [
+        "models"
+      ],
+      "layer_id": "infrastructure",
+      "role": "Contracted compute and AI cloud capacity"
+    },
+    "crowded_ai_beta_hedge": {
+      "bridge_to": [
+        "models",
+        "infrastructure"
+      ],
+      "layer_id": "chips",
+      "role": "Crowded AI chip beta and hedge signal"
+    },
+    "enterprise_ai_infra": {
+      "bridge_to": [
+        "models",
+        "applications"
+      ],
+      "layer_id": "infrastructure",
+      "role": "Enterprise AI cloud/capex duration signal"
+    },
+    "memory_storage_networking": {
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "layer_id": "chips",
+      "role": "HBM, storage, foundry, and advanced packaging"
+    },
+    "miner_to_datacenter": {
+      "bridge_to": [
+        "energy"
+      ],
+      "layer_id": "infrastructure",
+      "role": "Power/site conversion into AI or HPC datacenters"
+    },
+    "power_bottleneck": {
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "layer_id": "energy",
+      "role": "Power bottleneck"
+    },
+    "semicap_equipment": {
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "layer_id": "chips",
+      "role": "Semicap, lithography, foundry enablement"
+    },
+    "space_infra": {
+      "bridge_to": [
+        "applications"
+      ],
+      "layer_id": "infrastructure",
+      "role": "Strategic connectivity and defense infrastructure proxy"
+    }
+  },
+  "source": {
+    "framework": "Jensen Huang five-layer AI stack",
+    "layers": "Energy -> chips -> infrastructure -> models -> applications",
+    "primary_source_note": "The public summary used here describes Huang's five-layer stack as energy, chips, infrastructure, models, and applications.",
+    "source_urls": [
+      "https://www.axios.com/2026/03/10/jensen-huang-ais-biggest-buildout-is-still-ahead",
+      "https://www.techradar.com/pro/nvidia-wants-to-have-your-cake-and-eat-it-jensen-described-the-ai-layered-stack-and-hints-at-what-worlds-most-valuable-firm-will-do-next"
+    ]
+  },
+  "summary": {
+    "decision_counts": {
+      "HOLD": 40
+    },
+    "signal_only_count": 4,
+    "source_classification_counts": {
+      "sa_adjacent_historical_or_thesis_proxy": 6,
+      "sa_adjacent_thesis_proxy": 4,
+      "sa_post_quarter_13g": 1,
+      "sa_reported_current_13f": 29
+    },
+    "ticker_count": 40
+  },
+  "tickers": [
+    {
+      "anti_thesis": "Semicap cycle, export controls, or customer capex digestion can overpower monopoly quality for long periods.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "55",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+      "instrument_role": "common_equity_with_put_signal",
+      "invalidation_trigger": "Sustained leading-edge order/backlog deterioration or export controls that impair the core EUV growth runway.",
+      "layer_id": "chips",
+      "layer_role": "Semicap, lithography, foundry enablement",
+      "name": "ASML Holding",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA put signal makes valuation and China/export-control risk central.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "semicap_equipment",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA put signal makes valuation and China/export-control risk central.",
+      "ticker": "ASML",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "NVIDIA ecosystem strength, software lock-in, or gross-margin pressure may keep AMD from becoming a true bottleneck.",
+      "bridge_to": [
+        "models",
+        "infrastructure"
+      ],
+      "confidence_score": "45",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+      "instrument_role": "common_equity_with_put_signal",
+      "invalidation_trigger": "AI accelerator roadmap fails to gain durable datacenter traction at acceptable margins.",
+      "layer_id": "chips",
+      "layer_role": "Crowded AI chip beta and hedge signal",
+      "name": "Advanced Micro Devices",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: AMD is a second-source AI accelerator candidate, but SA put exposure says the long case must clear high valuation and execution hurdles.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "crowded_ai_beta_hedge",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "AMD is a second-source AI accelerator candidate, but SA put exposure says the long case must clear high valuation and execution hurdles.",
+      "ticker": "AMD",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "The company may be more financing-sensitive development exposure than durable infrastructure scarcity.",
+      "bridge_to": [
+        "energy"
+      ],
+      "confidence_score": "40",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Major customer/financing failure or evidence that sites cannot support contracted AI load.",
+      "layer_id": "infrastructure",
+      "layer_role": "Power/site conversion into AI or HPC datacenters",
+      "name": "Applied Digital",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "miner_to_datacenter",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.",
+      "ticker": "APLD",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "This could be a levered industrial turnaround rather than an AI power solution.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "32",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Liquidity or backlog deterioration removes any credible power-bottleneck expression.",
+      "layer_id": "energy",
+      "layer_role": "Power bottleneck",
+      "name": "Babcock & Wilcox Enterprises",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "power_bottleneck",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.",
+      "ticker": "BW",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "The business may be too exposed to crypto cycles and hardware execution to be a clean AI bottleneck.",
+      "bridge_to": [
+        "energy"
+      ],
+      "confidence_score": "35",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "AI/HPC conversion remains immaterial while mining/hardware cyclicality drives value.",
+      "layer_id": "infrastructure",
+      "layer_role": "Power/site conversion into AI or HPC datacenters",
+      "name": "Bitdeer",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Bitdeer offers power and infrastructure optionality, but the thesis is mixed across mining, ASICs, and possible HPC capacity.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "miner_to_datacenter",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Bitdeer offers power and infrastructure optionality, but the thesis is mixed across mining, ASICs, and possible HPC capacity.",
+      "ticker": "BTDR",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "The equity may remain mostly Bitcoin beta with dilution rather than datacenter scarcity.",
+      "bridge_to": [
+        "energy"
+      ],
+      "confidence_score": "35",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "No credible AI/HPC path emerges and economics remain dominated by mining exposure.",
+      "layer_id": "infrastructure",
+      "layer_role": "Power/site conversion into AI or HPC datacenters",
+      "name": "Bitfarms",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Bitfarms is a power/site option that could benefit from AI conversion, but current evidence is not strong enough for new capital.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "miner_to_datacenter",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Bitfarms is a power/site option that could benefit from AI conversion, but current evidence is not strong enough for new capital.",
+      "ticker": "BITF",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Fuel-cell economics, warranty risk, financing needs, or loose energy-transition exposure may swamp datacenter upside.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "45",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity_and_call_signal",
+      "invalidation_trigger": "Datacenter backlog fails to convert or financing/product risk impairs delivery economics.",
+      "layer_id": "energy",
+      "layer_role": "Power bottleneck",
+      "name": "Bloom Energy",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "power_bottleneck",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment.",
+      "ticker": "BE",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "A strong AI networking/custom-silicon business does not make a trade if the signal is only downside/crowding risk.",
+      "bridge_to": [
+        "models",
+        "infrastructure"
+      ],
+      "confidence_score": "35",
+      "current_decision": "HOLD",
+      "dip_decision": "NOT_ARMED",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use as risk signal only and do not allocate capital.",
+      "instrument_role": "reported_put_signal",
+      "invalidation_trigger": "Separate long-only thesis documented with valuation, sizing, and invalidation.",
+      "layer_id": "chips",
+      "layer_role": "Crowded AI chip beta and hedge signal",
+      "name": "Broadcom",
+      "next_trigger": "Monitor as SA risk signal; act only if a separate long-only thesis emerges.",
+      "one_line_rationale": "Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "crowded_ai_beta_hedge",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Broadcom is tracked as SA reported put exposure, not as a long candidate under the current mandate.",
+      "ticker": "AVGO",
+      "trade_policy": "signal_only_no_puts_or_shorts",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "The stock may remain a Bitcoin miner with limited AI conversion relevance.",
+      "bridge_to": [
+        "energy"
+      ],
+      "confidence_score": "34",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "No credible conversion route and mining economics remain the dominant value driver.",
+      "layer_id": "infrastructure",
+      "layer_role": "Power/site conversion into AI or HPC datacenters",
+      "name": "CleanSpark",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: CleanSpark may own useful power/site optionality, but current posture is watch-only until AI datacenter economics become primary-source visible.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "miner_to_datacenter",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "CleanSpark may own useful power/site optionality, but current posture is watch-only until AI datacenter economics become primary-source visible.",
+      "ticker": "CLSK",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Customer concentration, post-restructuring capital needs, or power delivery risk can still make the equity fragile.",
+      "bridge_to": [
+        "energy"
+      ],
+      "confidence_score": "42",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "HPC contracts weaken or financing prevents profitable conversion of sites.",
+      "layer_id": "infrastructure",
+      "layer_role": "Power/site conversion into AI or HPC datacenters",
+      "name": "Core Scientific",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Core Scientific is one of the cleaner miner-to-HPC conversion candidates because contracted hosting can separate value from Bitcoin beta.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "miner_to_datacenter",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Core Scientific is one of the cleaner miner-to-HPC conversion candidates because contracted hosting can separate value from Bitcoin beta.",
+      "ticker": "CORZ",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "It may be a highly financed GPU-capacity trade rather than durable infrastructure value.",
+      "bridge_to": [
+        "models"
+      ],
+      "confidence_score": "43",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity_and_call_signal",
+      "invalidation_trigger": "Large customer demand weakens, refinancing risk rises, or contracted utilization breaks.",
+      "layer_id": "infrastructure",
+      "layer_role": "Contracted compute and AI cloud capacity",
+      "name": "CoreWeave",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "compute_infra",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory.",
+      "ticker": "CRWV",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "The AI link may be too diluted by consumer, display, or telecom cycles.",
+      "bridge_to": [
+        "chips"
+      ],
+      "confidence_score": "38",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+      "instrument_role": "common_equity_with_put_signal",
+      "invalidation_trigger": "AI/datacenter optical demand does not become material enough to change earnings power.",
+      "layer_id": "infrastructure",
+      "layer_role": "Cluster fabric, optical, and data movement",
+      "name": "Corning",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "ai_networking_optical",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.",
+      "ticker": "GLW",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "The company may remain crypto beta with small AI optionality.",
+      "bridge_to": [
+        "energy"
+      ],
+      "confidence_score": "34",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "HPC revenue remains immaterial and mining economics dominate value.",
+      "layer_id": "infrastructure",
+      "layer_role": "Power/site conversion into AI or HPC datacenters",
+      "name": "HIVE Digital Technologies",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "miner_to_datacenter",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer.",
+      "ticker": "HIVE",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "The stock may still be a Bitcoin miner with expensive AI optionality.",
+      "bridge_to": [
+        "energy"
+      ],
+      "confidence_score": "40",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "AI/HPC conversion fails to become material or financing dilutes away site value.",
+      "layer_id": "infrastructure",
+      "layer_role": "Power/site conversion into AI or HPC datacenters",
+      "name": "IREN",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "miner_to_datacenter",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta.",
+      "ticker": "IREN",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "A defensive services business does not matter if the signal is AI disruption risk.",
+      "bridge_to": [
+        "models"
+      ],
+      "confidence_score": "32",
+      "current_decision": "HOLD",
+      "dip_decision": "NOT_ARMED",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use as risk signal only and do not allocate capital.",
+      "instrument_role": "reported_put_signal",
+      "invalidation_trigger": "Separate long-only thesis documented with valuation, sizing, and invalidation.",
+      "layer_id": "applications",
+      "layer_role": "AI disruption signal in services/application labor",
+      "name": "Infosys",
+      "next_trigger": "Monitor as SA risk signal; act only if a separate long-only thesis emerges.",
+      "one_line_rationale": "Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "ai_services_put_signal",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Infosys is tracked as SA reported put exposure and should inform AI services disruption risk, not long-only action.",
+      "ticker": "INFY",
+      "trade_policy": "signal_only_no_puts_or_shorts",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "The turnaround may consume capital without proving process or foundry competitiveness.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "38",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+      "instrument_role": "common_equity_with_put_signal",
+      "invalidation_trigger": "Foundry roadmap slips further or capital needs overwhelm strategic value.",
+      "layer_id": "chips",
+      "layer_role": "Semicap, lithography, foundry enablement",
+      "name": "Intel",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "semicap_equipment",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold.",
+      "ticker": "INTC",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "The upside may be cyclical pricing rather than durable structural scarcity.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "48",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+      "instrument_role": "common_equity_call_signal_and_put_signal",
+      "invalidation_trigger": "HBM leadership or memory pricing breaks while valuation remains elevated.",
+      "layer_id": "chips",
+      "layer_role": "HBM, storage, foundry, and advanced packaging",
+      "name": "Micron",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "memory_storage_networking",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.",
+      "ticker": "MU",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "Valuation, export controls, customer concentration, or accelerator competition may compress returns despite strong fundamentals.",
+      "bridge_to": [
+        "models",
+        "infrastructure"
+      ],
+      "confidence_score": "55",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+      "instrument_role": "common_equity_with_put_signal",
+      "invalidation_trigger": "Datacenter growth or platform margins break enough to impair the accelerator thesis.",
+      "layer_id": "chips",
+      "layer_role": "Crowded AI chip beta and hedge signal",
+      "name": "NVIDIA",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: NVIDIA remains the highest-quality AI accelerator bottleneck, but SA put exposure flags valuation/crowding risk.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "crowded_ai_beta_hedge",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "NVIDIA remains the highest-quality AI accelerator bottleneck, but SA put exposure flags valuation/crowding risk.",
+      "ticker": "NVDA",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "OCI growth can be real while equity risk remains valuation/debt/capex sensitive.",
+      "bridge_to": [
+        "models",
+        "applications"
+      ],
+      "confidence_score": "34",
+      "current_decision": "HOLD",
+      "dip_decision": "NOT_ARMED",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use as risk signal only and do not allocate capital.",
+      "instrument_role": "reported_put_signal",
+      "invalidation_trigger": "Separate long-only thesis documented with valuation, sizing, and invalidation.",
+      "layer_id": "infrastructure",
+      "layer_role": "Enterprise AI cloud/capex duration signal",
+      "name": "Oracle",
+      "next_trigger": "Monitor as SA risk signal; act only if a separate long-only thesis emerges.",
+      "one_line_rationale": "Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "enterprise_ai_infra",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Oracle is tracked as SA reported put exposure; it informs capex duration and AI infrastructure risk, not long-only action.",
+      "ticker": "ORCL",
+      "trade_policy": "signal_only_no_puts_or_shorts",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "It may be a small industrial cyclical rather than a scalable AI power bottleneck.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "34",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Backlog or customer evidence fails to connect power equipment demand to AI load growth.",
+      "layer_id": "energy",
+      "layer_role": "Power bottleneck",
+      "name": "Power Solutions International",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Power Solutions International may supply engines/gensets into power scarcity, but the proof point is durable datacenter/customer backlog.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "power_bottleneck",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Power Solutions International may supply engines/gensets into power scarcity, but the proof point is durable datacenter/customer backlog.",
+      "ticker": "PSIX",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Oilfield services cyclicality may dominate any power-equipment read-through.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "30",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "No primary-source evidence ties the business to durable AI power bottlenecks.",
+      "layer_id": "energy",
+      "layer_role": "Power bottleneck",
+      "name": "ProPetro Holding",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: ProPetro requires caution because the AI power link is less direct than other sleeve names and may be oilfield-services exposure.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "power_bottleneck",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "ProPetro requires caution because the AI power link is less direct than other sleeve names and may be oilfield-services exposure.",
+      "ticker": "PUMP",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Bitcoin mining economics may remain the overwhelming driver of returns.",
+      "bridge_to": [
+        "energy"
+      ],
+      "confidence_score": "34",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "AI/datacenter conversion remains speculative and mining economics dominate value.",
+      "layer_id": "infrastructure",
+      "layer_role": "Power/site conversion into AI or HPC datacenters",
+      "name": "Riot Platforms",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Riot has power and site optionality, but the current long-only case is not clean enough without stronger AI conversion evidence.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "miner_to_datacenter",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Riot has power and site optionality, but the current long-only case is not clean enough without stronger AI conversion evidence.",
+      "ticker": "RIOT",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "The case may be cyclical NAND beta rather than durable AI storage scarcity.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "38",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity_and_call_signal",
+      "invalidation_trigger": "NAND/storage recovery fails or balance sheet risk overwhelms AI storage upside.",
+      "layer_id": "chips",
+      "layer_role": "HBM, storage, foundry, and advanced packaging",
+      "name": "SanDisk",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "memory_storage_networking",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline.",
+      "ticker": "SNDK",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "It may be an illiquid/speculative proxy without enough public evidence for capital.",
+      "bridge_to": [
+        "models"
+      ],
+      "confidence_score": "25",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Public evidence fails to verify durable compute assets or customer economics.",
+      "layer_id": "infrastructure",
+      "layer_role": "Contracted compute and AI cloud capacity",
+      "name": "SharonAI Holdings",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: SharonAI is tracked because it appears in current public SA exposure, but liquidity, governance, and asset verification keep it hold-only.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "compute_infra",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "SharonAI is tracked because it appears in current public SA exposure, but liquidity, governance, and asset verification keep it hold-only.",
+      "ticker": "SHAZ",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "The company may remain energy-services cyclicality rather than durable datacenter power.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "34",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Contracted power demand fails to scale or margins do not support fleet expansion.",
+      "layer_id": "energy",
+      "layer_role": "Power bottleneck",
+      "name": "Solaris Energy Infrastructure",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "power_bottleneck",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.",
+      "ticker": "SEI",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "It may be policy/manufacturing cyclicality rather than an AI power bottleneck.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "30",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Business model, capacity funding, or customer demand fails to support power-bottleneck role.",
+      "layer_id": "energy",
+      "layer_role": "Power bottleneck",
+      "name": "T1 Energy",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: T1 Energy is tracked as a current SA holding, but business-model and financing clarity are not strong enough for new capital.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "power_bottleneck",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "T1 Energy is tracked as a current SA holding, but business-model and financing clarity are not strong enough for new capital.",
+      "ticker": "TE",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Geopolitical risk or capex cyclicality can dominate even a strong structural moat.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "55",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.",
+      "instrument_role": "common_equity_call_signal_and_put_signal",
+      "invalidation_trigger": "Leading-edge foundry/packaging share or geopolitical risk invalidates ownership quality.",
+      "layer_id": "chips",
+      "layer_role": "HBM, storage, foundry, and advanced packaging",
+      "name": "Taiwan Semiconductor Manufacturing",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: TSMC is a core foundry/advanced packaging scarcity asset, but geopolitics, customer concentration, and SA put exposure require sizing discipline.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "memory_storage_networking",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "TSMC is a core foundry/advanced packaging scarcity asset, but geopolitics, customer concentration, and SA put exposure require sizing discipline.",
+      "ticker": "TSM",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "ETF exposure is too broad to express Bottleneck Capital's best single-name theses.",
+      "bridge_to": [
+        "models",
+        "infrastructure"
+      ],
+      "confidence_score": "34",
+      "current_decision": "HOLD",
+      "dip_decision": "NOT_ARMED",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use as risk signal only and do not allocate capital.",
+      "instrument_role": "common_equity_with_put_signal",
+      "invalidation_trigger": "Separate long-only ETF thesis documented with valuation, sizing, and invalidation.",
+      "layer_id": "chips",
+      "layer_role": "Crowded AI chip beta and hedge signal",
+      "name": "VanEck Semiconductor ETF",
+      "next_trigger": "Monitor as SA risk signal; act only if a separate long-only thesis emerges.",
+      "one_line_rationale": "Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "crowded_ai_beta_hedge",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "SMH is useful for interpreting SA semiconductor hedge/crowding risk, not for a long-only ETF trade right now.",
+      "ticker": "SMH",
+      "trade_policy": "signal_only_no_puts_or_shorts",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "The asset may be a narrow/illiquid listing with financing sensitivity rather than durable compute infrastructure.",
+      "bridge_to": [
+        "models"
+      ],
+      "confidence_score": "26",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Public evidence fails to verify durable compute assets or contract economics.",
+      "layer_id": "infrastructure",
+      "layer_role": "Contracted compute and AI cloud capacity",
+      "name": "WhiteFiber",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: WhiteFiber is tracked because it appears in current public SA exposure, but public evidence, liquidity, and financing quality need caution.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "compute_infra",
+      "source_classification": "sa_reported_current_13f",
+      "thesis_expressed": "WhiteFiber is tracked because it appears in current public SA exposure, but public evidence, liquidity, and financing quality need caution.",
+      "ticker": "WYFI",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "AI cloud ambition may require capital faster than contracts and utilization mature.",
+      "bridge_to": [
+        "models"
+      ],
+      "confidence_score": "40",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "AI cloud utilization, funding, or jurisdiction risk invalidates durable infrastructure value.",
+      "layer_id": "infrastructure",
+      "layer_role": "Contracted compute and AI cloud capacity",
+      "name": "Nebius",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jurisdiction, customer, and financing risk keep it hold-only.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "compute_infra",
+      "source_classification": "sa_post_quarter_13g",
+      "thesis_expressed": "Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jurisdiction, customer, and financing risk keep it hold-only.",
+      "ticker": "NBIS",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "Power scarcity and nuclear/generation value may already be priced.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "42",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Datacenter/generation scarcity thesis weakens or valuation offers no margin of safety.",
+      "layer_id": "energy",
+      "layer_role": "Power bottleneck",
+      "name": "Vistra",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "power_bottleneck",
+      "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+      "thesis_expressed": "Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy.",
+      "ticker": "VST",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Power scarcity may already be recognized, and utility/regulatory risk can limit upside.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "42",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Datacenter/power thesis weakens or SA/current evidence does not support promotion.",
+      "layer_id": "energy",
+      "layer_role": "Power bottleneck",
+      "name": "Constellation Energy",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Constellation is a high-quality power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only absent promotion or a priced entry.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "power_bottleneck",
+      "source_classification": "sa_adjacent_thesis_proxy",
+      "thesis_expressed": "Constellation is a high-quality power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only absent promotion or a priced entry.",
+      "ticker": "CEG",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Datacenter power upside may already be capitalized or limited by contract/regulatory risk.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "38",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Datacenter power contract thesis weakens or source evidence does not support promotion.",
+      "layer_id": "energy",
+      "layer_role": "Power bottleneck",
+      "name": "Talen Energy",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Talen is a power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only pending promotion or better entry evidence.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "power_bottleneck",
+      "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+      "thesis_expressed": "Talen is a power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only pending promotion or better entry evidence.",
+      "ticker": "TLNE",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Valuation may already discount AI datacenter order strength.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "42",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "AI datacenter orders or margins normalize faster than expected.",
+      "layer_id": "energy",
+      "layer_role": "Power, thermal, and water equipment",
+      "name": "Vertiv",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Vertiv is a clear datacenter power/thermal equipment beneficiary, but it is not latest-current SA exposure in this system.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "ai_power_equipment",
+      "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+      "thesis_expressed": "Vertiv is a clear datacenter power/thermal equipment beneficiary, but it is not latest-current SA exposure in this system.",
+      "ticker": "VRT",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Core business exposure may be too far from the AI bottleneck thesis.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "28",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "No evidence that datacenter infrastructure materially changes earnings power.",
+      "layer_id": "energy",
+      "layer_role": "Power, thermal, and water equipment",
+      "name": "Watts Water Technologies",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action.",
+      "priority": "low",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "ai_power_equipment",
+      "source_classification": "sa_adjacent_thesis_proxy",
+      "thesis_expressed": "Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action.",
+      "ticker": "WTS",
+      "trade_policy": "long_only_after_research",
+      "urgency": "LOW"
+    },
+    {
+      "anti_thesis": "Telecom cyclicality may dominate any datacenter optical upside.",
+      "bridge_to": [
+        "chips"
+      ],
+      "confidence_score": "34",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "AI/datacom demand fails to offset telecom cyclicality.",
+      "layer_id": "infrastructure",
+      "layer_role": "Cluster fabric, optical, and data movement",
+      "name": "Lumentum",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "ai_networking_optical",
+      "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+      "thesis_expressed": "Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.",
+      "ticker": "LITE",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "Custom silicon wins may be lumpy and valuation may already discount AI upside.",
+      "bridge_to": [
+        "chips"
+      ],
+      "confidence_score": "38",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "AI custom silicon/networking fails to drive durable earnings growth.",
+      "layer_id": "infrastructure",
+      "layer_role": "Cluster fabric, optical, and data movement",
+      "name": "Marvell Technology",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "ai_networking_optical",
+      "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+      "thesis_expressed": "Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system.",
+      "ticker": "MRVL",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "The ticker/listing path, liquidity, valuation, and actual instrument exposure may be unclear or non-actionable.",
+      "bridge_to": [
+        "applications"
+      ],
+      "confidence_score": "28",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "local_position_adjacent_proxy",
+      "invalidation_trigger": "SPCX does not represent investable SpaceX/space-infra exposure or listing/liquidity risk becomes unacceptable.",
+      "layer_id": "infrastructure",
+      "layer_role": "Strategic connectivity and defense infrastructure proxy",
+      "name": "SpaceX / SPCX ticker signal",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "space_infra",
+      "source_classification": "sa_adjacent_thesis_proxy",
+      "thesis_expressed": "SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure.",
+      "ticker": "SPCX",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    },
+    {
+      "anti_thesis": "EV cyclicality, competition, governance/key-person risk, valuation, and unclear AI monetization could dominate the bottleneck thesis.",
+      "bridge_to": [
+        "energy",
+        "models"
+      ],
+      "confidence_score": "25",
+      "current_decision": "HOLD",
+      "dip_decision": "NOT_ARMED",
+      "evidence_quality": "LOCAL_POSITION_AND_RECENT_PUBLIC_MERGER_CHATTER",
+      "hedge_or_sizing": "Hold existing exposure only; do not add until merger terms, exact TSLA sizing, valuation, and thesis fit are validated.",
+      "instrument_role": "local_position_adjacent_proxy",
+      "invalidation_trigger": "SpaceX merger optionality disappears, transaction terms would dilute TSLA holders badly, or Tesla fails to express a durable AI/autonomy/energy/platform-consolidation thesis.",
+      "layer_id": "applications",
+      "layer_role": "Autonomy, robotics, embodied AI, and energy adjacency",
+      "name": "Tesla",
+      "next_trigger": "Confirm exact shares and cost basis, then underwrite TSLA as a SpaceX merger/platform-consolidation option with explicit dilution and governance risk.",
+      "one_line_rationale": "Hold/watch only: TSLA now has plausible SpaceX merger/platform-consolidation optionality, but no new capital until transaction odds, terms, sizing, and valuation are underwritten.",
+      "priority": "high",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "autonomy_energy",
+      "source_classification": "sa_adjacent_thesis_proxy",
+      "thesis_expressed": "Tesla may express AI autonomy, robotics, battery/storage, and energy infrastructure optionality, but its fit to the Bottleneck Capital sleeve is unvalidated.",
+      "ticker": "TSLA",
+      "trade_policy": "long_only_after_research",
+      "urgency": "HIGH"
+    },
+    {
+      "anti_thesis": "The company may be a cyclical semicap beneficiary rather than a unique AI bottleneck.",
+      "bridge_to": [
+        "infrastructure"
+      ],
+      "confidence_score": "36",
+      "current_decision": "HOLD",
+      "dip_decision": "RESEARCH_FIRST",
+      "evidence_quality": "SA_FILING_AND_LOCAL_BASELINE",
+      "hedge_or_sizing": "No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.",
+      "instrument_role": "common_equity",
+      "invalidation_trigger": "Advanced packaging/process-control demand fails to create differentiated growth.",
+      "layer_id": "chips",
+      "layer_role": "Semicap, lithography, foundry enablement",
+      "name": "Onto Innovation",
+      "next_trigger": "Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.",
+      "one_line_rationale": "Hold/watch only: Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure.",
+      "priority": "medium",
+      "sell_status": "NOT_TRIGGERED",
+      "sleeve": "semicap_equipment",
+      "source_classification": "sa_adjacent_historical_or_thesis_proxy",
+      "thesis_expressed": "Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure.",
+      "ticker": "ONTO",
+      "trade_policy": "long_only_after_research",
+      "urgency": "MEDIUM"
+    }
+  ]
+}</script>
+  <script>
+    const data = JSON.parse(document.getElementById("valueChainData").textContent);
+    const state = {
+      selectedTicker: data.tickers[0]?.ticker || "",
+      search: "",
+      decision: "all",
+      source: "all",
+      layer: "all",
+    };
+
+    const layerById = Object.fromEntries(data.layers.map((layer) => [layer.id, layer]));
+    const tickerBySymbol = Object.fromEntries(data.tickers.map((ticker) => [ticker.ticker, ticker]));
+
+    const el = {
+      frameworkSummary: document.getElementById("frameworkSummary"),
+      summaryStrip: document.getElementById("summaryStrip"),
+      cake: document.getElementById("cake"),
+      inspector: document.getElementById("inspector"),
+      rows: document.getElementById("tickerRows"),
+      search: document.getElementById("searchInput"),
+      decision: document.getElementById("decisionFilter"),
+      source: document.getElementById("sourceFilter"),
+      layer: document.getElementById("layerFilter"),
+      update: document.getElementById("updateButton"),
+      updateStatus: document.getElementById("updateStatus"),
+      reset: document.getElementById("resetButton"),
+    };
+
+    function cleanLabel(value) {
+      return (value || "unclassified").replaceAll("_", " ");
+    }
+
+    function shortSource(value) {
+      if (value === "sa_reported_current_13f") return "SA 13F";
+      if (value === "sa_post_quarter_13g") return "SA 13G";
+      if (value === "sa_adjacent_historical_or_thesis_proxy") return "Adjacent historical";
+      if (value === "sa_adjacent_thesis_proxy") return "Adjacent proxy";
+      return cleanLabel(value);
+    }
+
+    function matchesFilters(ticker) {
+      const haystack = [
+        ticker.ticker,
+        ticker.name,
+        ticker.sleeve,
+        ticker.layer_role,
+        ticker.current_decision,
+        ticker.source_classification,
+      ].join(" ").toLowerCase();
+      return (
+        (!state.search || haystack.includes(state.search.toLowerCase())) &&
+        (state.decision === "all" || ticker.current_decision === state.decision) &&
+        (state.source === "all" || ticker.source_classification === state.source) &&
+        (state.layer === "all" || ticker.layer_id === state.layer)
+      );
+    }
+
+    function visibleTickers() {
+      return data.tickers.filter(matchesFilters);
+    }
+
+    function setOptions(select, values, label) {
+      select.innerHTML = "";
+      select.append(new Option(label, "all"));
+      values.forEach((value) => select.append(new Option(cleanLabel(value), value)));
+    }
+
+    function initControls() {
+      const decisions = [...new Set(data.tickers.map((ticker) => ticker.current_decision))].sort();
+      const sources = [...new Set(data.tickers.map((ticker) => ticker.source_classification))].sort();
+      setOptions(el.decision, decisions, "All decisions");
+      setOptions(el.source, sources, "All sources");
+      el.layer.innerHTML = "";
+      el.layer.append(new Option("All layers", "all"));
+      data.layers.forEach((layer) => el.layer.append(new Option(layer.name, layer.id)));
+      el.search.addEventListener("input", (event) => {
+        state.search = event.target.value.trim();
+        render();
+      });
+      el.decision.addEventListener("change", (event) => {
+        state.decision = event.target.value;
+        render();
+      });
+      el.source.addEventListener("change", (event) => {
+        state.source = event.target.value;
+        render();
+      });
+      el.layer.addEventListener("change", (event) => {
+        state.layer = event.target.value;
+        render();
+      });
+      el.reset.addEventListener("click", () => {
+        state.search = "";
+        state.decision = "all";
+        state.source = "all";
+        state.layer = "all";
+        el.search.value = "";
+        el.decision.value = "all";
+        el.source.value = "all";
+        el.layer.value = "all";
+        render();
+      });
+      el.update.addEventListener("click", updateVisualizer);
+    }
+
+    function renderSummary() {
+      const visible = visibleTickers();
+      const current13f = visible.filter((ticker) => ticker.source_classification === "sa_reported_current_13f").length;
+      const signalOnly = visible.filter((ticker) => ticker.trade_policy === "signal_only_no_puts_or_shorts").length;
+      const researchFirst = visible.filter((ticker) => ticker.dip_decision === "RESEARCH_FIRST").length;
+      const layerCount = new Set(visible.map((ticker) => ticker.layer_id)).size;
+      const metrics = [
+        ["Visible tickers", visible.length],
+        ["Layers occupied", `${layerCount} / 5`],
+        ["Current SA 13F", current13f],
+        ["Signal-only", signalOnly],
+        ["Research-first dips", researchFirst],
+      ];
+      el.summaryStrip.innerHTML = metrics.map(([label, value]) => `
+        <article class="metric"><span>${label}</span><strong>${value}</strong></article>
+      `).join("");
+    }
+
+    function renderCake() {
+      const visible = new Set(visibleTickers().map((ticker) => ticker.ticker));
+      el.cake.innerHTML = data.layers.map((layer) => {
+        const layerTickers = layer.tickers.filter((ticker) => visible.has(ticker.ticker));
+        const bySleeve = Object.groupBy ? Object.groupBy(layerTickers, (ticker) => ticker.sleeve) : groupBy(layerTickers, (ticker) => ticker.sleeve);
+        const sleeveMarkup = Object.entries(bySleeve).sort(([a], [b]) => a.localeCompare(b)).map(([sleeve, tickers]) => `
+          <section class="sleeve-group">
+            <div class="sleeve-title">
+              <span>${cleanLabel(sleeve)}</span>
+              <code>${tickers.length} ${tickers.length === 1 ? "ticker" : "tickers"}</code>
+            </div>
+            <div class="cards">
+              ${tickers.map((ticker) => tickerCard(ticker, layer)).join("")}
+            </div>
+          </section>
+        `).join("");
+        const emptyMarkup = layerTickers.length
+          ? ""
+          : `<div class="empty-layer">${layer.empty_note || "No tracked ticker matches the active filters in this layer."}</div>`;
+        const display = state.layer !== "all" && state.layer !== layer.id ? "display:none" : "";
+        return `
+          <article class="layer" style="--layer-color: ${layer.color}; ${display}" data-layer="${layer.id}">
+            <div class="layer-meta">
+              <div class="layer-kicker"><span class="layer-dot"></span>Layer ${layer.order}</div>
+              <h2>${layer.name}</h2>
+              <p>${layer.headline}</p>
+              <p>${layer.description}</p>
+              <div class="layer-question">${layer.watch_question}</div>
+            </div>
+            <div class="ticker-zone">${sleeveMarkup}${emptyMarkup}</div>
+          </article>
+        `;
+      }).join("");
+      el.cake.querySelectorAll("[data-ticker]").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.selectedTicker = button.dataset.ticker;
+          render();
+        });
+      });
+    }
+
+    function tickerCard(ticker, layer) {
+      const selected = ticker.ticker === state.selectedTicker ? " selected" : "";
+      const signal = ticker.trade_policy === "signal_only_no_puts_or_shorts" ? `<span class="tag signal">signal</span>` : "";
+      const confidence = ticker.confidence_score ? `<span class="tag">${ticker.confidence_score}</span>` : "";
+      return `
+        <button class="ticker-card${selected}" type="button" data-ticker="${ticker.ticker}" style="--layer-color: ${layer.color}">
+          <span class="ticker-top">
+            <span class="ticker-symbol">${ticker.ticker}</span>
+            <span class="tag decision-${ticker.current_decision}">${ticker.current_decision}</span>
+          </span>
+          <span class="ticker-name">${ticker.name}</span>
+          <span class="ticker-tags">
+            <span class="tag">${shortSource(ticker.source_classification)}</span>
+            ${signal}
+            ${confidence}
+          </span>
+        </button>
+      `;
+    }
+
+    function renderRows() {
+      const visible = visibleTickers().sort((a, b) => a.layer_id.localeCompare(b.layer_id) || a.sleeve.localeCompare(b.sleeve) || a.ticker.localeCompare(b.ticker));
+      el.rows.innerHTML = visible.map((ticker) => {
+        const layer = layerById[ticker.layer_id];
+        return `
+          <tr data-ticker="${ticker.ticker}">
+            <td><strong>${ticker.ticker}</strong></td>
+            <td>${ticker.name}</td>
+            <td>${layer.name}</td>
+            <td><code>${ticker.sleeve}</code></td>
+            <td>${ticker.current_decision}</td>
+            <td>${shortSource(ticker.source_classification)}</td>
+            <td>${ticker.layer_role}</td>
+          </tr>
+        `;
+      }).join("");
+      el.rows.querySelectorAll("[data-ticker]").forEach((row) => {
+        row.addEventListener("click", () => {
+          state.selectedTicker = row.dataset.ticker;
+          render();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      });
+    }
+
+    function renderInspector() {
+      const selected = tickerBySymbol[state.selectedTicker] || visibleTickers()[0] || data.tickers[0];
+      if (!selected) {
+        el.inspector.innerHTML = "<p>No ticker selected.</p>";
+        return;
+      }
+      state.selectedTicker = selected.ticker;
+      const layer = layerById[selected.layer_id];
+      const bridges = selected.bridge_to.length
+        ? selected.bridge_to.map((id) => layerById[id]?.name || id).join(", ")
+        : "None";
+      el.inspector.innerHTML = `
+        <div class="inspector-header">
+          <div>
+            <h2>${selected.ticker}</h2>
+            <p class="name">${selected.name}</p>
+          </div>
+          <span class="decision-pill ${selected.current_decision}">${selected.current_decision}</span>
+        </div>
+        <div class="detail-grid">
+          ${detail("Layer", layer.name)}
+          ${detail("Sleeve", selected.sleeve)}
+          ${detail("Source", shortSource(selected.source_classification))}
+          ${detail("Policy", selected.trade_policy || "unclassified")}
+          ${detail("Dip", selected.dip_decision || "unclassified")}
+          ${detail("Confidence", selected.confidence_score || "unscored")}
+          ${detail("Role", selected.layer_role)}
+          ${detail("Bridge", bridges)}
+        </div>
+        <div class="narrative">
+          ${copySection("Rationale", selected.one_line_rationale)}
+          ${copySection("Thesis Expressed", selected.thesis_expressed)}
+          ${copySection("Anti-thesis", selected.anti_thesis)}
+          ${copySection("Sizing / Hedge Response", selected.hedge_or_sizing)}
+          ${copySection("Invalidation Trigger", selected.invalidation_trigger)}
+          ${copySection("Next Trigger", selected.next_trigger)}
+        </div>
+      `;
+    }
+
+    function detail(label, value) {
+      return `<div class="detail"><span>${label}</span><strong>${value || "n/a"}</strong></div>`;
+    }
+
+    function copySection(label, value) {
+      return `<section><h3>${label}</h3><p>${value || "Not specified."}</p></section>`;
+    }
+
+    function groupBy(items, getKey) {
+      return items.reduce((acc, item) => {
+        const key = getKey(item);
+        acc[key] = acc[key] || [];
+        acc[key].push(item);
+        return acc;
+      }, {});
+    }
+
+    function setUpdateStatus(message, isError = false) {
+      el.updateStatus.textContent = message;
+      el.updateStatus.classList.toggle("error", isError);
+    }
+
+    async function updateVisualizer() {
+      el.update.disabled = true;
+      setUpdateStatus("Updating visualizer...");
+      try {
+        if (window.location.protocol === "file:") {
+          throw new Error("file_mode");
+        }
+        const response = await fetch("/__bcap_update", {
+          method: "POST",
+          headers: { "Accept": "application/json" },
+        });
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || `HTTP ${response.status}`);
+        }
+        setUpdateStatus("Updated. Reloading...");
+        window.location.reload();
+      } catch (error) {
+        const fileMode = error && error.message === "file_mode";
+        setUpdateStatus(
+          fileMode
+            ? "One-click update needs local server mode: ./bcap value-chain --serve. For this file, run ./bcap value-chain, then refresh."
+            : "Update failed. Run ./bcap value-chain in the terminal, then refresh.",
+          true,
+        );
+        el.update.disabled = false;
+      }
+    }
+
+    function render() {
+      el.frameworkSummary.textContent = `${data.source.framework}: ${data.source.layers}. Generated ${new Date(data.generated_at).toLocaleString()}.`;
+      renderSummary();
+      renderCake();
+      renderRows();
+      renderInspector();
+    }
+
+    initControls();
+    render();
+  </script>
+</body>
+</html>

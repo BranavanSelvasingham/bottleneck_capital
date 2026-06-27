@@ -1,6 +1,6 @@
 # Bottleneck Capital Decision Index
 
-Updated: 2026-06-20T22:46-04:00
+Updated: 2026-06-26T16:22-04:00
 
 ## Buy Now
 
@@ -16,47 +16,13 @@ Updated: 2026-06-20T22:46-04:00
 
 ## Hold
 
-| Ticker | Why | What Would Change It |
-|---|---|---|
-| ASML | Hold/watch only: ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA put signal makes valuation and China/export-control risk central. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| AMD | Hold/watch only: AMD is a second-source AI accelerator candidate, but SA put exposure says the long case must clear high valuation and execution hurdles. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| APLD | Hold/watch only: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| BW | Hold/watch only: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| BTDR | Hold/watch only: Bitdeer offers power and infrastructure optionality, but the thesis is mixed across mining, ASICs, and possible HPC capacity. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| BITF | Hold/watch only: Bitfarms is a power/site option that could benefit from AI conversion, but current evidence is not strong enough for new capital. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| BE | Hold/watch only: Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| AVGO | Signal-only SA put/hedge exposure; no puts or shorts in the current mandate. | Monitor as SA risk signal; act only if a separate long-only thesis emerges. |
-| CLSK | Hold/watch only: CleanSpark may own useful power/site optionality, but current posture is watch-only until AI datacenter economics become primary-source visible. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| CORZ | Hold/watch only: Core Scientific is one of the cleaner miner-to-HPC conversion candidates because contracted hosting can separate value from Bitcoin beta. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| CRWV | Hold/watch only: CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| GLW | Hold/watch only: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| HIVE | Hold/watch only: HIVE has a plausible HPC pivot, but the equity remains too tied to mining until GPU/HPC revenue and contracts are clearer. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| IREN | Hold/watch only: IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| INFY | Signal-only SA put/hedge exposure; no puts or shorts in the current mandate. | Monitor as SA risk signal; act only if a separate long-only thesis emerges. |
-| INTC | Hold/watch only: Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| MU | Hold/watch only: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| NVDA | Hold/watch only: NVIDIA remains the highest-quality AI accelerator bottleneck, but SA put exposure flags valuation/crowding risk. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| ORCL | Signal-only SA put/hedge exposure; no puts or shorts in the current mandate. | Monitor as SA risk signal; act only if a separate long-only thesis emerges. |
-| PSIX | Hold/watch only: Power Solutions International may supply engines/gensets into power scarcity, but the proof point is durable datacenter/customer backlog. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| PUMP | Hold/watch only: ProPetro requires caution because the AI power link is less direct than other sleeve names and may be oilfield-services exposure. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| RIOT | Hold/watch only: Riot has power and site optionality, but the current long-only case is not clean enough without stronger AI conversion evidence. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| SNDK | Hold/watch only: SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| SHAZ | Hold/watch only: SharonAI is tracked because it appears in current public SA exposure, but liquidity, governance, and asset verification keep it hold-only. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| SEI | Hold/watch only: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| TE | Hold/watch only: T1 Energy is tracked as a current SA holding, but business-model and financing clarity are not strong enough for new capital. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| TSM | Hold/watch only: TSMC is a core foundry/advanced packaging scarcity asset, but geopolitics, customer concentration, and SA put exposure require sizing discipline. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| SMH | Signal-only SA put/hedge exposure; no puts or shorts in the current mandate. | Monitor as SA risk signal; act only if a separate long-only thesis emerges. |
-| WYFI | Hold/watch only: WhiteFiber is tracked because it appears in current public SA exposure, but public evidence, liquidity, and financing quality need caution. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| NBIS | Hold/watch only: Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jurisdiction, customer, and financing risk keep it hold-only. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| VST | Hold/watch only: Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| CEG | Hold/watch only: Constellation is a high-quality power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only absent promotion or a priced entry. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| TLNE | Hold/watch only: Talen is a power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only pending promotion or better entry evidence. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| VRT | Hold/watch only: Vertiv is a clear datacenter power/thermal equipment beneficiary, but it is not latest-current SA exposure in this system. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| WTS | Hold/watch only: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| LITE | Hold/watch only: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| MRVL | Hold/watch only: Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| SPCX | Hold/watch only: SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
-| ONTO | Hold/watch only: Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure. | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| Ticker | Tier | Why | Bottleneck Upside | Promotion Trigger |
+|---|---|---|---|---|
+| INFY | HOLD | Signal-only SA put/hedge exposure; no puts or shorts in the current mandate. | Not scored | Monitor as SA risk signal; act only if a separate long-only thesis emerges. |
+| NVDA | HOLD | Hold/watch only: NVIDIA remains the highest-quality AI accelerator bottleneck, but SA put exposure flags valuation/crowding risk. | Not scored | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| VST | HOLD | Hold/watch only: Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy. | Not scored | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
+| CEG | WATCH_TOP | Hold/watch only: Constellation is a high-quality power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only absent promotion or a priced entry. | 72: Reliable nuclear power reprices as scarce datacenter capacity; long-term PPAs and fleet scarcity expand the equity value beyond normal utility multiples. | Promote to ADD_ON_DIP if valuation work shows at least 50% plausible upside, the pullback cause is bounded, no regulatory/thesis damage is found, and a starter-size cap is set. |
+| WTS | HOLD | Hold/watch only: Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action. | Not scored | Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip. |
 
 ## Trim / Sell Watch
 
@@ -74,5 +40,39 @@ Updated: 2026-06-20T22:46-04:00
 
 | Ticker | Question | Deadline |
 |---|---|---|
-| - | - | - |
+| ASML | Unresolved material event requires research before changing capital. | Next review |
+| AMD | Unresolved material event requires research before changing capital. | Next review |
+| APLD | Unresolved material event requires research before changing capital. | Next review |
+| BW | Unresolved material event requires research before changing capital. | Next review |
+| BTDR | Unresolved material event requires research before changing capital. | Next review |
+| BITF | Unresolved material event requires research before changing capital. | Next review |
+| BE | Unresolved material event requires research before changing capital. | Next review |
+| AVGO | Unresolved material event requires research before changing capital. | Next review |
+| CLSK | Unresolved material event requires research before changing capital. | Next review |
+| CORZ | Unresolved material event requires research before changing capital. | Next review |
+| CRWV | Unresolved material event requires research before changing capital. | Next review |
+| GLW | Unresolved material event requires research before changing capital. | Next review |
+| HIVE | Unresolved material event requires research before changing capital. | Next review |
+| IREN | Unresolved material event requires research before changing capital. | Next review |
+| INTC | Unresolved material event requires research before changing capital. | Next review |
+| MU | Unresolved material event requires research before changing capital. | Next review |
+| ORCL | Unresolved material event requires research before changing capital. | Next review |
+| PSIX | Unresolved material event requires research before changing capital. | Next review |
+| PUMP | Unresolved material event requires research before changing capital. | Next review |
+| RIOT | Unresolved material event requires research before changing capital. | Next review |
+| SNDK | Unresolved material event requires research before changing capital. | Next review |
+| SHAZ | Unresolved material event requires research before changing capital. | Next review |
+| SEI | Unresolved material event requires research before changing capital. | Next review |
+| TE | Unresolved material event requires research before changing capital. | Next review |
+| TSM | Unresolved material event requires research before changing capital. | Next review |
+| SMH | Unresolved material event requires research before changing capital. | Next review |
+| WYFI | Unresolved material event requires research before changing capital. | Next review |
+| NBIS | Unresolved material event requires research before changing capital. | Next review |
+| TLNE | Unresolved material event requires research before changing capital. | Next review |
+| VRT | Unresolved material event requires research before changing capital. | Next review |
+| LITE | Unresolved material event requires research before changing capital. | Next review |
+| MRVL | Unresolved material event requires research before changing capital. | Next review |
+| SPCX | Unresolved material event requires research before changing capital. | Next review |
+| TSLA | Unresolved material event requires research before changing capital. | Next review |
+| ONTO | Unresolved material event requires research before changing capital. | Next review |
 

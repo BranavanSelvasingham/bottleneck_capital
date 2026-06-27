@@ -7,7 +7,13 @@ from typing import Any
 from zoneinfo import ZoneInfo
 
 from bottleneck_capital.decision_engine import evaluate_all, load_watchlist
-from bottleneck_capital.io import ConfigError, dump_yaml_mapping, load_yaml_file, scalar_text
+from bottleneck_capital.io import (
+    ConfigError,
+    dump_yaml_mapping,
+    load_yaml_file,
+    read_jsonl,
+    scalar_text,
+)
 
 LOCAL_POSITIONS_PATH = Path("state/local_positions.yaml")
 
@@ -33,6 +39,20 @@ class Position:
     @property
     def unrealized_pl(self) -> float:
         return self.market_value - self.cost_basis
+
+
+@dataclass(frozen=True)
+class PositionPriceRefreshResult:
+    path: Path
+    updated_count: int
+    missing_tickers: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class PositionUpdateResult:
+    path: Path
+    ticker: str
+    created: bool
 
 
 def initialize_local_positions(root: Path, overwrite: bool = False) -> Path:
@@ -126,6 +146,97 @@ def write_exposure_report(root: Path, positions_path: Path | None = None) -> Pat
     return report_path
 
 
+def refresh_position_prices(
+    root: Path, positions_path: Path | None = None
+) -> PositionPriceRefreshResult:
+    path = positions_path or root / LOCAL_POSITIONS_PATH
+    data = _load_positions_data(path)
+    raw_positions = data.get("positions", [])
+    if not isinstance(raw_positions, list):
+        raise ConfigError("positions must be a list")
+    latest_snapshots = _latest_market_snapshots(root)
+    updated = 0
+    missing: list[str] = []
+    for item in raw_positions:
+        if not isinstance(item, dict):
+            continue
+        ticker = scalar_text(item.get("ticker")).upper()
+        quantity = _float(item.get("quantity"))
+        if not ticker or quantity <= 0:
+            continue
+        snapshot = latest_snapshots.get(ticker)
+        if snapshot is None:
+            missing.append(ticker)
+            continue
+        price = snapshot["price"]
+        if _float(item.get("current_price")) != price:
+            item["current_price"] = price
+            updated += 1
+        currency = scalar_text(snapshot.get("currency")).upper()
+        if currency and scalar_text(item.get("currency")).upper() != currency:
+            item["currency"] = currency
+            updated += 1
+    data["as_of"] = _today()
+    path.write_text(dump_yaml_mapping(data), encoding="utf-8")
+    return PositionPriceRefreshResult(path, updated, tuple(sorted(missing)))
+
+
+def update_local_position(
+    root: Path,
+    *,
+    ticker: str,
+    quantity: float | None = None,
+    average_cost: float | None = None,
+    current_price: float | None = None,
+    currency: str | None = None,
+    account: str | None = None,
+    notes: str | None = None,
+    positions_path: Path | None = None,
+) -> PositionUpdateResult:
+    ticker = ticker.upper().strip()
+    if not ticker:
+        raise ConfigError("ticker is required")
+    path = positions_path or root / LOCAL_POSITIONS_PATH
+    data = _load_positions_data(path)
+    raw_positions = data.get("positions", [])
+    if not isinstance(raw_positions, list):
+        raise ConfigError("positions must be a list")
+    item = None
+    for candidate in raw_positions:
+        if isinstance(candidate, dict) and scalar_text(candidate.get("ticker")).upper() == ticker:
+            item = candidate
+            break
+    created = False
+    if item is None:
+        item = {
+            "ticker": ticker,
+            "quantity": 0,
+            "average_cost": 0,
+            "current_price": 0,
+            "currency": "USD",
+            "account": "",
+            "notes": "",
+        }
+        raw_positions.append(item)
+        created = True
+    if quantity is not None:
+        item["quantity"] = quantity
+    if average_cost is not None:
+        item["average_cost"] = average_cost
+    if current_price is not None:
+        item["current_price"] = current_price
+    if currency is not None:
+        item["currency"] = currency.upper().strip()
+    if account is not None:
+        item["account"] = account
+    if notes is not None:
+        item["notes"] = notes
+    data["positions"] = raw_positions
+    data["as_of"] = _today()
+    path.write_text(dump_yaml_mapping(data), encoding="utf-8")
+    return PositionUpdateResult(path=path, ticker=ticker, created=created)
+
+
 def _load_positions_data(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise ConfigError(
@@ -165,6 +276,20 @@ def _load_positions(data: dict[str, Any]) -> list[Position]:
             )
         )
     return positions
+
+
+def _latest_market_snapshots(root: Path) -> dict[str, dict[str, Any]]:
+    snapshots: dict[str, dict[str, Any]] = {}
+    for record in read_jsonl(root / "state" / "market_snapshots.jsonl"):
+        ticker = scalar_text(record.get("ticker")).upper()
+        price = _float(record.get("price"))
+        if ticker and price > 0:
+            raw_snapshot = record.get("raw_snapshot")
+            currency = ""
+            if isinstance(raw_snapshot, dict):
+                currency = scalar_text(raw_snapshot.get("currency")).upper()
+            snapshots[ticker] = {"price": price, "currency": currency}
+    return snapshots
 
 
 def _cash_total(value: Any) -> float:

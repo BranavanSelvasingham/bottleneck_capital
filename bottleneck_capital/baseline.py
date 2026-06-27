@@ -833,9 +833,9 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: {"SIGNAL_ONLY" if signal_only else "ACTIVE WATCH"}  
-Confidence: {note.confidence}  
-Time horizon: multi-year  
+Status: {"SIGNAL_ONLY" if signal_only else "ACTIVE WATCH"}
+Confidence: {note.confidence}
+Time horizon: multi-year
 Importance: HIGH
 
 Claim: {note.thesis}
@@ -860,12 +860,12 @@ Hedge implication:
 
 ### Thesis B - Valuation thesis
 
-Status: UNPROVEN FOR NEW CAPITAL  
+Status: UNPROVEN FOR NEW CAPITAL
 Claim: {note.valuation_frame}. Current baseline does not approve a buy.
 
 ### Thesis C - Catalyst thesis
 
-Status: EVENT-DRIVEN  
+Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
 change, or detected dip can reopen the decision.
 
@@ -981,11 +981,11 @@ def _decision_body(
 
 Updated: {_today()}
 
-Decision: {decision}  
-Dip decision: {dip_decision}  
-Sell status: NOT_TRIGGERED  
-Confidence: {note.confidence} / 100  
-Urgency: {urgency}  
+Decision: {decision}
+Dip decision: {dip_decision}
+Sell status: NOT_TRIGGERED
+Confidence: {note.confidence} / 100
+Urgency: {urgency}
 
 One-line rationale:
 {note.thesis}

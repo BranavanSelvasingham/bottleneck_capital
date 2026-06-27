@@ -1,16 +1,18 @@
 # ONTO Agent Task Packet
 
-Ticker: `ONTO`  
-Name: Onto Innovation  
-Wave: 3  
-Owner agent: `asset_analyst.ONTO`  
-Sleeve agent: `sleeve_analyst.semicap_equipment`  
-Sleeve: `semicap_equipment`  
-Source classification: `sa_adjacent_historical_or_thesis_proxy`  
-Instrument role: `common_equity`  
-Trade policy: `long_only_after_research`  
-Priority: `medium`  
-Initialization score: 28  
+Ticker: `ONTO`
+Name: Onto Innovation
+Wave: 3
+Owner agent: `asset_analyst.ONTO`
+Sleeve agent: `sleeve_analyst.semicap_equipment`
+Sleeve: `semicap_equipment`
+Source classification: `sa_adjacent_historical_or_thesis_proxy`
+Instrument role: `common_equity`
+Trade policy: `long_only_after_research`
+Priority: `medium`
+Initialization score: 28
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

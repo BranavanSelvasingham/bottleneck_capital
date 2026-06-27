@@ -2,26 +2,26 @@
 ticker: CRWV
 name: CoreWeave
 sleeve: compute_infra
-last_updated: 2026-06-20
+last_updated: 2026-06-22
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_and_call_signal
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+evidence_quality: LIVE_PRICE_DISLOCATION_REVIEWED_NO_NEW_FILING
 thesis_expressed: CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory.
 anti_thesis: It may be a highly financed GPU-capacity trade rather than durable infrastructure value.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: Large customer demand weakens, refinancing risk rises, or contracted utilization breaks.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory."
+next_trigger: Review whether the June 22 CRWV dip is valuation opportunity or financing/crowding risk once cause, valuation, and customer demand evidence are bounded.
+one_line_rationale: "RESEARCH_REQUIRED: CRWV triggered a June 22 live price-dislocation review, but no primary filing/news thesis break was found; do not add until dip cause, valuation, and financing risk are bounded."
 asset_role: Scarce contracted AI cloud compute.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-20
+last_primary_source_check: 2026-06-21
 thesis_health_score: 55
 confidence_score: 43
 valuation_attractiveness_score: 30
@@ -82,9 +82,9 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: ACTIVE WATCH  
-Confidence: 43  
-Time horizon: multi-year  
+Status: ACTIVE WATCH
+Confidence: 43
+Time horizon: multi-year
 Importance: HIGH
 
 Claim: CoreWeave is a direct compute scarcity expression, but customer concentration, leverage, and GPU supply commitments make valuation discipline mandatory.
@@ -109,12 +109,12 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 
 ### Thesis B - Valuation thesis
 
-Status: UNPROVEN FOR NEW CAPITAL  
+Status: UNPROVEN FOR NEW CAPITAL
 Claim: contracted revenue, capacity economics, and leverage-adjusted scenario value. Current baseline does not approve a buy.
 
 ### Thesis C - Catalyst thesis
 
-Status: EVENT-DRIVEN  
+Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
 change, or detected dip can reopen the decision.
 

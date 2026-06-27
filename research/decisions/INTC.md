@@ -2,12 +2,12 @@
 ticker: INTC
 name: Intel
 sleeve: semicap_equipment
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 38
 urgency: HIGH
-last_updated: 2026-06-20
+last_updated: 2026-06-26
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: long_only_after_research
@@ -25,20 +25,24 @@ hedge_or_sizing: No puts or shorts; require smaller sizing, higher valuation hur
 invalidation_trigger: Foundry roadmap slips further or capital needs overwhelm strategic value.
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold."
+one_line_rationale: Unresolved material event requires research before changing capital.
+action_tier: HOLD
+bottleneck_upside_score: ""
+bottleneck_upside_case: ""
+promotion_trigger: ""
 ---
 # INTC Decision
 
-Updated: 2026-06-20
+Updated: 2026-06-26
 
-Decision: HOLD  
-Dip decision: RESEARCH_FIRST  
-Sell status: NOT_TRIGGERED  
-Confidence: 38 / 100  
-Urgency: HIGH  
+Decision: RESEARCH_REQUIRED
+Dip decision: RESEARCH_FIRST
+Sell status: NOT_TRIGGERED
+Confidence: 38 / 100
+Urgency: HIGH
 
 One-line rationale:
-Hold/watch only: Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold.
+Unresolved material event requires research before changing capital.
 
 Thesis expressed:
 Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold.
@@ -68,4 +72,4 @@ Next trigger:
 Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Follow sizing and hedge discipline before any trade.
+Research before acting.

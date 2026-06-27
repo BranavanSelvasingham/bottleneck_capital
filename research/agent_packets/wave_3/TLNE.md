@@ -1,16 +1,18 @@
 # TLNE Agent Task Packet
 
-Ticker: `TLNE`  
-Name: Talen Energy  
-Wave: 3  
-Owner agent: `asset_analyst.TLNE`  
-Sleeve agent: `sleeve_analyst.power_bottleneck`  
-Sleeve: `power_bottleneck`  
-Source classification: `sa_adjacent_historical_or_thesis_proxy`  
-Instrument role: `common_equity`  
-Trade policy: `long_only_after_research`  
-Priority: `medium`  
-Initialization score: 28  
+Ticker: `TLNE`
+Name: Talen Energy
+Wave: 3
+Owner agent: `asset_analyst.TLNE`
+Sleeve agent: `sleeve_analyst.power_bottleneck`
+Sleeve: `power_bottleneck`
+Source classification: `sa_adjacent_historical_or_thesis_proxy`
+Instrument role: `common_equity`
+Trade policy: `long_only_after_research`
+Priority: `medium`
+Initialization score: 28
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

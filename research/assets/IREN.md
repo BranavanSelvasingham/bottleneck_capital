@@ -2,7 +2,7 @@
 ticker: IREN
 name: IREN
 sleeve: miner_to_datacenter
-last_updated: 2026-06-20
+last_updated: 2026-06-21
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -21,11 +21,20 @@ current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-20
+last_primary_source_check: 2026-06-21
 thesis_health_score: 50
 confidence_score: 40
 valuation_attractiveness_score: 28
 urgency_score: 90
+action_tier: WATCH_TOP_SPECULATIVE
+bottleneck_upside_score: 78
+bottleneck_upside_case: "Power-secured mining sites convert into contracted AI/HPC datacenter capacity; equity rerates from mining beta to scarce powered compute infrastructure."
+base_case_return_band: "30-60%"
+bull_case_return_band: "100-300%"
+downside_case_return_band: "-50% or worse"
+promotion_trigger: "Promote to ADD_ON_DIP only if AI/HPC contract economics and financing terms show that conversion value exceeds dilution and mining beta risk."
+first_tranche_rule: "Speculative starter only; size below CEG unless contract and financing evidence improve materially."
+opportunity_rank: 2
 max_position_weight_pct: 0
 current_position_weight_pct: 0
 approved_entry_zone: No new capital until scheduled scan validates valuation.
@@ -59,6 +68,8 @@ IREN is a high-priority power/site conversion candidate, but new capital needs v
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | Bitcoin beta, funding needs, power delivery, and customer contract risk. |
 | Main upside driver today | Power-secured sites, AI/HPC customer demand, and datacenter conversion economics. |
+| Action tier | WATCH_TOP_SPECULATIVE |
+| Bottleneck upside | 78 / 100; base 30-60%, bull 100-300% if sites rerate into contracted AI/HPC infrastructure. |
 | Next review trigger | Scheduled scan or new primary-source event |
 
 ## 1. Role in Bottleneck Capital
@@ -82,9 +93,9 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: ACTIVE WATCH  
-Confidence: 40  
-Time horizon: multi-year  
+Status: ACTIVE WATCH
+Confidence: 40
+Time horizon: multi-year
 Importance: HIGH
 
 Claim: IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta.
@@ -109,12 +120,12 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 
 ### Thesis B - Valuation thesis
 
-Status: UNPROVEN FOR NEW CAPITAL  
+Status: UNPROVEN FOR NEW CAPITAL
 Claim: power capacity value plus contracted AI/HPC scenario value. Current baseline does not approve a buy.
 
 ### Thesis C - Catalyst thesis
 
-Status: EVENT-DRIVEN  
+Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
 change, or detected dip can reopen the decision.
 
@@ -135,7 +146,22 @@ Why we may be wrong:
 Is the variant view big enough to matter?
 UNCLEAR until a scheduled scan updates primary evidence and valuation.
 
-## 4. Long-Term Ownership Quality
+## 4. Bottleneck Upside Map
+
+| Field | Status |
+|---|---|
+| Action tier | WATCH_TOP_SPECULATIVE |
+| Bottleneck upside score | 78 / 100 |
+| Base-case return band | 30-60% |
+| Bull-case return band | 100-300% |
+| Downside return band | -50% or worse |
+| Bottleneck mechanism | Power-secured mining sites convert into contracted AI/HPC datacenter capacity. |
+| Market-implied ceiling | Market may still value the company as mining beta plus expensive AI optionality. |
+| Variant upside | If conversion economics are real, the equity can rerate toward scarce powered compute infrastructure. |
+| Promotion trigger | Promote to ADD_ON_DIP only if AI/HPC contract economics and financing terms show that conversion value exceeds dilution and mining beta risk. |
+| First tranche rule | Speculative starter only; size below CEG unless contract and financing evidence improve materially. |
+
+## 5. Long-Term Ownership Quality
 
 | Dimension | Score | Notes |
 |---|---:|---|

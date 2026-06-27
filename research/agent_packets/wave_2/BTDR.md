@@ -1,16 +1,18 @@
 # BTDR Agent Task Packet
 
-Ticker: `BTDR`  
-Name: Bitdeer  
-Wave: 2  
-Owner agent: `asset_analyst.BTDR`  
-Sleeve agent: `sleeve_analyst.miner_to_datacenter`  
-Sleeve: `miner_to_datacenter`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity`  
-Trade policy: `long_only_after_research`  
-Priority: `high`  
-Initialization score: 70  
+Ticker: `BTDR`
+Name: Bitdeer
+Wave: 2
+Owner agent: `asset_analyst.BTDR`
+Sleeve agent: `sleeve_analyst.miner_to_datacenter`
+Sleeve: `miner_to_datacenter`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity`
+Trade policy: `long_only_after_research`
+Priority: `high`
+Initialization score: 70
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

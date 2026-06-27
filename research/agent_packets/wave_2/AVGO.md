@@ -1,16 +1,18 @@
 # AVGO Agent Task Packet
 
-Ticker: `AVGO`  
-Name: Broadcom  
-Wave: 2  
-Owner agent: `asset_analyst.AVGO`  
-Sleeve agent: `sleeve_analyst.crowded_ai_beta_hedge`  
-Sleeve: `crowded_ai_beta_hedge`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `reported_put_signal`  
-Trade policy: `signal_only_no_puts_or_shorts`  
-Priority: `high`  
-Initialization score: 62  
+Ticker: `AVGO`
+Name: Broadcom
+Wave: 2
+Owner agent: `asset_analyst.AVGO`
+Sleeve agent: `sleeve_analyst.crowded_ai_beta_hedge`
+Sleeve: `crowded_ai_beta_hedge`
+Source classification: `sa_reported_current_13f`
+Instrument role: `reported_put_signal`
+Trade policy: `signal_only_no_puts_or_shorts`
+Priority: `high`
+Initialization score: 62
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

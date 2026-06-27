@@ -1,16 +1,18 @@
 # WTS Agent Task Packet
 
-Ticker: `WTS`  
-Name: Watts Water Technologies  
-Wave: 3  
-Owner agent: `asset_analyst.WTS`  
-Sleeve agent: `sleeve_analyst.ai_power_equipment`  
-Sleeve: `ai_power_equipment`  
-Source classification: `sa_adjacent_thesis_proxy`  
-Instrument role: `common_equity`  
-Trade policy: `long_only_after_research`  
-Priority: `low`  
-Initialization score: 18  
+Ticker: `WTS`
+Name: Watts Water Technologies
+Wave: 3
+Owner agent: `asset_analyst.WTS`
+Sleeve agent: `sleeve_analyst.ai_power_equipment`
+Sleeve: `ai_power_equipment`
+Source classification: `sa_adjacent_thesis_proxy`
+Instrument role: `common_equity`
+Trade policy: `long_only_after_research`
+Priority: `low`
+Initialization score: 18
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

@@ -1,16 +1,18 @@
 # NVDA Agent Task Packet
 
-Ticker: `NVDA`  
-Name: NVIDIA  
-Wave: 1  
-Owner agent: `asset_analyst.NVDA`  
-Sleeve agent: `sleeve_analyst.crowded_ai_beta_hedge`  
-Sleeve: `crowded_ai_beta_hedge`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `common_equity_with_put_signal`  
-Trade policy: `long_only_after_research`  
-Priority: `high`  
-Initialization score: 109  
+Ticker: `NVDA`
+Name: NVIDIA
+Wave: 1
+Owner agent: `asset_analyst.NVDA`
+Sleeve agent: `sleeve_analyst.crowded_ai_beta_hedge`
+Sleeve: `crowded_ai_beta_hedge`
+Source classification: `sa_reported_current_13f`
+Instrument role: `common_equity_with_put_signal`
+Trade policy: `long_only_after_research`
+Priority: `high`
+Initialization score: 109
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

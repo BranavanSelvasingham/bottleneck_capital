@@ -2,7 +2,7 @@
 ticker: INFY
 name: Infosys
 sleeve: ai_services_put_signal
-last_updated: 2026-06-20
+last_updated: 2026-06-21
 source_classification: sa_reported_current_13f
 instrument_role: reported_put_signal
 trade_policy: signal_only_no_puts_or_shorts
@@ -21,7 +21,7 @@ current_decision: HOLD
 dip_decision: NOT_ARMED
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-06-20
+last_primary_source_check: 2026-06-21
 thesis_health_score: 35
 confidence_score: 32
 valuation_attractiveness_score: 18
@@ -82,9 +82,9 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: SIGNAL_ONLY  
-Confidence: 32  
-Time horizon: multi-year  
+Status: SIGNAL_ONLY
+Confidence: 32
+Time horizon: multi-year
 Importance: HIGH
 
 Claim: Infosys is tracked as SA reported put exposure and should inform AI services disruption risk, not long-only action.
@@ -109,12 +109,12 @@ No puts or shorts; use as risk signal only and do not allocate capital.
 
 ### Thesis B - Valuation thesis
 
-Status: UNPROVEN FOR NEW CAPITAL  
+Status: UNPROVEN FOR NEW CAPITAL
 Claim: signal-only risk map, not an entry valuation. Current baseline does not approve a buy.
 
 ### Thesis C - Catalyst thesis
 
-Status: EVENT-DRIVEN  
+Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
 change, or detected dip can reopen the decision.
 

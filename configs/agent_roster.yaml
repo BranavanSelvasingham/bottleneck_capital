@@ -1,3 +1,16 @@
+runtime_policy:
+  model: best_available
+  preferred_model: GPT-5.5_or_newer_when_selectable
+  reasoning_effort: extra_high
+  applies_to:
+    - asset_analyst subagents
+    - sleeve_analyst subagents
+    - hedge_analyst subagents
+    - portfolio_pm subagents
+    - filing_analyst subagents
+    - spawned Codex threads
+    - automation-created research threads
+  fallback: If explicit model or effort selection is unavailable, state the limitation in the handoff and use the strongest available equivalent.
 agent_types:
   asset_analyst:
     purpose: Ticker-scoped research and decision-file updates.
@@ -164,6 +177,10 @@ ticker_owners:
     ticker: SPCX
     owner_agent: asset_analyst.SPCX
     sleeve_agent: sleeve_analyst.space_infra
+  -
+    ticker: TSLA
+    owner_agent: asset_analyst.TSLA
+    sleeve_agent: sleeve_analyst.autonomy_energy
   -
     ticker: ONTO
     owner_agent: asset_analyst.ONTO

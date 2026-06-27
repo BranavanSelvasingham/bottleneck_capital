@@ -2,7 +2,7 @@
 ticker: LITE
 name: Lumentum
 sleeve: ai_networking_optical
-last_updated: 2026-06-20
+last_updated: 2026-06-21
 source_classification: sa_adjacent_historical_or_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -21,7 +21,7 @@ current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-06-20
+last_primary_source_check: 2026-06-21
 thesis_health_score: 42
 confidence_score: 34
 valuation_attractiveness_score: 24
@@ -82,9 +82,9 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: ACTIVE WATCH  
-Confidence: 34  
-Time horizon: multi-year  
+Status: ACTIVE WATCH
+Confidence: 34
+Time horizon: multi-year
 Importance: HIGH
 
 Claim: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.
@@ -109,12 +109,12 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 
 ### Thesis B - Valuation thesis
 
-Status: UNPROVEN FOR NEW CAPITAL  
+Status: UNPROVEN FOR NEW CAPITAL
 Claim: datacom recovery and optical component scenario value. Current baseline does not approve a buy.
 
 ### Thesis C - Catalyst thesis
 
-Status: EVENT-DRIVEN  
+Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
 change, or detected dip can reopen the decision.
 

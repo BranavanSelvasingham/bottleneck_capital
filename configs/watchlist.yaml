@@ -265,6 +265,13 @@ watchlist:
     instrument_role: local_position_adjacent_proxy
     trade_policy: long_only_after_research
     priority: medium
+  - ticker: TSLA
+    name: Tesla
+    sleeve: autonomy_energy
+    source_classification: sa_adjacent_thesis_proxy
+    instrument_role: local_position_adjacent_proxy
+    trade_policy: long_only_after_research
+    priority: high
   - ticker: ONTO
     name: Onto Innovation
     sleeve: semicap_equipment

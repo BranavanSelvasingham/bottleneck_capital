@@ -4,6 +4,56 @@ Always try to validate work and results. If you cannot see or evaluate your own 
 
 Be concise without losing signal.
 
+## Runtime Policy
+
+Any subagent, delegated task, spawned Codex thread, or automation-created research thread
+from this project should use the strongest available model and highest available reasoning
+effort. Prefer GPT-5.5 or newer when selectable, with reasoning effort set to extra-high.
+
+If the runtime cannot explicitly select model or effort, state that limitation in the
+handoff and proceed with the best available equivalent.
+
+## Operating Loop Hardening
+
+Do not defer scheduled Bottleneck runs solely because the worktree is dirty. First check
+whether another run is active or whether the due process would conflict with same-file
+writes already in progress. If there is no active conflict, proceed with scoped writes,
+preserve unrelated changes, and validate.
+Scheduled write commands use a shared `scheduled-write` lock plus per-process locks; treat a
+live lock conflict as a real same-file collision, and stale dead-PID locks as recoverable.
+
+For sentinel windows, prefer `bcap live-check`. It runs market ingestion, attempts filing
+ingestion, classifies sentinel events, writes the action board, and validates. Use the
+lower-level sequence `bcap ingest market`, `bcap ingest filings`, `bcap sentinel run`,
+then `bcap action-board` only for diagnostics or recovery. Use `state/latest_events.jsonl`
+or `state/latest_events.json` as the preferred sentinel input. `mock/latest_events.*` is a
+fallback only and should be treated as a validation warning on market days.
+
+Signal events are append-only. Use `bcap signal resolve --event-id ... --reason ...` after
+research review; do not hand-edit old JSONL rows just to mark them resolved.
+
+Use `bcap validate` after process or universe changes and `bcap validate --strict-live`
+before resuming market-day automation. Use `bcap live-readiness` to write the dated resume
+checklist and recovery actions. Strict-live must use live provider sources, live market
+ingest status, SEC user-agent configuration, and exact local position data. Alpaca
+credentials are preferred but not mandatory when the auto market provider successfully uses
+the Yahoo fallback. Use `bcap action-board` whenever the user needs the latest actionable
+steps outside the close-board window.
+Use `bcap resume-check` as the final unpause gate; it writes the readiness report and exits
+non-zero until the automation is safe to resume.
+`bcap ingest filings` uses SEC submissions when reachable and falls back to the official
+SEC browse Atom feed when the submissions API is blocked. Include foreign-issuer equivalents
+such as `6-K` and `20-F` in filing coverage for ADRs and non-U.S. issuers.
+If direct SEC access is blocked, use an approved SEC mirror/proxy via
+`BCAP_SEC_COMPANY_TICKERS_URL`, `BCAP_SEC_SUBMISSIONS_URL_TEMPLATE`, or
+`BCAP_SEC_BROWSE_ATOM_URL`; alternatively use `BCAP_FILING_EVENTS_URL` for an approved live
+filing vendor/proxy feed that reports `covered_tickers` and normalized events. Use
+`configs/live_sources.yaml` for provider-symbol overrides after ticker changes or corporate
+actions; do not edit code for simple symbol remaps.
+Treat `market_data_gap` and filing coverage gaps as operationally material. Strict-live
+blocks held or actionable ticker gaps; non-actionable watchlist gaps are warnings, but must
+remain visible on the action board until resolved or the universe mapping is corrected.
+
 ## Decision Discipline
 
 This repo is a long-term, thesis-led investment research system.

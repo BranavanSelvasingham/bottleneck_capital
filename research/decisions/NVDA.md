@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 55
 urgency: HIGH
-last_updated: 2026-06-20
+last_updated: 2026-06-26
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: long_only_after_research
@@ -26,16 +26,20 @@ invalidation_trigger: Datacenter growth or platform margins break enough to impa
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 one_line_rationale: "Hold/watch only: NVIDIA remains the highest-quality AI accelerator bottleneck, but SA put exposure flags valuation/crowding risk."
+action_tier: HOLD
+bottleneck_upside_score: ""
+bottleneck_upside_case: ""
+promotion_trigger: ""
 ---
 # NVDA Decision
 
-Updated: 2026-06-20
+Updated: 2026-06-26
 
-Decision: HOLD  
-Dip decision: RESEARCH_FIRST  
-Sell status: NOT_TRIGGERED  
-Confidence: 55 / 100  
-Urgency: HIGH  
+Decision: HOLD
+Dip decision: RESEARCH_FIRST
+Sell status: NOT_TRIGGERED
+Confidence: 55 / 100
+Urgency: HIGH
 
 One-line rationale:
 Hold/watch only: NVIDIA remains the highest-quality AI accelerator bottleneck, but SA put exposure flags valuation/crowding risk.

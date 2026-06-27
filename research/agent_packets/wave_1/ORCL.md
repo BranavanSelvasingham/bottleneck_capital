@@ -1,16 +1,18 @@
 # ORCL Agent Task Packet
 
-Ticker: `ORCL`  
-Name: Oracle  
-Wave: 1  
-Owner agent: `asset_analyst.ORCL`  
-Sleeve agent: `sleeve_analyst.enterprise_ai_infra`  
-Sleeve: `enterprise_ai_infra`  
-Source classification: `sa_reported_current_13f`  
-Instrument role: `reported_put_signal`  
-Trade policy: `signal_only_no_puts_or_shorts`  
-Priority: `high`  
-Initialization score: 97  
+Ticker: `ORCL`
+Name: Oracle
+Wave: 1
+Owner agent: `asset_analyst.ORCL`
+Sleeve agent: `sleeve_analyst.enterprise_ai_infra`
+Sleeve: `enterprise_ai_infra`
+Source classification: `sa_reported_current_13f`
+Instrument role: `reported_put_signal`
+Trade policy: `signal_only_no_puts_or_shorts`
+Priority: `high`
+Initialization score: 97
+Requested runtime: best available model, prefer GPT-5.5 or newer when selectable,
+reasoning effort extra-high.
 
 ## Job
 

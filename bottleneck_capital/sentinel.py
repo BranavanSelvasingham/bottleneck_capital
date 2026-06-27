@@ -1,11 +1,23 @@
 from __future__ import annotations
 
+import hashlib
 from datetime import datetime
 from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
-from bottleneck_capital.io import append_jsonl, load_yaml_file, read_json_events, scalar_text
+from bottleneck_capital.io import (
+    append_jsonl,
+    load_yaml_file,
+    read_json_events,
+    read_jsonl,
+    scalar_text,
+)
+from bottleneck_capital.signal_events import (
+    event_id_for_event,
+    event_id_for_record,
+    existing_signal_event_ids,
+)
 
 EVENT_CLASSES = {
     "dip_trigger",
@@ -15,6 +27,8 @@ EVENT_CLASSES = {
     "hedge_risk_update",
     "sa_exit_update",
     "sa_position_reduction_update",
+    "market_data_gap",
+    "filing_data_gap",
     "noise",
 }
 
@@ -72,11 +86,46 @@ def run_sentinel(
     events = _load_latest_events(root, input_path)
     output = output_path or root / "state" / "signal_events.jsonl"
     detected_at = _now_iso(thresholds)
+    existing_records = read_jsonl(output)
+    existing_event_ids = existing_signal_event_ids(output)
+    resolved_event_ids = {
+        scalar_text(record.get("resolved_event_id"))
+        for record in existing_records
+        if scalar_text(record.get("event_class")) == "event_resolution"
+        and scalar_text(record.get("resolved_event_id"))
+    }
+    existing_by_id = {
+        event_id_for_record(record): record
+        for record in existing_records
+        if scalar_text(record.get("event_class")) != "event_resolution"
+    }
 
     records = []
     for event in events:
         classification = classify_event(event, thresholds)
+        event_id = event_id_for_event(event, classification)
+        record_event_id = event_id
+        reopened_from_event_id = ""
+        if event_id in existing_event_ids:
+            existing_record = existing_by_id.get(event_id)
+            if _should_append_update(classification, event, existing_record):
+                pass
+            elif _should_reopen_resolved_price_dislocation(
+                thresholds,
+                classification,
+                event,
+                existing_record,
+                event_id,
+                resolved_event_ids,
+            ):
+                reopened_from_event_id = event_id
+                record_event_id = _reopened_price_event_id(event_id, event)
+                if record_event_id in existing_event_ids:
+                    continue
+            else:
+                continue
         record = {
+            "event_id": record_event_id,
             "detected_at": detected_at,
             "ticker": scalar_text(event.get("ticker")).upper(),
             "event_class": classification,
@@ -89,9 +138,74 @@ def run_sentinel(
             ),
             "raw_event": event,
         }
+        if reopened_from_event_id:
+            record["reopened_from_event_id"] = reopened_from_event_id
         append_jsonl(output, record)
+        existing_event_ids.add(record_event_id)
         records.append(record)
     return records
+
+
+def _should_append_update(
+    classification: str,
+    event: dict[str, Any],
+    existing_record: dict[str, Any] | None,
+) -> bool:
+    if classification not in {"market_data_gap", "filing_data_gap"}:
+        return False
+    if not existing_record:
+        return False
+    summary = scalar_text(event.get("summary") or event.get("headline") or "No summary provided.")
+    return summary != scalar_text(existing_record.get("summary"))
+
+
+def _should_reopen_resolved_price_dislocation(
+    thresholds: dict[str, Any],
+    classification: str,
+    event: dict[str, Any],
+    existing_record: dict[str, Any] | None,
+    event_id: str,
+    resolved_event_ids: set[str],
+) -> bool:
+    if classification != "dip_trigger" or event_id not in resolved_event_ids:
+        return False
+    if scalar_text(event.get("event_type")) != "price_dislocation":
+        return False
+    if not existing_record:
+        return False
+    existing_event = existing_record.get("raw_event")
+    if not isinstance(existing_event, dict):
+        return False
+    worsening = _max_price_drop_pct(event) - _max_price_drop_pct(existing_event)
+    threshold = (
+        thresholds.get("sentinel", {})
+        .get("price_triggers", {})
+        .get("reopen_worsening_pct", 3)
+    )
+    return worsening >= float(threshold)
+
+
+def _max_price_drop_pct(event: dict[str, Any]) -> float:
+    drops = [
+        abs(value)
+        for key in (
+            "intraday_drop_pct",
+            "one_day_drop_pct",
+            "five_day_drop_pct",
+            "twenty_day_drop_pct",
+            "gap_down_pct",
+            "post_earnings_move_pct",
+        )
+        if (value := _pct_value(event.get(key))) is not None and value < 0
+    ]
+    return max(drops, default=0.0)
+
+
+def _reopened_price_event_id(event_id: str, event: dict[str, Any]) -> str:
+    severity_bucket = int(_max_price_drop_pct(event) // 5 * 5)
+    observed_at = scalar_text(event.get("observed_at"))[:13]
+    suffix = f"{event_id}:reopen:{severity_bucket}:{observed_at}"
+    return hashlib.sha256(suffix.encode("utf-8")).hexdigest()[:24]
 
 
 def classify_event(event: dict[str, Any], thresholds: dict[str, Any]) -> str:
@@ -139,10 +253,10 @@ def classify_event(event: dict[str, Any], thresholds: dict[str, Any]) -> str:
 def _load_latest_events(root: Path, input_path: Path | None) -> list[dict[str, Any]]:
     candidates = [
         input_path,
-        root / "mock" / "latest_events.jsonl",
-        root / "mock" / "latest_events.json",
         root / "state" / "latest_events.jsonl",
         root / "state" / "latest_events.json",
+        root / "mock" / "latest_events.jsonl",
+        root / "mock" / "latest_events.json",
     ]
     for candidate in candidates:
         if candidate is not None and candidate.exists():
@@ -196,7 +310,14 @@ def _contains_any(text: str, needles: set[str]) -> bool:
 
 
 def _priority_for(classification: str) -> str:
-    if classification in {"dip_trigger", "thesis_damage_candidate"}:
+    if classification in {
+        "dip_trigger",
+        "thesis_damage_candidate",
+        "sa_exit_update",
+        "sa_position_reduction_update",
+    }:
+        return "high"
+    if classification in {"market_data_gap", "filing_data_gap"}:
         return "high"
     if classification in {"filing_update", "catalyst_update", "hedge_risk_update"}:
         return "medium"

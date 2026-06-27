@@ -2,12 +2,12 @@
 ticker: MRVL
 name: Marvell Technology
 sleeve: ai_networking_optical
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 38
 urgency: MEDIUM
-last_updated: 2026-06-20
+last_updated: 2026-06-26
 source_classification: sa_adjacent_historical_or_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -25,20 +25,24 @@ hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and
 invalidation_trigger: AI custom silicon/networking fails to drive durable earnings growth.
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system."
+one_line_rationale: Unresolved material event requires research before changing capital.
+action_tier: HOLD
+bottleneck_upside_score: ""
+bottleneck_upside_case: ""
+promotion_trigger: ""
 ---
 # MRVL Decision
 
-Updated: 2026-06-20
+Updated: 2026-06-26
 
-Decision: HOLD  
-Dip decision: RESEARCH_FIRST  
-Sell status: NOT_TRIGGERED  
-Confidence: 38 / 100  
-Urgency: MEDIUM  
+Decision: RESEARCH_REQUIRED
+Dip decision: RESEARCH_FIRST
+Sell status: NOT_TRIGGERED
+Confidence: 38 / 100
+Urgency: MEDIUM
 
 One-line rationale:
-Hold/watch only: Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system.
+Unresolved material event requires research before changing capital.
 
 Thesis expressed:
 Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system.
@@ -68,4 +72,4 @@ Next trigger:
 Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Follow sizing and hedge discipline before any trade.
+Research before acting.
