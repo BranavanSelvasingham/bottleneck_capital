@@ -29,6 +29,8 @@ EVENT_CLASSES = {
     "sa_position_reduction_update",
     "market_data_gap",
     "filing_data_gap",
+    "geopolitical_regime_update",
+    "macro_regime_update",
     "noise",
 }
 
@@ -56,6 +58,24 @@ _HEDGE_KEYWORDS = {
     "hedge",
     "index risk",
     "sector beta",
+}
+
+_GEOPOLITICAL_KEYWORDS = {
+    "air strike",
+    "ceasefire",
+    "hostilities",
+    "missile strike",
+    "retaliatory strike",
+    "strait of hormuz",
+    "war escalation",
+}
+
+_MACRO_REGIME_KEYWORDS = {
+    "credit stress",
+    "energy shock",
+    "liquidity shock",
+    "rate shock",
+    "risk-off",
 }
 
 _SA_EXIT_KEYWORDS = {
@@ -228,6 +248,10 @@ def classify_event(event: dict[str, Any], thresholds: dict[str, Any]) -> str:
         return "sa_position_reduction_update"
     if _contains_any(text, _DAMAGE_KEYWORDS):
         return "thesis_damage_candidate"
+    if _contains_any(text, _GEOPOLITICAL_KEYWORDS):
+        return "geopolitical_regime_update"
+    if _contains_any(text, _MACRO_REGIME_KEYWORDS):
+        return "macro_regime_update"
     if _is_price_drop_event(event, thresholds):
         return "dip_trigger"
     if scalar_text(event.get("filing_type")) or "sec filing" in text or "8-k" in text:
@@ -315,6 +339,8 @@ def _priority_for(classification: str) -> str:
         "thesis_damage_candidate",
         "sa_exit_update",
         "sa_position_reduction_update",
+        "geopolitical_regime_update",
+        "macro_regime_update",
     }:
         return "high"
     if classification in {"market_data_gap", "filing_data_gap"}:

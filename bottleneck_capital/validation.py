@@ -40,6 +40,7 @@ def validate_project(root: Path, *, strict_live: bool = False) -> list[Validatio
     _check_generated_wiring(root, tickers, issues)
     _check_decisions(root, tickers, issues)
     _check_research_blocks(root, issues, strict_live=strict_live)
+    _check_market_regime(root, issues, strict_live=strict_live)
     _check_signal_events(root, issues)
     _check_event_inputs(root, issues, strict_live=strict_live)
     _check_ingest_freshness(root, issues, strict_live=strict_live, positions=position_items)
@@ -185,6 +186,76 @@ def _check_research_blocks(
                     f"{item.ticker} has been RESEARCH_REQUIRED for {item.age_days} days "
                     f"since primary-source review (max {item.max_age_days}); opportunity "
                     f"score {item.score:.1f}. Refresh evidence and resolve or reaffirm."
+                ),
+            )
+        )
+
+
+def _check_market_regime(
+    root: Path,
+    issues: list[ValidationIssue],
+    *,
+    strict_live: bool,
+) -> None:
+    from bottleneck_capital.market_regime import assess_market_regime, regime_config
+
+    if not (root / "configs" / "regime.yaml").exists():
+        return
+    config = regime_config(root)
+    exposures = config.get("sleeve_channel_exposures", {})
+    configured_sleeves = set(exposures) if isinstance(exposures, dict) else set()
+    missing_sleeves = sorted(
+        {
+            scalar_text(item.get("sleeve"))
+            for item in load_watchlist(root)
+            if scalar_text(item.get("sleeve")) not in configured_sleeves
+        }
+    )
+    if missing_sleeves:
+        issues.append(
+            ValidationIssue(
+                "ERROR" if strict_live else "WARN",
+                "REGIME_EXPOSURE_MAP_GAP",
+                "Missing regime channel exposures for sleeves: "
+                + ", ".join(missing_sleeves),
+            )
+        )
+    regime = assess_market_regime(root)
+    if regime.source_status in {"CROSS_ASSET_ONLY", "MISSING"}:
+        issues.append(
+            ValidationIssue(
+                "ERROR" if strict_live else "WARN",
+                "GEOPOLITICAL_CONTEXT_GAP",
+                (
+                    "No fresh structured geopolitical regime heartbeat is active. "
+                    "Record the latest escalation, ceasefire, de-escalation, or calm review "
+                    "before clearing new entries."
+                ),
+            )
+        )
+    if regime.state == "UNKNOWN" or not regime.fresh:
+        issues.append(
+            ValidationIssue(
+                "ERROR" if strict_live else "WARN",
+                "MARKET_REGIME_CONTEXT_GAP",
+                (
+                    f"Market regime is {regime.state} with {regime.source_status} sources; "
+                    f"latest context {regime.latest_context_at}. New BUY_NOW/ADD_ON_DIP "
+                    "entries must remain gated until cross-asset context is fresh."
+                ),
+            )
+        )
+    if regime.state in {"CONFLICT_ESCALATION", "MARKET_STRESS"} or (
+        regime.geopolitical_status in {"conflict", "escalating", "renewed_escalation"}
+    ):
+        issues.append(
+            ValidationIssue(
+                "WARN",
+                "ADVERSE_MARKET_REGIME",
+                (
+                    f"{regime.state} regime is active at {regime.confidence:.0f}% confidence "
+                    f"with {regime.market_confirmation} market confirmation; "
+                    "apply ticker channel exposures and entry gates before deploying capital."
                 ),
             )
         )

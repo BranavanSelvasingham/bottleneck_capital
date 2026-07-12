@@ -13,7 +13,12 @@ from bottleneck_capital.decision_engine import (
     write_daily_board,
 )
 from bottleneck_capital.dip_review import write_dip_review
-from bottleneck_capital.ingest import IngestError, ingest_filings, ingest_market
+from bottleneck_capital.ingest import (
+    IngestError,
+    ingest_filings,
+    ingest_market,
+    write_manual_event,
+)
 from bottleneck_capital.initialize import run_initialization
 from bottleneck_capital.io import read_jsonl
 from bottleneck_capital.live_check import LiveCheckResult, run_live_check
@@ -135,6 +140,36 @@ def main(argv: list[str] | None = None) -> int:
     subparsers.add_parser("compile-decisions", help="Evaluate and rewrite ticker decision files.")
     subparsers.add_parser("daily-board", help="Write the daily decision board.")
     subparsers.add_parser("action-board", help="Write the current actionable-step board.")
+    regime_event_parser = subparsers.add_parser(
+        "regime-event",
+        help="Record a structured macro or geopolitical regime heartbeat.",
+    )
+    regime_event_parser.add_argument("--region", default="global")
+    regime_event_parser.add_argument(
+        "--status",
+        required=True,
+        choices=(
+            "conflict",
+            "renewed_escalation",
+            "escalating",
+            "elevated",
+            "ceasefire",
+            "deescalating",
+            "resolved",
+            "calm",
+        ),
+    )
+    regime_event_parser.add_argument("--severity", required=True, type=float)
+    regime_event_parser.add_argument("--confidence", type=float, default=70)
+    regime_event_parser.add_argument(
+        "--channels",
+        required=True,
+        help="Comma-separated channel=severity values, such as global_risk=70,energy=80.",
+    )
+    regime_event_parser.add_argument("--observed-at", required=True)
+    regime_event_parser.add_argument("--summary", required=True)
+    regime_event_parser.add_argument("--source", default="structured_regime_review")
+    regime_event_parser.add_argument("--source-url", default="")
     validate_parser = subparsers.add_parser(
         "validate", help="Validate Bottleneck Capital operating invariants."
     )
@@ -355,6 +390,19 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         print(path)
         return 0
+    if args.command == "regime-event":
+        try:
+            path, records = _logged(
+                root,
+                process="regime-event",
+                command="regime-event",
+                fn=lambda: _record_regime_event(root, args),
+            )
+        except (RunLockError, ValueError) as exc:
+            print(exc)
+            return 1
+        print(f"Recorded regime heartbeat in {path}; wrote {len(records)} signal event(s).")
+        return 0
     if args.command == "validate":
         issues = validate_project(root, strict_live=args.strict_live)
         print(render_validation(issues), end="")
@@ -459,6 +507,49 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     parser.error(f"Unknown command: {args.command}")
     return 2
+
+
+def _record_regime_event(root: Path, args: argparse.Namespace) -> tuple[Path, list[dict[str, Any]]]:
+    channels = _parse_regime_channels(args.channels)
+    event_class = (
+        "geopolitical_regime_update"
+        if args.region.lower() != "global"
+        else "macro_regime_update"
+    )
+    event = {
+        "ticker": "BCAP",
+        "event_type": "geopolitical_regime" if "geopolitical" in event_class else "macro_regime",
+        "event_class": event_class,
+        "region": args.region.lower(),
+        "status": args.status,
+        "severity": max(0.0, min(100.0, args.severity)),
+        "confidence": max(0.0, min(100.0, args.confidence)),
+        "channels": channels,
+        "observed_at": args.observed_at,
+        "summary": args.summary,
+        "source": args.source,
+        "source_url": args.source_url,
+        "dedupe_key": (
+            f"regime:{args.region.lower()}:{args.observed_at[:10]}:{args.status}"
+        ),
+    }
+    path = write_manual_event(root, event)
+    return path, run_sentinel(root)
+
+
+def _parse_regime_channels(value: str) -> dict[str, float]:
+    channels: dict[str, float] = {}
+    for item in value.split(","):
+        if "=" not in item:
+            raise ValueError(f"Invalid regime channel {item!r}; expected channel=severity.")
+        channel, raw_severity = item.split("=", 1)
+        channel = channel.strip().lower()
+        if not channel:
+            raise ValueError("Regime channel name cannot be blank.")
+        channels[channel] = max(0.0, min(100.0, float(raw_severity)))
+    if not channels:
+        raise ValueError("At least one regime channel is required.")
+    return channels
 
 
 def _logged(

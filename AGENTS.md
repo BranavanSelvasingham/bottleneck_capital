@@ -39,6 +39,14 @@ ingest status, SEC user-agent configuration, and exact local position data. Alpa
 credentials are preferred but not mandatory when the auto market provider successfully uses
 the Yahoo fallback. Use `bcap action-board` whenever the user needs the latest actionable
 steps outside the close-board window.
+Before clearing a market-day entry, refresh the configured cross-asset context basket and
+record a structured geopolitical/macro heartbeat with `bcap regime-event`. The heartbeat
+must state region, status, severity, confidence, affected channels, observed time, summary,
+and primary source. A newer status for the same region supersedes an older ceasefire or
+escalation state in the regime assessment. Do not treat a stale or missing heartbeat as
+neutral. Compare headline escalation against oil, volatility, broad-equity, dollar, and
+rates proxies; use market confirmation to scale execution risk without pretending the
+company thesis itself broke.
 Use `bcap resume-check` as the final unpause gate; it writes the readiness report and exits
 non-zero until the automation is safe to resume.
 `bcap ingest filings` uses SEC submissions when reachable and falls back to the official

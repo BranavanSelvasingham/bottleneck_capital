@@ -13,6 +13,12 @@ from bottleneck_capital.io import (
     scalar_bool,
     scalar_text,
 )
+from bottleneck_capital.market_regime import (
+    MarketRegime,
+    assess_market_regime,
+    regime_adjustment,
+    regime_entry_gate,
+)
 
 
 @dataclass(frozen=True)
@@ -20,6 +26,9 @@ class OpportunityCandidate:
     ticker: str
     decision: str
     score: float
+    structural_score: float
+    regime_adjustment: float
+    entry_gate: str
     current_price: float
     entry_zone: str
     rationale: str
@@ -43,8 +52,10 @@ def rank_opportunities(
     root: Path,
     *,
     decision_overrides: dict[str, str] | None = None,
+    regime: MarketRegime | None = None,
 ) -> list[OpportunityCandidate]:
     prices = _latest_prices(root)
+    current_regime = regime or assess_market_regime(root)
     candidates: list[OpportunityCandidate] = []
     for ticker in _watchlist_tickers(root):
         data = _asset_decision_data(root, ticker)
@@ -67,7 +78,7 @@ def rank_opportunities(
             "HOLD": 0.0,
             "RESEARCH_REQUIRED": -10.0,
         }.get(decision, 0.0)
-        score = min(
+        structural_score = min(
             100.0,
             max(
                 0.0,
@@ -79,11 +90,26 @@ def rank_opportunities(
                 + action_bonus,
             ),
         )
+        adjustment = regime_adjustment(
+            root,
+            ticker=ticker,
+            sleeve=scalar_text(data.get("sleeve")),
+            regime=current_regime,
+        )
+        score = min(100.0, max(0.0, structural_score + adjustment))
         candidates.append(
             OpportunityCandidate(
                 ticker=ticker,
                 decision=decision or "RESEARCH_REQUIRED",
                 score=score,
+                structural_score=structural_score,
+                regime_adjustment=adjustment,
+                entry_gate=regime_entry_gate(
+                    root,
+                    decision=decision,
+                    adjustment=adjustment,
+                    regime=current_regime,
+                ),
                 current_price=prices.get(ticker, 0.0),
                 entry_zone=scalar_text(data.get("approved_entry_zone")) or "Not armed",
                 rationale=scalar_text(data.get("one_line_rationale"))
