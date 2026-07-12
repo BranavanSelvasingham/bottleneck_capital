@@ -1,0 +1,103 @@
+regime:
+  context_snapshot_max_age_days: 4
+  geopolitical_event_max_age_days: 14
+  required_context_symbols:
+    - SPY
+    - QQQ
+    - USO
+    - VIXY
+  context_symbols:
+    SPY: SPY
+    QQQ: QQQ
+    USO: USO
+    VIXY: VIXY
+    GLD: GLD
+    TLT: TLT
+    UUP: UUP
+    XLE: XLE
+  entry_gates:
+    reduce_tranche_adjustment: -4
+    pause_new_buy_adjustment: -8
+  sleeve_channel_exposures:
+    ai_networking_optical:
+      global_risk: -0.10
+      energy: -0.02
+      supply_chain: -0.08
+      rates: -0.05
+    ai_power_equipment:
+      global_risk: -0.06
+      energy: 0.03
+      supply_chain: -0.04
+      rates: -0.05
+    ai_services_put_signal:
+      global_risk: -0.12
+      energy: -0.01
+      supply_chain: -0.02
+      rates: -0.08
+    autonomy_energy:
+      global_risk: -0.13
+      energy: 0.02
+      supply_chain: -0.08
+      rates: -0.10
+    compute_infra:
+      global_risk: -0.10
+      energy: -0.03
+      supply_chain: -0.05
+      rates: -0.06
+    power_bottleneck:
+      global_risk: -0.05
+      energy: 0.05
+      supply_chain: -0.02
+      rates: -0.05
+    miner_to_datacenter:
+      global_risk: -0.13
+      energy: -0.04
+      supply_chain: -0.03
+      rates: -0.08
+    memory_storage_networking:
+      global_risk: -0.10
+      energy: -0.03
+      supply_chain: -0.08
+      rates: -0.05
+    crowded_ai_beta_hedge:
+      global_risk: -0.15
+      energy: -0.02
+      supply_chain: -0.05
+      rates: -0.08
+    enterprise_ai_infra:
+      global_risk: -0.08
+      energy: -0.02
+      supply_chain: -0.03
+      rates: -0.05
+    semicap_equipment:
+      global_risk: -0.09
+      energy: -0.02
+      supply_chain: -0.10
+      rates: -0.04
+    space_infra:
+      global_risk: -0.10
+      energy: -0.03
+      supply_chain: -0.05
+      rates: -0.08
+  ticker_channel_exposures:
+    TSM:
+      global_risk: -0.12
+      energy: -0.02
+      supply_chain: -0.12
+      rates: -0.04
+      taiwan: -0.30
+    MU:
+      global_risk: -0.11
+      energy: -0.03
+      supply_chain: -0.08
+      rates: -0.05
+    AVGO:
+      global_risk: -0.10
+      energy: -0.02
+      supply_chain: -0.07
+      rates: -0.05
+    TSLA:
+      global_risk: -0.14
+      energy: 0.02
+      supply_chain: -0.08
+      rates: -0.10

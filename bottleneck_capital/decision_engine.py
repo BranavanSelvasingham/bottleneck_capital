@@ -363,6 +363,7 @@ def write_daily_board(root: Path) -> Path:
 
 def write_action_board(root: Path) -> Path:
     from bottleneck_capital.dip_review import review_active_dips
+    from bottleneck_capital.market_regime import assess_market_regime
     from bottleneck_capital.opportunity import (
         opportunity_board_limit,
         overdue_research_blocks,
@@ -372,8 +373,9 @@ def write_action_board(root: Path) -> Path:
     results = evaluate_all(root)
     events = active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
     dip_reviews = review_active_dips(root)
+    regime = assess_market_regime(root)
     decisions = {result.ticker: result.action for result in results}
-    opportunities = rank_opportunities(root, decision_overrides=decisions)[
+    opportunities = rank_opportunities(root, decision_overrides=decisions, regime=regime)[
         : opportunity_board_limit(root)
     ]
     overdue = overdue_research_blocks(root, decision_overrides=decisions)
@@ -388,6 +390,7 @@ def write_action_board(root: Path) -> Path:
             dip_reviews,
             opportunities=opportunities,
             overdue_research=overdue,
+            market_regime=regime,
         ),
         encoding="utf-8",
     )
@@ -434,6 +437,7 @@ def render_action_board(
     dip_reviews: list[Any] | None = None,
     opportunities: list[Any] | None = None,
     overdue_research: list[Any] | None = None,
+    market_regime: Any | None = None,
 ) -> str:
     from bottleneck_capital.dip_review import render_action_board_dip_reviews
 
@@ -482,6 +486,8 @@ def render_action_board(
                 f"{_table(scalar_text(event.get('summary')))} |"
             )
         lines.append("")
+    lines.extend(_render_market_regime(market_regime))
+    lines.append("")
     lines.extend(_render_opportunity_ranking(opportunities or []))
     lines.append("")
     if overdue_research:
@@ -495,18 +501,21 @@ def render_action_board(
             "",
         ]
     )
+    gate_by_ticker = {item.ticker: item.entry_gate for item in opportunities or []}
     lines.extend([
-        "| Ticker | Decision | Urgency | Max Add | Why |",
-        "|---|---|---:|---:|---|",
+        "| Ticker | Decision | Regime Gate | Urgency | Max Add | Why |",
+        "|---|---|---|---:|---:|---|",
     ])
     if actionable:
         for result in actionable:
             lines.append(
-                f"| {result.ticker} | {result.action} | {result.urgency} | "
+                f"| {result.ticker} | {result.action} | "
+                f"{_table(gate_by_ticker.get(result.ticker, 'NOT_RANKED'))} | "
+                f"{result.urgency} | "
                 f"{_table(result.max_add)} | {_table(result.rationale)} |"
             )
     else:
-        lines.append("| - | - | - | - | No actionable decision changes. |")
+        lines.append("| - | - | - | - | - | No actionable decision changes. |")
 
     lines.extend(["", "## Active High-Priority Signals", ""])
     grouped_high_events = group_signal_events(high_events)
@@ -541,23 +550,65 @@ def _render_opportunity_ranking(opportunities: list[Any]) -> list[str]:
         "## Opportunity Ranking",
         "",
         (
-            "Ranked by thesis health, valuation, bottleneck upside, confidence, "
-            "portfolio capacity, and current decision."
+            "Structural score uses thesis health, valuation, bottleneck upside, confidence, "
+            "portfolio capacity, and current decision. Regime adjustment stress-tests active "
+            "market and geopolitical channels before capital is deployed."
         ),
         "",
-        "| Rank | Ticker | Decision | Score | Price | Approved Entry | Why |",
-        "|---:|---|---|---:|---:|---|---|",
+        (
+            "| Rank | Ticker | Decision | Structural | Regime Adj. | Effective | "
+            "Entry Gate | Price | Approved Entry | Why |"
+        ),
+        "|---:|---|---|---:|---:|---:|---|---:|---|---|",
     ]
     if not opportunities:
-        lines.append("| - | - | - | - | - | - | - |")
+        lines.append("| - | - | - | - | - | - | - | - | - | - |")
         return lines
     for index, item in enumerate(opportunities, start=1):
         price = f"${item.current_price:,.2f}" if item.current_price > 0 else "Unknown"
         lines.append(
             f"| {index} | {_table(item.ticker)} | {_table(item.decision)} | "
-            f"{item.score:.1f} | {price} | {_table(item.entry_zone)} | "
+            f"{item.structural_score:.1f} | {item.regime_adjustment:+.1f} | "
+            f"{item.score:.1f} | {_table(item.entry_gate)} | {price} | "
+            f"{_table(item.entry_zone)} | "
             f"{_table(item.rationale)} |"
         )
+    return lines
+
+
+def _render_market_regime(regime: Any | None) -> list[str]:
+    lines = ["## Market Regime", ""]
+    if regime is None:
+        lines.append("Market regime was not evaluated. New entries are not cleared.")
+        return lines
+    lines.extend(
+        [
+            (
+                "| State | Geopolitical | Market Confirmation | Evidence Confidence | Fresh? | "
+                "Sources | Latest Context |"
+            ),
+            "|---|---|---|---:|---|---|---|",
+            (
+                f"| {_table(regime.state)} | {_table(regime.geopolitical_status)} | "
+                f"{_table(regime.market_confirmation)} | {regime.confidence:.0f}% | "
+                f"{'YES' if regime.fresh else 'NO'} | "
+                f"{_table(regime.source_status)} | {_table(regime.latest_context_at)} |"
+            ),
+            "",
+            "| Channel | Severity |",
+            "|---|---:|",
+        ]
+    )
+    if regime.channel_severity:
+        for channel, severity in regime.channel_severity.items():
+            lines.append(f"| {_table(channel)} | {severity:.0f} |")
+    else:
+        lines.append("| context | Unknown |")
+    lines.extend(["", "Evidence:"])
+    if regime.evidence:
+        lines.extend(f"- {item}" for item in regime.evidence[:6])
+    else:
+        lines.append("- No fresh cross-asset or structured regime evidence is available.")
     return lines
 
 

@@ -48,9 +48,13 @@ def ingest_market(
     input_path: Path | None = None,
     symbols: list[str] | None = None,
 ) -> IngestResult:
+    from bottleneck_capital.market_regime import context_symbols
+
     thresholds = load_yaml_file(root / "configs" / "signal_thresholds.yaml")
-    tickers = symbols or [item["ticker"] for item in load_watchlist(root)]
-    symbol_overrides = _market_symbol_overrides(root)
+    investment_tickers = symbols or [item["ticker"] for item in load_watchlist(root)]
+    context = context_symbols(root) if symbols is None and input_path is None else {}
+    tickers = list(dict.fromkeys([*investment_tickers, *context]))
+    symbol_overrides = {**_market_symbol_overrides(root), **context}
     provider = provider.lower()
     source = f"market_{provider}"
     warnings: list[str] = []
@@ -74,8 +78,17 @@ def ingest_market(
     snapshots = [snapshot for snapshot in snapshots if snapshot["ticker"] in set(tickers)]
     _append_market_snapshots(root, snapshots, source)
     missing_tickers = sorted(set(tickers) - {snapshot["ticker"] for snapshot in snapshots})
-    events = _market_events(snapshots, thresholds, source)
-    events.extend(_market_coverage_events(missing_tickers, source, warnings))
+    investment_snapshots = [
+        snapshot for snapshot in snapshots if snapshot["ticker"] in set(investment_tickers)
+    ]
+    investment_missing = sorted(set(investment_tickers) - {item["ticker"] for item in snapshots})
+    context_missing = sorted(set(context) & set(missing_tickers))
+    if context_missing:
+        warnings.append(
+            "Market regime context missing: " + ", ".join(context_missing)
+        )
+    events = _market_events(investment_snapshots, thresholds, source)
+    events.extend(_market_coverage_events(investment_missing, source, warnings))
     output = _write_channel_events(root, "market", events)
     aggregate = _refresh_latest_events(root)
     _update_ingest_status(

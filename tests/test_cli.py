@@ -48,6 +48,39 @@ def test_ingest_market_cli_records_run_ledger(tmp_path: Path) -> None:
     assert ledger[-1]["outputs"]
 
 
+def test_regime_event_cli_records_structured_heartbeat(tmp_path: Path) -> None:
+    _write_project(tmp_path)
+
+    exit_code = main(
+        [
+            "--root",
+            str(tmp_path),
+            "regime-event",
+            "--region",
+            "middle_east",
+            "--status",
+            "ceasefire",
+            "--severity",
+            "25",
+            "--confidence",
+            "90",
+            "--channels",
+            "global_risk=20,energy=25",
+            "--observed-at",
+            "2026-07-12T09:00:00-04:00",
+            "--summary",
+            "Ceasefire review remains in force.",
+        ]
+    )
+
+    manual = read_jsonl(tmp_path / "state" / "latest_manual_events.jsonl")
+    signals = read_jsonl(tmp_path / "state" / "signal_events.jsonl")
+    assert exit_code == 0
+    assert manual[-1]["status"] == "ceasefire"
+    assert manual[-1]["channels"]["energy"] == 25
+    assert signals[-1]["event_class"] == "geopolitical_regime_update"
+
+
 def test_live_check_cli_runs_market_sentinel_action_board_and_validation(
     tmp_path: Path,
 ) -> None:

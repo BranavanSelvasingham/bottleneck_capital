@@ -292,6 +292,28 @@ def test_data_gap_events_are_high_priority(tmp_path: Path) -> None:
     assert by_class["filing_data_gap"]["priority"] == "high"
 
 
+def test_geopolitical_regime_event_is_high_priority(tmp_path: Path) -> None:
+    _write_thresholds(tmp_path)
+    events = tmp_path / "events.jsonl"
+    events.write_text(
+        json.dumps(
+            {
+                "ticker": "BCAP",
+                "summary": "Renewed retaliatory strikes after the ceasefire.",
+                "region": "middle_east",
+                "status": "renewed_escalation",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    record = run_sentinel(tmp_path, input_path=events)[0]
+
+    assert record["event_class"] == "geopolitical_regime_update"
+    assert record["priority"] == "high"
+
+
 def test_data_gap_summary_update_appends_latest_active_record(tmp_path: Path) -> None:
     _write_thresholds(tmp_path)
     events = tmp_path / "events.jsonl"
