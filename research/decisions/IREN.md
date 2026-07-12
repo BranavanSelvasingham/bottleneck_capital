@@ -2,12 +2,12 @@
 ticker: IREN
 name: IREN
 sleeve: miner_to_datacenter
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 40
 urgency: HIGH
-last_updated: 2026-06-26
+last_updated: 2026-07-12
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -25,7 +25,7 @@ hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and
 invalidation_trigger: AI/HPC conversion fails to become material or financing dilutes away site value.
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: Unresolved material event requires research before changing capital.
+one_line_rationale: "Hold/watch only: IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta."
 action_tier: WATCH_TOP_SPECULATIVE
 bottleneck_upside_score: 78
 bottleneck_upside_case: Power-secured mining sites convert into contracted AI/HPC datacenter capacity; equity rerates from mining beta to scarce powered compute infrastructure.
@@ -33,16 +33,16 @@ promotion_trigger: Promote to ADD_ON_DIP only if AI/HPC contract economics and f
 ---
 # IREN Decision
 
-Updated: 2026-06-26
+Updated: 2026-07-12
 
-Decision: RESEARCH_REQUIRED
+Decision: HOLD
 Dip decision: RESEARCH_FIRST
 Sell status: NOT_TRIGGERED
 Confidence: 40 / 100
 Urgency: HIGH
 
 One-line rationale:
-Unresolved material event requires research before changing capital.
+Hold/watch only: IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta.
 
 Thesis expressed:
 IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta.
@@ -72,4 +72,4 @@ Next trigger:
 Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

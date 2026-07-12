@@ -2,12 +2,12 @@
 ticker: SHAZ
 name: SharonAI Holdings
 sleeve: compute_infra
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 25
 urgency: MEDIUM
-last_updated: 2026-06-26
+last_updated: 2026-07-12
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -25,7 +25,7 @@ hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and
 invalidation_trigger: Public evidence fails to verify durable compute assets or customer economics.
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: Unresolved material event requires research before changing capital.
+one_line_rationale: "Hold/watch only: SharonAI is tracked because it appears in current public SA exposure, but liquidity, governance, and asset verification keep it hold-only."
 action_tier: HOLD
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
@@ -33,16 +33,16 @@ promotion_trigger: ""
 ---
 # SHAZ Decision
 
-Updated: 2026-06-26
+Updated: 2026-07-12
 
-Decision: RESEARCH_REQUIRED
+Decision: HOLD
 Dip decision: RESEARCH_FIRST
 Sell status: NOT_TRIGGERED
 Confidence: 25 / 100
 Urgency: MEDIUM
 
 One-line rationale:
-Unresolved material event requires research before changing capital.
+Hold/watch only: SharonAI is tracked because it appears in current public SA exposure, but liquidity, governance, and asset verification keep it hold-only.
 
 Thesis expressed:
 SharonAI is tracked because it appears in current public SA exposure, but liquidity, governance, and asset verification keep it hold-only.
@@ -72,4 +72,4 @@ Next trigger:
 Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

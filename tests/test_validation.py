@@ -21,6 +21,31 @@ def test_validate_project_warns_when_only_mock_events_exist(tmp_path: Path) -> N
     assert any(issue.code == "MOCK_EVENT_FALLBACK_ONLY" for issue in issues)
 
 
+def test_validate_project_warns_on_overdue_research_block(tmp_path: Path) -> None:
+    _write_minimal_project(tmp_path)
+    for kind in ("assets", "decisions"):
+        path = tmp_path / "research" / kind / "AAA.md"
+        path.write_text(
+            """---
+ticker: AAA
+name: AAA Inc.
+sleeve: compute_infra
+current_decision: RESEARCH_REQUIRED
+last_primary_source_check: 2020-01-01
+one_line_rationale: Earnings review unresolved.
+---
+# AAA
+""",
+            encoding="utf-8",
+        )
+
+    issues = validate_project(tmp_path)
+
+    overdue = [issue for issue in issues if issue.code == "OVERDUE_RESEARCH_BLOCK"]
+    assert overdue
+    assert overdue[0].severity == "WARN"
+
+
 def test_validate_project_strict_live_errors_without_live_ingest(tmp_path: Path) -> None:
     _write_minimal_project(tmp_path)
     mock = tmp_path / "mock" / "latest_events.jsonl"

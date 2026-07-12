@@ -2,38 +2,38 @@
 ticker: SPCX
 name: SpaceX / SPCX ticker signal
 sleeve: space_infra
-last_updated: 2026-06-22
+last_updated: 2026-07-11
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: local_position_adjacent_proxy
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: LIVE_SEC_8K_AND_PRICE_DISLOCATION_REVIEWED
+evidence_quality: PRIMARY_IR_SEC_AND_CREDIT_RATING
 thesis_expressed: SPCX is tracked as Space Exploration Technologies Corp. live public equity exposure and a user-held adjacent proxy for launch, satellite, connectivity, defense infrastructure, and AI-infrastructure scarcity.
-anti_thesis: The June 22 senior unsecured notes filing and price dislocation highlight debt, bridge-loan refinancing, valuation, and post-IPO volatility risk.
-hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+anti_thesis: The $25 billion unsecured notes issuance, expected negative free cash flow, xAI/AI infrastructure capital intensity, post-IPO valuation, and volatility can overwhelm strong space infrastructure assets.
+hedge_or_sizing: Hold the confirmed 45-share position; add no capital because SPCX is approximately 26% of the known FX-normalized portfolio. Review before any trim only if financing, liquidity, execution, or valuation deteriorates.
 invalidation_trigger: Senior-note terms, bridge-loan refinancing, customer demand, or liquidity risk show the post-IPO equity is overlevered or no longer a clean space/AI infrastructure expression.
-next_trigger: Review June 22 senior-note pricing/use of proceeds, bridge-loan repayment, post-IPO valuation, and local cost basis before any add/sell decision.
-one_line_rationale: "RESEARCH_REQUIRED: SPCX June 22 8-K launched senior unsecured notes to repay bridge-loan borrowings while the stock fell sharply; no buy or sell until financing terms, valuation, and local cost basis are reviewed."
+next_trigger: Next earnings/filing, material Starlink or launch guidance change, AI infrastructure capex/free-cash-flow update, credit-rating change, or a move that pushes SPCX materially above the 27% position cap.
+one_line_rationale: "HOLD / NO ADD: the $25 billion bond refinancing closed with a BBB stable rating and bridge-loan repayment, but the confirmed 45-share position is already approximately 26% of known FX-normalized exposure."
 asset_role: Space infrastructure adjacent proxy and local-position tracker.
 default_holding_period: multi_year
-current_decision: RESEARCH_REQUIRED
-dip_decision: RESEARCH_FIRST
+current_decision: HOLD
+dip_decision: NOT_ARMED
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-06-21
-thesis_health_score: 42
-confidence_score: 28
+last_primary_source_check: 2026-07-11
+thesis_health_score: 70
+confidence_score: 65
 valuation_attractiveness_score: 18
 urgency_score: 60
-max_position_weight_pct: 0
-current_position_weight_pct: 0
-approved_entry_zone: No new capital until scheduled scan validates valuation.
-do_not_buy_zone: Any price without thesis, valuation, sizing, and invalidation.
+max_position_weight_pct: 27
+current_position_weight_pct: 26.5
+approved_entry_zone: No new capital while SPCX is above 20% of known FX-normalized exposure.
+do_not_buy_zone: Any price while portfolio weight remains above 20%, or after credit, liquidity, launch, Starlink, AI-capex, or governance deterioration.
 sell_trigger_status: false
 hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
-open_questions_count: 3
+open_questions_count: 0
 broken_thesis: ""
 ---
 # SPCX - SpaceX / SPCX ticker signal
@@ -46,18 +46,18 @@ Current action: HOLD
 
 ### One-line decision
 
-SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure.
+HOLD / NO ADD. The bond refinancing removed the immediate financing uncertainty, but the confirmed 45-share position is already approximately 26% of known FX-normalized exposure.
 
 ### Decision table
 
 | Field | Status |
 |---|---|
-| Long-term ownership candidate? | POSSIBLE, NOT APPROVED |
+| Long-term ownership candidate? | YES, WITH STRICT CONCENTRATION CONTROL |
 | Buy today? | NO |
-| Add on dip? | RESEARCH_FIRST |
+| Add on dip? | NO; position is already oversized |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
-| Main risk today | Private-market access, listing uncertainty, liquidity, valuation, custody, and headline risk. |
+| Main risk today | Debt-funded AI infrastructure expansion, negative free cash flow, valuation, execution, and concentration. |
 | Main upside driver today | Reusable launch, satellite communications, defense demand, and space logistics scarcity. |
 | Next review trigger | Scheduled scan or new primary-source event |
 
@@ -87,10 +87,13 @@ Confidence: 28
 Time horizon: multi-year
 Importance: HIGH
 
-Claim: SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure.
+Claim: SPCX is a direct public SpaceX exposure to launch, satellite connectivity, defense infrastructure, and AI infrastructure scarcity, with the June bridge-loan refinancing now completed through long-dated unsecured notes.
 
 Evidence for:
-- Situational Awareness LP public 13F-HR, 2026-03-31 period, filed 2026-05-18; configs/watchlist.yaml; configs/sa_universe.yaml; research/agent_packets/wave_3/SPCX.md; wave execution memo.
+- SpaceX priced and closed $25 billion of senior unsecured notes due 2031-2056, using proceeds to repay the bridge loan in full.
+- S&P assigned the notes BBB and a stable outlook, expecting adjusted leverage below 2.0x despite aggressive investment and negative free cash flow.
+- The local position is confirmed at 45 shares, average cost $146.71 and screenshot value $6,566.40 at $145.92.
+- Situational Awareness LP public 13F-HR, 2026-03-31 period; configs/watchlist.yaml; configs/sa_universe.yaml.
 - Sleeve thesis: `space_infra`.
 
 Evidence against:
@@ -101,8 +104,7 @@ What would break it:
 - SPCX does not represent investable SpaceX/space-infra exposure or listing/liquidity risk becomes unacceptable.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+HOLD. Financing uncertainty is bounded, but add no capital while SPCX remains above 20% of known FX-normalized exposure.
 
 Hedge implication:
 No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
@@ -197,6 +199,9 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 
 ## 11. Source Register
 
+- SpaceX June 23 2026 bond pricing release: https://ir.spacex.com/updates/releases-details/2026/SpaceX-Announces-Pricing-of-25-Billion-Inaugural-Bond-Issuance-2026-33VwNgsx3O/default.aspx
+- SpaceX June 26 2026 closing 8-K: https://www.sec.gov/Archives/edgar/data/1181412/000162828026045763/spcx-closing8xkjune2026.htm
+- S&P Global June 22 2026 rating update: https://www.spglobal.com/ratings/en/regulatory/article/-/view/type/HTML/id/3584128
 - Situational Awareness LP public 13F-HR, 2026-03-31 period, filed 2026-05-18
 - `configs/sa_universe.yaml`
 - `configs/watchlist.yaml`

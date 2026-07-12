@@ -2,12 +2,12 @@
 ticker: SPCX
 name: SpaceX / SPCX ticker signal
 sleeve: space_infra
-current_decision: RESEARCH_REQUIRED
-dip_decision: RESEARCH_FIRST
+current_decision: HOLD
+dip_decision: NOT_ARMED
 sell_status: NOT_TRIGGERED
-confidence_score: 28
+confidence_score: 65
 urgency: MEDIUM
-last_updated: 2026-06-26
+last_updated: 2026-07-12
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: local_position_adjacent_proxy
 trade_policy: long_only_after_research
@@ -18,14 +18,14 @@ valuation_improved: false
 portfolio_risk_allows_add: true
 buy_thesis: Not buyable after the June 22 senior-note launch and price dislocation until financing terms, valuation, and local cost basis are reviewed.
 thesis_expressed: SPCX is tracked as Space Exploration Technologies Corp. live public equity exposure and a user-held adjacent proxy for launch, satellite, connectivity, defense infrastructure, and AI-infrastructure scarcity.
-anti_thesis: The June 22 senior unsecured notes filing and price dislocation highlight debt, bridge-loan refinancing, valuation, and post-IPO volatility risk.
-evidence_quality: LIVE_SEC_8K_AND_PRICE_DISLOCATION_REVIEWED
+anti_thesis: The $25 billion unsecured notes issuance, expected negative free cash flow, xAI/AI infrastructure capital intensity, post-IPO valuation, and volatility can overwhelm strong space infrastructure assets.
+evidence_quality: PRIMARY_IR_SEC_AND_CREDIT_RATING
 valuation_case: private-market infrastructure scarcity and listing/liquidity-adjusted scenario value
-hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+hedge_or_sizing: Hold the confirmed 45-share position; add no capital because SPCX is approximately 26% of the known FX-normalized portfolio. Review before any trim only if financing, liquidity, execution, or valuation deteriorates.
 invalidation_trigger: Senior-note terms, bridge-loan refinancing, customer demand, or liquidity risk show the post-IPO equity is overlevered or no longer a clean space/AI infrastructure expression.
 broken_thesis: ""
-next_trigger: Review June 22 senior-note pricing/use of proceeds, bridge-loan repayment, post-IPO valuation, and local cost basis before any add/sell decision.
-one_line_rationale: Unresolved material event requires research before changing capital.
+next_trigger: Next earnings/filing, material Starlink or launch guidance change, AI infrastructure capex/free-cash-flow update, credit-rating change, or a move that pushes SPCX materially above the 27% position cap.
+one_line_rationale: "HOLD / NO ADD: the $25 billion bond refinancing closed with a BBB stable rating and bridge-loan repayment, but the confirmed 45-share position is already approximately 26% of known FX-normalized exposure."
 action_tier: HOLD
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
@@ -33,28 +33,28 @@ promotion_trigger: ""
 ---
 # SPCX Decision
 
-Updated: 2026-06-26
+Updated: 2026-07-12
 
-Decision: RESEARCH_REQUIRED
-Dip decision: RESEARCH_FIRST
+Decision: HOLD
+Dip decision: NOT_ARMED
 Sell status: NOT_TRIGGERED
-Confidence: 28 / 100
+Confidence: 65 / 100
 Urgency: MEDIUM
 
 One-line rationale:
-Unresolved material event requires research before changing capital.
+HOLD / NO ADD: the $25 billion bond refinancing closed with a BBB stable rating and bridge-loan repayment, but the confirmed 45-share position is already approximately 26% of known FX-normalized exposure.
 
 Thesis expressed:
 SPCX is tracked as Space Exploration Technologies Corp. live public equity exposure and a user-held adjacent proxy for launch, satellite, connectivity, defense infrastructure, and AI-infrastructure scarcity.
 
 Anti-thesis:
-The June 22 senior unsecured notes filing and price dislocation highlight debt, bridge-loan refinancing, valuation, and post-IPO volatility risk.
+The $25 billion unsecured notes issuance, expected negative free cash flow, xAI/AI infrastructure capital intensity, post-IPO valuation, and volatility can overwhelm strong space infrastructure assets.
 
 Evidence quality:
-LIVE_SEC_8K_AND_PRICE_DISLOCATION_REVIEWED
+PRIMARY_IR_SEC_AND_CREDIT_RATING
 
 Hedge or sizing:
-No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+Hold the confirmed 45-share position; add no capital because SPCX is approximately 26% of the known FX-normalized portfolio. Review before any trim only if financing, liquidity, execution, or valuation deteriorates.
 
 Invalidation trigger:
 Senior-note terms, bridge-loan refinancing, customer demand, or liquidity risk show the post-IPO equity is overlevered or no longer a clean space/AI infrastructure expression.
@@ -63,13 +63,13 @@ Buy now?
 NO
 
 Buy on dip?
-RESEARCH_FIRST
+NOT_ARMED
 
 Sell?
 NO
 
 Next trigger:
-Review June 22 senior-note pricing/use of proceeds, bridge-loan repayment, post-IPO valuation, and local cost basis before any add/sell decision.
+Next earnings/filing, material Starlink or launch guidance change, AI infrastructure capex/free-cash-flow update, credit-rating change, or a move that pushes SPCX materially above the 27% position cap.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

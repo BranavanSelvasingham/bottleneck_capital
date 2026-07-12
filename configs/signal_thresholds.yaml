@@ -9,6 +9,10 @@ sentinel:
     market_data_max_age_minutes: 20
     filing_data_max_age_minutes: 240
 
+  research:
+    research_required_max_age_days: 5
+    opportunity_board_limit: 10
+
   price_triggers:
     intraday_drop_pct: 5
     one_day_drop_pct: 7

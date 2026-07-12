@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 28
 urgency: LOW
-last_updated: 2026-06-26
+last_updated: 2026-07-12
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -33,7 +33,7 @@ promotion_trigger: ""
 ---
 # WTS Decision
 
-Updated: 2026-06-26
+Updated: 2026-07-12
 
 Decision: HOLD
 Dip decision: RESEARCH_FIRST
