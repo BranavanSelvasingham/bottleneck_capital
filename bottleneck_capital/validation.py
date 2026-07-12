@@ -16,7 +16,11 @@ from bottleneck_capital.io import (
     scalar_text,
 )
 from bottleneck_capital.live_sources import effective_sec_user_agent
-from bottleneck_capital.signal_events import active_signal_events, event_id_for_record
+from bottleneck_capital.signal_events import (
+    active_signal_events,
+    event_id_for_record,
+    group_signal_events,
+)
 
 
 @dataclass(frozen=True)
@@ -35,6 +39,7 @@ def validate_project(root: Path, *, strict_live: bool = False) -> list[Validatio
     _check_ticker_files(root, tickers, issues)
     _check_generated_wiring(root, tickers, issues)
     _check_decisions(root, tickers, issues)
+    _check_research_blocks(root, issues, strict_live=strict_live)
     _check_signal_events(root, issues)
     _check_event_inputs(root, issues, strict_live=strict_live)
     _check_ingest_freshness(root, issues, strict_live=strict_live, positions=position_items)
@@ -151,12 +156,36 @@ def _check_signal_events(root: Path, issues: list[ValidationIssue]) -> None:
         if scalar_text(record.get("priority")) in {"high", "critical"}
         and scalar_text(record.get("event_class")) != "noise"
     ]
-    for record in active_high:
+    for record in group_signal_events(active_high):
+        count = int(record.get("event_count", 1))
         issues.append(
             ValidationIssue(
                 "WARN",
                 "ACTIVE_HIGH_PRIORITY_SIGNAL",
-                f"{record.get('ticker')} {record.get('event_class')}: {record.get('summary')}",
+                f"{record.get('ticker')} {record.get('event_class')} ({count} active): "
+                f"{record.get('summary')}",
+            )
+        )
+
+
+def _check_research_blocks(
+    root: Path,
+    issues: list[ValidationIssue],
+    *,
+    strict_live: bool,
+) -> None:
+    from bottleneck_capital.opportunity import overdue_research_blocks
+
+    for item in overdue_research_blocks(root):
+        issues.append(
+            ValidationIssue(
+                "ERROR" if strict_live else "WARN",
+                "OVERDUE_RESEARCH_BLOCK",
+                (
+                    f"{item.ticker} has been RESEARCH_REQUIRED for {item.age_days} days "
+                    f"since primary-source review (max {item.max_age_days}); opportunity "
+                    f"score {item.score:.1f}. Refresh evidence and resolve or reaffirm."
+                ),
             )
         )
 

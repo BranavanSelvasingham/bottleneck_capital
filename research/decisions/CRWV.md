@@ -7,7 +7,7 @@ dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 43
 urgency: HIGH
-last_updated: 2026-06-26
+last_updated: 2026-07-12
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_and_call_signal
 trade_policy: long_only_after_research
@@ -33,7 +33,7 @@ promotion_trigger: ""
 ---
 # CRWV Decision
 
-Updated: 2026-06-26
+Updated: 2026-07-12
 
 Decision: RESEARCH_REQUIRED
 Dip decision: RESEARCH_FIRST

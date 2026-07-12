@@ -2,30 +2,30 @@
 ticker: AVGO
 name: Broadcom
 sleeve: crowded_ai_beta_hedge
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: NOT_ARMED
 sell_status: NOT_TRIGGERED
-confidence_score: 35
+confidence_score: 85
 urgency: HIGH
-last_updated: 2026-06-26
+last_updated: 2026-07-12
 source_classification: sa_reported_current_13f
-instrument_role: reported_put_signal
-trade_policy: signal_only_no_puts_or_shorts
+instrument_role: common_equity_long_with_reported_put_risk_signal
+trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
 dip_approved: false
 valuation_improved: false
 portfolio_risk_allows_add: true
-buy_thesis: Broadcom is tracked as SA reported put exposure, not as a long candidate under the current mandate.
-thesis_expressed: Broadcom is tracked as SA reported put exposure, not as a long candidate under the current mandate.
-anti_thesis: A strong AI networking/custom-silicon business does not make a trade if the signal is only downside/crowding risk.
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
-valuation_case: signal-only risk map, not an entry valuation
-hedge_or_sizing: No puts or shorts; use as risk signal only and do not allocate capital.
-invalidation_trigger: Separate long-only thesis documented with valuation, sizing, and invalidation.
+buy_thesis: Broadcom is a direct custom-AI-silicon and networking bottleneck, with the multi-generation OpenAI accelerator platform adding a marquee deployment to an already accelerating AI semiconductor business.
+thesis_expressed: Broadcom is a direct custom-AI-silicon and networking bottleneck, with the multi-generation OpenAI accelerator platform adding a marquee deployment to an already accelerating AI semiconductor business.
+anti_thesis: Valuation, hyperscaler/customer concentration, custom-silicon competition, VMware execution, debt, or slower AI deployment can compress the premium multiple despite strong revenue growth.
+evidence_quality: PRIMARY_COMPANY_IR_AND_SA_FILING
+valuation_case: Great business but not a discount near $400; add only at $370-$375 or lower with no thesis damage.
+hedge_or_sizing: Hold 4 shares at a $370 average cost; do not add near $400. Add only at $370-$375 or lower and cap AVGO at 8% of known FX-normalized exposure.
+invalidation_trigger: AI semiconductor growth falls below 25% for two quarters, the OpenAI deployment is materially delayed or reduced, major custom-accelerator customers are lost, networking share deteriorates, or leverage/VMware execution worsens materially.
 broken_thesis: ""
-next_trigger: Monitor as SA risk signal; act only if a separate long-only thesis emerges.
-one_line_rationale: Unresolved material event requires research before changing capital.
+next_trigger: Price at or below $375, next quarterly results, OpenAI deployment update, major custom-silicon customer change, guidance change, or SA filing change.
+one_line_rationale: "HOLD / ADD BELOW $375: Q2 AI semiconductor revenue grew 143% YoY and OpenAI validates the custom-silicon thesis, but the July 10 close near $400 and a roughly 6.5% portfolio weight do not offer enough margin of safety for another share."
 action_tier: HOLD
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
@@ -33,31 +33,31 @@ promotion_trigger: ""
 ---
 # AVGO Decision
 
-Updated: 2026-06-26
+Updated: 2026-07-12
 
-Decision: RESEARCH_REQUIRED
+Decision: HOLD
 Dip decision: NOT_ARMED
 Sell status: NOT_TRIGGERED
-Confidence: 35 / 100
+Confidence: 85 / 100
 Urgency: HIGH
 
 One-line rationale:
-Unresolved material event requires research before changing capital.
+HOLD / ADD BELOW $375: Q2 AI semiconductor revenue grew 143% YoY and OpenAI validates the custom-silicon thesis, but the July 10 close near $400 and a roughly 6.5% portfolio weight do not offer enough margin of safety for another share.
 
 Thesis expressed:
-Broadcom is tracked as SA reported put exposure, not as a long candidate under the current mandate.
+Broadcom is a direct custom-AI-silicon and networking bottleneck, with the multi-generation OpenAI accelerator platform adding a marquee deployment to an already accelerating AI semiconductor business.
 
 Anti-thesis:
-A strong AI networking/custom-silicon business does not make a trade if the signal is only downside/crowding risk.
+Valuation, hyperscaler/customer concentration, custom-silicon competition, VMware execution, debt, or slower AI deployment can compress the premium multiple despite strong revenue growth.
 
 Evidence quality:
-SA_FILING_AND_LOCAL_BASELINE
+PRIMARY_COMPANY_IR_AND_SA_FILING
 
 Hedge or sizing:
-No puts or shorts; use as risk signal only and do not allocate capital.
+Hold 4 shares at a $370 average cost; do not add near $400. Add only at $370-$375 or lower and cap AVGO at 8% of known FX-normalized exposure.
 
 Invalidation trigger:
-Separate long-only thesis documented with valuation, sizing, and invalidation.
+AI semiconductor growth falls below 25% for two quarters, the OpenAI deployment is materially delayed or reduced, major custom-accelerator customers are lost, networking share deteriorates, or leverage/VMware execution worsens materially.
 
 Buy now?
 NO
@@ -69,7 +69,7 @@ Sell?
 NO
 
 Next trigger:
-Monitor as SA risk signal; act only if a separate long-only thesis emerges.
+Price at or below $375, next quarterly results, OpenAI deployment update, major custom-silicon customer change, guidance change, or SA filing change.
 
 Human action:
-No trade; monitor as signal.
+Follow sizing and hedge discipline before any trade.

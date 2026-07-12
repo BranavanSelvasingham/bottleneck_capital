@@ -8,11 +8,13 @@ import pytest
 
 from bottleneck_capital.decision_engine import (
     MissingDecisionFile,
+    compile_decisions,
     evaluate_all,
     evaluate_ticker,
     write_action_board,
     write_daily_board,
 )
+from bottleneck_capital.io import read_markdown_frontmatter
 from bottleneck_capital.signal_events import resolve_signal_events
 
 
@@ -88,6 +90,50 @@ def test_resolved_material_event_no_longer_blocks_decision(tmp_path: Path) -> No
     assert result.action == "HOLD"
 
 
+def test_compile_restores_asset_decision_after_event_resolution(tmp_path: Path) -> None:
+    buy_fields = {
+        "current_decision": "BUY_NOW",
+        "buy_thesis": "Clean bottleneck exposure.",
+        "anti_thesis": "Customer concentration.",
+        "evidence_quality": "PRIMARY",
+        "valuation_case": "Acceptable valuation.",
+        "hedge_or_sizing": "One-share tranche with a 6% cap.",
+        "invalidation_trigger": "Named thesis break.",
+        "approved_entry_zone": "BUY_NOW one share at or below $435.",
+        "dip_decision": "ADD_SMALL_ON_DIP",
+    }
+    _write_project(
+        tmp_path,
+        "AAA",
+        asset={**buy_fields, "unresolved_material_event": False},
+        decision={**buy_fields, "unresolved_material_event": True},
+    )
+    _write_jsonl(
+        tmp_path / "state" / "signal_events.jsonl",
+        [
+            {
+                "ticker": "AAA",
+                "event_class": "dip_trigger",
+                "priority": "high",
+                "requires_codex": True,
+                "resolved": False,
+            }
+        ],
+    )
+
+    assert compile_decisions(tmp_path)[0].action == "RESEARCH_REQUIRED"
+    resolve_signal_events(tmp_path, ticker="AAA", reason="Reviewed; no thesis damage.")
+
+    assert compile_decisions(tmp_path)[0].action == "BUY_NOW"
+    restored, _ = read_markdown_frontmatter(
+        tmp_path / "research" / "decisions" / "AAA.md"
+    )
+    assert restored["current_decision"] == "BUY_NOW"
+    assert restored["unresolved_material_event"] is False
+    assert restored["dip_decision"] == "ADD_SMALL_ON_DIP"
+    assert restored["hedge_or_sizing"] == "One-share tranche with a 6% cap."
+
+
 def test_directly_resolved_material_event_no_longer_blocks_decision(tmp_path: Path) -> None:
     _write_project(tmp_path, "AAA", decision={"current_decision": "HOLD"})
     _write_jsonl(
@@ -106,6 +152,28 @@ def test_directly_resolved_material_event_no_longer_blocks_decision(tmp_path: Pa
     result = evaluate_all(tmp_path)[0]
 
     assert result.action == "HOLD"
+
+
+def test_current_asset_research_overrides_stale_generated_decision(tmp_path: Path) -> None:
+    _write_project(
+        tmp_path,
+        "AAA",
+        asset={
+            "current_decision": "HOLD",
+            "last_updated": "2026-07-12",
+            "one_line_rationale": "Wait for the imminent primary event.",
+        },
+        decision={
+            "current_decision": "BUY_NOW",
+            "last_updated": "2026-07-12",
+            "one_line_rationale": "Stale generated buy decision.",
+        },
+    )
+
+    result = evaluate_all(tmp_path)[0]
+
+    assert result.action == "HOLD"
+    assert result.rationale == "Wait for the imminent primary event."
 
 
 def test_sa_full_exit_event_becomes_research_required(tmp_path: Path) -> None:
@@ -269,9 +337,12 @@ def test_action_board_surfaces_only_actionable_decisions(tmp_path: Path) -> None
 
     report_path = write_action_board(tmp_path)
     report = report_path.read_text(encoding="utf-8")
+    actions = report.split("## Actions", 1)[1].split(
+        "## Active High-Priority Signals", 1
+    )[0]
 
-    assert "| BBB | BUY_NOW |" in report
-    assert "| AAA | HOLD |" not in report
+    assert "| BBB | BUY_NOW |" in actions
+    assert "| AAA | HOLD |" not in actions
 
 
 def test_action_board_places_source_gaps_before_actions(tmp_path: Path) -> None:

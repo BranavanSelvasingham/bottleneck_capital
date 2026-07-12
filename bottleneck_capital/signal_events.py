@@ -89,6 +89,35 @@ def active_signal_events(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     return list(active_by_identity.values())
 
 
+def group_signal_events(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Collapse repeated alerts while preserving the latest actionable context."""
+    grouped: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for record in records:
+        ticker = scalar_text(record.get("ticker")).upper()
+        event_class = scalar_text(record.get("event_class"))
+        if not ticker or not event_class:
+            continue
+        grouped.setdefault((ticker, event_class), []).append(record)
+
+    consolidated: list[dict[str, Any]] = []
+    for (ticker, event_class), items in grouped.items():
+        ordered = sorted(items, key=lambda item: scalar_text(item.get("detected_at")))
+        latest = dict(ordered[-1])
+        latest["ticker"] = ticker
+        latest["event_class"] = event_class
+        latest["event_count"] = len(items)
+        latest["first_detected_at"] = scalar_text(ordered[0].get("detected_at"))
+        latest["latest_detected_at"] = scalar_text(ordered[-1].get("detected_at"))
+        consolidated.append(latest)
+    return sorted(
+        consolidated,
+        key=lambda item: (
+            scalar_text(item.get("ticker")),
+            scalar_text(item.get("event_class")),
+        ),
+    )
+
+
 def resolve_signal_events(
     root: Path,
     *,

@@ -2,12 +2,12 @@
 ticker: APLD
 name: Applied Digital
 sleeve: miner_to_datacenter
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
 confidence_score: 40
 urgency: HIGH
-last_updated: 2026-06-26
+last_updated: 2026-07-12
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -25,7 +25,7 @@ hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and
 invalidation_trigger: Major customer/financing failure or evidence that sites cannot support contracted AI load.
 broken_thesis: ""
 next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: Unresolved material event requires research before changing capital.
+one_line_rationale: "Hold/watch only: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing."
 action_tier: HOLD
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
@@ -33,16 +33,16 @@ promotion_trigger: ""
 ---
 # APLD Decision
 
-Updated: 2026-06-26
+Updated: 2026-07-12
 
-Decision: RESEARCH_REQUIRED
+Decision: HOLD
 Dip decision: RESEARCH_FIRST
 Sell status: NOT_TRIGGERED
 Confidence: 40 / 100
 Urgency: HIGH
 
 One-line rationale:
-Unresolved material event requires research before changing capital.
+Hold/watch only: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.
 
 Thesis expressed:
 Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.
@@ -72,4 +72,4 @@ Next trigger:
 Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

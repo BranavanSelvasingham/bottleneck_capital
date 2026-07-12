@@ -2,37 +2,37 @@
 ticker: AVGO
 name: Broadcom
 sleeve: crowded_ai_beta_hedge
-last_updated: 2026-06-21
+last_updated: 2026-07-11
 source_classification: sa_reported_current_13f
-instrument_role: reported_put_signal
-trade_policy: signal_only_no_puts_or_shorts
+instrument_role: common_equity_long_with_reported_put_risk_signal
+trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
-thesis_expressed: Broadcom is tracked as SA reported put exposure, not as a long candidate under the current mandate.
-anti_thesis: A strong AI networking/custom-silicon business does not make a trade if the signal is only downside/crowding risk.
-hedge_or_sizing: No puts or shorts; use as risk signal only and do not allocate capital.
-invalidation_trigger: Separate long-only thesis documented with valuation, sizing, and invalidation.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: Signal-only SA exposure; no long-only trade is authorized.
-asset_role: Signal-only AI networking/custom-silicon risk map.
+evidence_quality: PRIMARY_COMPANY_IR_AND_SA_FILING
+thesis_expressed: Broadcom is a direct custom-AI-silicon and networking bottleneck, with the multi-generation OpenAI accelerator platform adding a marquee deployment to an already accelerating AI semiconductor business.
+anti_thesis: Valuation, hyperscaler/customer concentration, custom-silicon competition, VMware execution, debt, or slower AI deployment can compress the premium multiple despite strong revenue growth.
+hedge_or_sizing: Hold 4 shares at a $370 average cost; do not add near $400. Add only at $370-$375 or lower with no thesis damage, and cap AVGO at 8% of known FX-normalized exposure.
+invalidation_trigger: AI semiconductor growth falls below 25% for two quarters, the OpenAI multi-generation deployment is materially delayed or reduced, major custom-accelerator customers are lost, networking share deteriorates, or leverage/VMware execution worsens materially.
+next_trigger: Price at or below $375, next quarterly results, OpenAI deployment update, major custom-silicon customer change, guidance change, or SA filing change.
+one_line_rationale: "HOLD / ADD BELOW $375: Q2 AI semiconductor revenue grew 143% YoY and OpenAI validates the custom-silicon thesis, but the July 10 close near $400 and a roughly 6.5% portfolio weight do not offer enough margin of safety for another share."
+asset_role: Custom AI silicon, networking, connectivity, and infrastructure software bottleneck.
 default_holding_period: multi_year
 current_decision: HOLD
 dip_decision: NOT_ARMED
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
-thesis_health_score: 45
-confidence_score: 35
-valuation_attractiveness_score: 20
+last_primary_source_check: 2026-07-11
+thesis_health_score: 90
+confidence_score: 85
+valuation_attractiveness_score: 45
 urgency_score: 90
-max_position_weight_pct: 0
-current_position_weight_pct: 0
-approved_entry_zone: No new capital until scheduled scan validates valuation.
-do_not_buy_zone: Any price without thesis, valuation, sizing, and invalidation.
+max_position_weight_pct: 8
+current_position_weight_pct: 6.5
+approved_entry_zone: ADD_ON_DIP at $370-$375 or lower with no thesis damage; do not add at the July 10 close near $400.
+do_not_buy_zone: Above $400, after a customer/program loss, after an AI semiconductor guidance cut, or when AVGO exceeds 8% of known FX-normalized exposure.
 sell_trigger_status: false
 hedge_required: true
-main_hedge: No puts or shorts; use as risk signal only and do not allocate capital.
+main_hedge: No puts or shorts; use price discipline and an 8% position cap, while treating SA put exposure as a crowding-risk signal.
 open_questions_count: 0
 broken_thesis: ""
 ---

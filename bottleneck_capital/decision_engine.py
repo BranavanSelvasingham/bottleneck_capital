@@ -16,7 +16,11 @@ from bottleneck_capital.io import (
     scalar_text,
     write_markdown_with_frontmatter,
 )
-from bottleneck_capital.signal_events import active_signal_events, event_id_for_record
+from bottleneck_capital.signal_events import (
+    active_signal_events,
+    event_id_for_record,
+    group_signal_events,
+)
 
 ALLOWED_DECISIONS = {
     "BUY_NOW",
@@ -96,7 +100,36 @@ def load_watchlist(root: Path) -> list[dict[str, Any]]:
 
 def evaluate_all(root: Path) -> list[DecisionResult]:
     events = active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
-    return [evaluate_ticker(root, item, events) for item in load_watchlist(root)]
+    safe_bounded_dips = _safe_bounded_dip_tickers(root)
+    decision_events = [
+        event
+        for event in events
+        if not _is_safe_bounded_dip(event, safe_bounded_dips)
+    ]
+    return [evaluate_ticker(root, item, decision_events) for item in load_watchlist(root)]
+
+
+def _safe_bounded_dip_tickers(root: Path) -> set[str]:
+    from bottleneck_capital.dip_review import review_active_dips
+
+    return {
+        review.ticker
+        for review in review_active_dips(root)
+        if review.bounded
+        and review.thesis_damage_risk in {"LOW", "LOW_MEDIUM"}
+        and review.action_bias
+        in {
+            "ADD_ON_DIP_CANDIDATE_IF_VALUATION_CLEARS",
+            "SLEEVE_RELATIVE_VALUE_REVIEW",
+        }
+    }
+
+
+def _is_safe_bounded_dip(event: dict[str, Any], tickers: set[str]) -> bool:
+    return (
+        scalar_text(event.get("event_class")) == "dip_trigger"
+        and scalar_text(event.get("ticker")).upper() in tickers
+    )
 
 
 def evaluate_ticker(
@@ -111,20 +144,38 @@ def evaluate_ticker(
 
     asset_data, _ = read_markdown_frontmatter(root / "research" / "assets" / f"{ticker}.md")
     decision_data, _ = read_markdown_frontmatter(decision_path)
-    data = {**watchlist_item, **asset_data, **decision_data}
     ticker_events = [
         event
         for event in (signal_events or [])
         if scalar_text(event.get("ticker")).upper() == ticker
     ]
+    unresolved_events = [event for event in ticker_events if _is_unresolved_material(event)]
+    released_event_override = _is_released_material_event_override(
+        asset_data,
+        decision_data,
+        unresolved_events,
+    )
+    asset_research_override = released_event_override or _asset_research_is_current(
+        asset_data,
+        decision_data,
+    )
+    data = (
+        {**watchlist_item, **decision_data, **asset_data}
+        if asset_research_override
+        else {**watchlist_item, **asset_data, **decision_data}
+    )
 
     name = scalar_text(data.get("name") or watchlist_item.get("name") or ticker)
     sleeve = scalar_text(data.get("sleeve") or watchlist_item.get("sleeve") or "unassigned")
     current = _normalize_decision(
-        decision_data.get("current_decision")
-        or decision_data.get("decision")
-        or asset_data.get("current_decision")
-        or asset_data.get("decision")
+        (
+            asset_data.get("current_decision") or asset_data.get("decision")
+            if asset_research_override
+            else decision_data.get("current_decision")
+            or decision_data.get("decision")
+            or asset_data.get("current_decision")
+            or asset_data.get("decision")
+        )
     )
     thesis_damage = scalar_bool(asset_data.get("thesis_damage")) or scalar_bool(
         decision_data.get("thesis_damage")
@@ -135,7 +186,6 @@ def evaluate_ticker(
     unacceptable_risk = scalar_text(
         decision_data.get("unacceptable_risk") or asset_data.get("unacceptable_risk")
     )
-    unresolved_events = [event for event in ticker_events if _is_unresolved_material(event)]
     thesis_damage_events = [
         event
         for event in unresolved_events
@@ -193,9 +243,7 @@ def evaluate_ticker(
             "review thesis weight and position discipline.",
         )
 
-    unresolved_material_event = scalar_bool(
-        asset_data.get("unresolved_material_event")
-    ) or scalar_bool(decision_data.get("unresolved_material_event"))
+    unresolved_material_event = scalar_bool(data.get("unresolved_material_event"))
     if unresolved_events or unresolved_material_event:
         return _research_required(
             ticker,
@@ -282,10 +330,19 @@ def compile_decisions(root: Path) -> list[DecisionResult]:
     for result in results:
         path = root / "research" / "decisions" / f"{result.ticker}.md"
         existing, _ = read_markdown_frontmatter(path)
+        asset_data, _ = read_markdown_frontmatter(
+            root / "research" / "assets" / f"{result.ticker}.md"
+        )
+        source_data = (
+            {**existing, **asset_data}
+            if _asset_research_is_current(asset_data, existing)
+            or _compiled_event_override_was_released(result, asset_data, existing)
+            else existing
+        )
         write_markdown_with_frontmatter(
             path,
-            _decision_frontmatter(result, existing, now),
-            _decision_body(result, existing),
+            _decision_frontmatter(result, source_data, now),
+            _decision_body(result, source_data),
         )
         ledger_record = _ledger_record(result, now)
         if _ledger_changed(latest_ledger.get(result.ticker), ledger_record):
@@ -306,14 +363,34 @@ def write_daily_board(root: Path) -> Path:
 
 def write_action_board(root: Path) -> Path:
     from bottleneck_capital.dip_review import review_active_dips
+    from bottleneck_capital.opportunity import (
+        opportunity_board_limit,
+        overdue_research_blocks,
+        rank_opportunities,
+    )
 
     results = evaluate_all(root)
     events = active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
     dip_reviews = review_active_dips(root)
+    decisions = {result.ticker: result.action for result in results}
+    opportunities = rank_opportunities(root, decision_overrides=decisions)[
+        : opportunity_board_limit(root)
+    ]
+    overdue = overdue_research_blocks(root, decision_overrides=decisions)
     now = _now()
     report_path = root / "reports" / "action_boards" / f"{now[:10]}.md"
     report_path.parent.mkdir(parents=True, exist_ok=True)
-    report_path.write_text(render_action_board(results, events, now, dip_reviews), encoding="utf-8")
+    report_path.write_text(
+        render_action_board(
+            results,
+            events,
+            now,
+            dip_reviews,
+            opportunities=opportunities,
+            overdue_research=overdue,
+        ),
+        encoding="utf-8",
+    )
     return report_path
 
 
@@ -355,6 +432,8 @@ def render_action_board(
     signal_events: list[dict[str, Any]],
     now: str,
     dip_reviews: list[Any] | None = None,
+    opportunities: list[Any] | None = None,
+    overdue_research: list[Any] | None = None,
 ) -> str:
     from bottleneck_capital.dip_review import render_action_board_dip_reviews
 
@@ -403,6 +482,11 @@ def render_action_board(
                 f"{_table(scalar_text(event.get('summary')))} |"
             )
         lines.append("")
+    lines.extend(_render_opportunity_ranking(opportunities or []))
+    lines.append("")
+    if overdue_research:
+        lines.extend(_render_overdue_research(overdue_research))
+        lines.append("")
     lines.extend(render_action_board_dip_reviews(dip_reviews or []))
     lines.append("")
     lines.extend(
@@ -425,17 +509,24 @@ def render_action_board(
         lines.append("| - | - | - | - | No actionable decision changes. |")
 
     lines.extend(["", "## Active High-Priority Signals", ""])
-    lines.extend(["| Event ID | Ticker | Class | Summary |", "|---|---|---|---|"])
-    if high_events:
-        for event in high_events:
+    grouped_high_events = group_signal_events(high_events)
+    lines.extend(
+        [
+            "| Latest Event ID | Ticker | Class | Count | Latest Summary |",
+            "|---|---|---|---:|---|",
+        ]
+    )
+    if grouped_high_events:
+        for event in grouped_high_events:
             lines.append(
                 f"| {event_id_for_record(event)} | "
                 f"{_table(scalar_text(event.get('ticker')).upper())} | "
                 f"{_table(scalar_text(event.get('event_class')))} | "
+                f"{int(event.get('event_count', 1))} | "
                 f"{_table(scalar_text(event.get('summary')))} |"
             )
     else:
-        lines.append("| - | - | - | - |")
+        lines.append("| - | - | - | - | - |")
     return "\n".join(lines) + "\n"
 
 
@@ -443,6 +534,53 @@ def render_decision_index(results: list[DecisionResult], now: str) -> str:
     lines = ["# Bottleneck Capital Decision Index", "", f"Updated: {now}", ""]
     lines.extend(_render_board_sections(results))
     return "\n".join(lines) + "\n"
+
+
+def _render_opportunity_ranking(opportunities: list[Any]) -> list[str]:
+    lines = [
+        "## Opportunity Ranking",
+        "",
+        (
+            "Ranked by thesis health, valuation, bottleneck upside, confidence, "
+            "portfolio capacity, and current decision."
+        ),
+        "",
+        "| Rank | Ticker | Decision | Score | Price | Approved Entry | Why |",
+        "|---:|---|---|---:|---:|---|---|",
+    ]
+    if not opportunities:
+        lines.append("| - | - | - | - | - | - | - |")
+        return lines
+    for index, item in enumerate(opportunities, start=1):
+        price = f"${item.current_price:,.2f}" if item.current_price > 0 else "Unknown"
+        lines.append(
+            f"| {index} | {_table(item.ticker)} | {_table(item.decision)} | "
+            f"{item.score:.1f} | {price} | {_table(item.entry_zone)} | "
+            f"{_table(item.rationale)} |"
+        )
+    return lines
+
+
+def _render_overdue_research(items: list[Any]) -> list[str]:
+    lines = [
+        "## Overdue Research Blocks",
+        "",
+        (
+            "These names have remained RESEARCH_REQUIRED beyond the configured review "
+            "window. Refresh primary evidence and either resolve the block or explicitly "
+            "reaffirm it."
+        ),
+        "",
+        "| Ticker | Age | Max Age | Opportunity Score | Last Primary Check | Block |",
+        "|---|---:|---:|---:|---|---|",
+    ]
+    for item in items:
+        lines.append(
+            f"| {_table(item.ticker)} | {item.age_days}d | {item.max_age_days}d | "
+            f"{item.score:.1f} | {_table(item.last_primary_source_check)} | "
+            f"{_table(item.rationale)} |"
+        )
+    return lines
 
 
 def create_dip_investigation(root: Path, ticker: str) -> Path:
@@ -519,6 +657,58 @@ def _normalize_decision(value: Any) -> str:
     if action not in ALLOWED_DECISIONS:
         return "RESEARCH_REQUIRED"
     return action
+
+
+def _is_released_material_event_override(
+    asset_data: dict[str, Any],
+    decision_data: dict[str, Any],
+    unresolved_events: list[dict[str, Any]],
+) -> bool:
+    if unresolved_events:
+        return False
+    asset_decision = _normalize_decision(
+        asset_data.get("current_decision") or asset_data.get("decision")
+    )
+    decision = _normalize_decision(
+        decision_data.get("current_decision") or decision_data.get("decision")
+    )
+    return (
+        decision == "RESEARCH_REQUIRED"
+        and asset_decision != "RESEARCH_REQUIRED"
+        and scalar_text(decision_data.get("one_line_rationale"))
+        == "Unresolved material event requires research before changing capital."
+    )
+
+
+def _asset_research_is_current(
+    asset_data: dict[str, Any],
+    decision_data: dict[str, Any],
+) -> bool:
+    asset_updated = scalar_text(asset_data.get("last_updated"))[:10]
+    decision_updated = scalar_text(decision_data.get("last_updated"))[:10]
+    return bool(asset_updated) and (
+        not decision_updated or asset_updated >= decision_updated
+    )
+
+
+def _compiled_event_override_was_released(
+    result: DecisionResult,
+    asset_data: dict[str, Any],
+    decision_data: dict[str, Any],
+) -> bool:
+    asset_decision = _normalize_decision(
+        asset_data.get("current_decision") or asset_data.get("decision")
+    )
+    decision = _normalize_decision(
+        decision_data.get("current_decision") or decision_data.get("decision")
+    )
+    return (
+        result.action == asset_decision
+        and result.action != "RESEARCH_REQUIRED"
+        and decision == "RESEARCH_REQUIRED"
+        and scalar_text(decision_data.get("one_line_rationale"))
+        == "Unresolved material event requires research before changing capital."
+    )
 
 
 def _is_unresolved_material(event: dict[str, Any]) -> bool:

@@ -4,11 +4,18 @@ import json
 from datetime import date
 from pathlib import Path
 
+import pytest
+
 import bottleneck_capital.ingest as ingest_module
 import bottleneck_capital.live_sources as live_sources
 from bottleneck_capital.ingest import IngestError, ingest_filings, ingest_market
 from bottleneck_capital.io import read_json_events, read_jsonl
 from bottleneck_capital.sentinel import run_sentinel
+
+
+@pytest.fixture(autouse=True)
+def _freeze_ingest_date(monkeypatch) -> None:
+    monkeypatch.setattr(ingest_module, "_today_date", lambda: date(2026, 6, 22))
 
 
 def test_market_ingest_writes_latest_events_and_sentinel_classifies_dip(tmp_path: Path) -> None:

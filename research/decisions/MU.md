@@ -2,74 +2,74 @@
 ticker: MU
 name: Micron
 sleeve: memory_storage_networking
-current_decision: RESEARCH_REQUIRED
-dip_decision: RESEARCH_FIRST
+current_decision: ADD_ON_DIP
+dip_decision: APPROVED
 sell_status: NOT_TRIGGERED
-confidence_score: 48
+confidence_score: 80
 urgency: HIGH
-last_updated: 2026-06-26
+last_updated: 2026-07-12
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_call_signal_and_put_signal
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: true
-dip_approved: false
-valuation_improved: false
+unresolved_material_event: false
+dip_approved: true
+valuation_improved: true
 portfolio_risk_allows_add: true
 buy_thesis: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
-thesis_expressed: Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
-anti_thesis: The upside may be cyclical pricing rather than durable structural scarcity.
-evidence_quality: MARKET_NEWS_AND_LOCAL_BASELINE_NEEDS_PRIMARY_SOURCE
-valuation_case: cycle-normalized earnings plus HBM scarcity scenario value
-hedge_or_sizing: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
-invalidation_trigger: HBM leadership or memory pricing breaks while valuation remains elevated.
+thesis_expressed: Micron is a direct HBM, DRAM, and AI-memory bottleneck whose multi-year customer agreements and HBM4 ramp provide more visibility than a normal memory upcycle.
+anti_thesis: Current 86% gross-margin guidance may represent peak-cycle pricing; new supply, customer concentration, substitution, capex execution, or an HBM share loss could collapse normalized earnings.
+evidence_quality: PRIMARY_COMPANY_RESULTS_AND_10Q
+valuation_case: At the $979.30 July 10 close, MU is about 7.9x annualized Q4 non-GAAP EPS guidance of $31, but peak-cycle earnings require a discount; $925-$950 is the first approved entry and $875-$900 is the stronger margin-of-safety zone.
+hedge_or_sizing: No puts or shorts; buy one share only at $925-$950, reserve a second tranche for $875-$900, and cap MU at 4% of known FX-normalized exposure until margins prove durable.
+invalidation_trigger: Move to HOLD or SELL review if forward gross-margin guidance falls below 70%, HBM4 qualification or volume shipments slip materially, strategic customer agreements weaken, DRAM/HBM supply growth overtakes demand, or SA fully exits.
 broken_thesis: ""
-next_trigger: Resolve the June 22 Anthropic partnership economics and June 24 earnings setup before any new capital.
-one_line_rationale: Unresolved material event requires research before changing capital.
-action_tier: RESEARCH_REQUIRED
+next_trigger: Price at or below $950, next quarterly results, HBM4 customer qualification, strategic customer agreement update, gross-margin guidance change, or SA filing change.
+one_line_rationale: "ADD_ON_DIP: Q3 revenue reached $41.46 billion, Q4 guidance is $50 billion with about 86% gross margin and $31 non-GAAP EPS, and HBM4 is shipping; buy one share only at $925-$950 because the stock is up more than 250% YTD and peak-cycle risk remains material."
+action_tier: ADD_ON_DIP
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
 promotion_trigger: ""
 ---
 # MU Decision
 
-Updated: 2026-06-26
+Updated: 2026-07-12
 
-Decision: RESEARCH_REQUIRED
-Dip decision: RESEARCH_FIRST
+Decision: ADD_ON_DIP
+Dip decision: YES
 Sell status: NOT_TRIGGERED
-Confidence: 48 / 100
+Confidence: 80 / 100
 Urgency: HIGH
 
 One-line rationale:
-Unresolved material event requires research before changing capital.
+ADD_ON_DIP: Q3 revenue reached $41.46 billion, Q4 guidance is $50 billion with about 86% gross margin and $31 non-GAAP EPS, and HBM4 is shipping; buy one share only at $925-$950 because the stock is up more than 250% YTD and peak-cycle risk remains material.
 
 Thesis expressed:
-Micron is a direct HBM/memory scarcity expression, but the memory cycle and SA put signal make entry discipline crucial.
+Micron is a direct HBM, DRAM, and AI-memory bottleneck whose multi-year customer agreements and HBM4 ramp provide more visibility than a normal memory upcycle.
 
 Anti-thesis:
-The upside may be cyclical pricing rather than durable structural scarcity.
+Current 86% gross-margin guidance may represent peak-cycle pricing; new supply, customer concentration, substitution, capex execution, or an HBM share loss could collapse normalized earnings.
 
 Evidence quality:
-MARKET_NEWS_AND_LOCAL_BASELINE_NEEDS_PRIMARY_SOURCE
+PRIMARY_COMPANY_RESULTS_AND_10Q
 
 Hedge or sizing:
-No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
+No puts or shorts; buy one share only at $925-$950, reserve a second tranche for $875-$900, and cap MU at 4% of known FX-normalized exposure until margins prove durable.
 
 Invalidation trigger:
-HBM leadership or memory pricing breaks while valuation remains elevated.
+Move to HOLD or SELL review if forward gross-margin guidance falls below 70%, HBM4 qualification or volume shipments slip materially, strategic customer agreements weaken, DRAM/HBM supply growth overtakes demand, or SA fully exits.
 
 Buy now?
 NO
 
 Buy on dip?
-RESEARCH_FIRST
+YES
 
 Sell?
 NO
 
 Next trigger:
-Resolve the June 22 Anthropic partnership economics and June 24 earnings setup before any new capital.
+Price at or below $950, next quarterly results, HBM4 customer qualification, strategic customer agreement update, gross-margin guidance change, or SA filing change.
 
 Human action:
-Research before acting.
+Follow sizing and hedge discipline before any trade.

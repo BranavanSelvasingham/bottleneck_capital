@@ -2,12 +2,12 @@
 ticker: ORCL
 name: Oracle
 sleeve: enterprise_ai_infra
-current_decision: RESEARCH_REQUIRED
+current_decision: HOLD
 dip_decision: NOT_ARMED
 sell_status: NOT_TRIGGERED
 confidence_score: 34
 urgency: HIGH
-last_updated: 2026-06-26
+last_updated: 2026-07-12
 source_classification: sa_reported_current_13f
 instrument_role: reported_put_signal
 trade_policy: signal_only_no_puts_or_shorts
@@ -25,7 +25,7 @@ hedge_or_sizing: No puts or shorts; use as risk signal only and do not allocate 
 invalidation_trigger: Separate long-only thesis documented with valuation, sizing, and invalidation.
 broken_thesis: ""
 next_trigger: Monitor as SA risk signal; act only if a separate long-only thesis emerges.
-one_line_rationale: Unresolved material event requires research before changing capital.
+one_line_rationale: Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.
 action_tier: HOLD
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
@@ -33,16 +33,16 @@ promotion_trigger: ""
 ---
 # ORCL Decision
 
-Updated: 2026-06-26
+Updated: 2026-07-12
 
-Decision: RESEARCH_REQUIRED
+Decision: HOLD
 Dip decision: NOT_ARMED
 Sell status: NOT_TRIGGERED
 Confidence: 34 / 100
 Urgency: HIGH
 
 One-line rationale:
-Unresolved material event requires research before changing capital.
+Signal-only SA put/hedge exposure; no puts or shorts in the current mandate.
 
 Thesis expressed:
 Oracle is tracked as SA reported put exposure; it informs capex duration and AI infrastructure risk, not long-only action.

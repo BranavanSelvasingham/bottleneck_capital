@@ -93,8 +93,10 @@ def test_live_check_cli_runs_market_sentinel_action_board_and_validation(
 
     ledger = read_jsonl(tmp_path / "state" / "run_ledger.jsonl")
     refreshed_positions = positions.read_text(encoding="utf-8")
+    action_board = next((tmp_path / "reports" / "action_boards").glob("*.md"))
     assert exit_code == 0
     assert (tmp_path / "reports" / "action_boards").exists()
+    assert "## Opportunity Ranking" in action_board.read_text(encoding="utf-8")
     assert ledger[-1]["process"] == "live-check"
     assert ledger[-1]["status"] == "success"
     assert ledger[-1]["warnings"]
