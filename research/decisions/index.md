@@ -1,13 +1,13 @@
 # Bottleneck Capital Decision Index
 
-Updated: 2026-07-12T20:28-04:00
+Updated: 2026-07-13T07:14-04:00
 
 ## Buy Now
 
 | Ticker | Reason | Max Add | Hedge? |
 |---|---|---:|---|
 | ORCL | BUY_NOW / HALF STARTER: Oracle at $140.64 is about 17.5x FY2027 non-GAAP EPS guidance while OCI grew 93% and RPO reached $638 billion, but negative free cash flow and planned financing require strict sizing. | cap 3% | Strict initial size and no second tranche until funding and cash conversion improve; no puts or shorts. |
-| VST | BUY_NOW / HALF STARTER: at $158.86 Vistra offers an approximate 8.1% midpoint 2026 free-cash-flow-before-growth yield, strong near-term hedging, and cleaner power-bottleneck diversification than another semiconductor purchase. | cap 4% | Limit initial sizing and diversify away from semiconductor concentration; no puts or shorts. |
+| VST | BUY_NOW / HALF STARTER: at $158.86 Vistra offers about a 7.7% midpoint cash-flow-before-growth yield after preferred dividends, but leverage, preferred claims, and excluded growth spending make a full immediate allocation unjustified. | cap 4% | Limit initial sizing and diversify away from semiconductor concentration; no puts or shorts. |
 
 ## Add on Dip
 
@@ -73,4 +73,3 @@ Updated: 2026-07-12T20:28-04:00
 |---|---|---|
 | BITF | Unresolved material event requires research before changing capital. | Next review |
 | CRWV | Unresolved material event requires research before changing capital. | Next review |
-
