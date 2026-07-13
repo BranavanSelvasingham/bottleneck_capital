@@ -5,3 +5,7 @@ __pycache__/
 .ruff_cache/
 state/local_positions.yaml
 reports/local_exposure.md
+state/signal_events.jsonl
+reports/action_boards/
+reports/daily_decision_boards/
+reports/sunday_preps/

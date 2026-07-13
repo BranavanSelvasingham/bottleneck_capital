@@ -11,7 +11,7 @@ unresolved_material_event: false
 evidence_quality: PRIMARY_FILINGS_AND_SA_13F
 thesis_expressed: TSMC is the cleanest upstream AI compute bottleneck: leading-edge foundry plus advanced packaging capacity, with current revenue and margin evidence showing AI/HPC demand is already material.
 anti_thesis: Taiwan/geopolitical risk, customer concentration, capex execution, or a sudden advanced-node and advanced-packaging demand slowdown can dominate even a strong moat.
-hedge_or_sizing: No puts or shorts; make no further purchase before July 16 earnings, treat any already-submitted two-share order as the full pre-earnings allocation if it fills, and cap total TSM exposure at 6% through the event.
+hedge_or_sizing: No puts or shorts; make no further purchase before July 16 earnings and apply a 6% event-risk policy cap from the local ledger.
 invalidation_trigger: Move to RESEARCH_REQUIRED or SELL review if advanced technologies fall below 65% of wafer revenue for two quarters, HPC falls below 50% of revenue without offsetting packaging growth, 2026 revenue growth guidance falls below 20%, gross margin guidance falls below 58%, customer concentration or geopolitical risk materially worsens, or SA fully exits.
 next_trigger: July 13 2026 June revenue, July 16 Q2 results, SA filing change, customer-concentration update, guidance change, geopolitical escalation, or a post-earnings move into the $405-$415 add zone.
 one_line_rationale: "HOLD / POST-EARNINGS ADD: TSMC remains the cleanest upstream AI compute bottleneck, but the $434.11 July 10 close is about 31x annualized Q1 ADR EPS and June sales plus Q2 results are imminent; MU offers greater bottleneck upside per dollar at its approved dip entry, while TSM remains the higher-quality holding."
@@ -30,7 +30,7 @@ confidence_score: 82
 valuation_attractiveness_score: 55
 urgency_score: 55
 max_position_weight_pct: 6
-current_position_weight_pct: 3.5
+current_position_weight_pct: 0
 approved_entry_zone: "HOLD through July 16 results. After results, add one ADR at $405-$415 only if revenue guidance, advanced-node demand, and gross margins remain intact; reconsider up to $425 only after a material guidance raise."
 valuation_case: "At the $434.11 July 10 close and Q1 2026 EPS of $3.49/ADR, TSM trades near 31.1x annualized Q1 ADR EPS. That is defensible for quality but not a clear discount immediately before June sales and Q2 results."
 do_not_buy_zone: "Do not add before July 16 results, above $435 without a material guidance raise, after a geopolitical escalation or guidance cut, or when TSM exceeds the 6% event-risk cap."
@@ -227,7 +227,7 @@ Evidence quality: primary company filings, SA 13F information table, and current
 
 ## 12. Open Questions
 
-- Position is opened: local TFSA position shows 2.0 TSM ADR shares with cost/current price recorded in `state/local_positions.yaml`. Exact portfolio weight remains pending until total portfolio value is available.
+- No public research question is blocking; exact exposure remains local-only.
 
 ## 13. Latest Agent Notes
 

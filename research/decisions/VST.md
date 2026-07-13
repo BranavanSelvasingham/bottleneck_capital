@@ -2,74 +2,74 @@
 ticker: VST
 name: Vistra
 sleeve: power_bottleneck
-current_decision: HOLD
-dip_decision: RESEARCH_FIRST
+current_decision: BUY_NOW
+dip_decision: APPROVED
 sell_status: NOT_TRIGGERED
-confidence_score: 42
-urgency: MEDIUM
+confidence_score: 82
+urgency: HIGH
 last_updated: 2026-07-12
 source_classification: sa_adjacent_historical_or_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-dip_approved: false
-valuation_improved: false
+dip_approved: true
+valuation_improved: true
 portfolio_risk_allows_add: true
-buy_thesis: Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy.
-thesis_expressed: Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy.
-anti_thesis: Power scarcity and nuclear/generation value may already be priced.
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
-valuation_case: generation fleet value, PPA economics, and power scarcity scenario value
-hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
-invalidation_trigger: Datacenter/generation scarcity thesis weakens or valuation offers no margin of safety.
+buy_thesis: Vistra is a direct expression of scarce dispatchable US power, with a hedged fleet and long-duration data-center demand not fully captured by the current cash-flow yield.
+thesis_expressed: Vistra is a direct expression of scarce dispatchable US power, with a hedged generation fleet and long-duration data-center power demand that is not fully captured by the current cash-flow yield.
+anti_thesis: Acquisition leverage, integration risk, power-price normalization, regulatory intervention, nuclear outages, or weak retail execution can overwhelm the data-center demand thesis.
+evidence_quality: PRIMARY_COMPANY_IR_AND_SEC
+valuation_case: At $158.86, approximate $53.6 billion equity value and 8.1% midpoint 2026 free-cash-flow-before-growth yield.
+hedge_or_sizing: Use a half starter while the geopolitical regime is elevated; policy cap 4%, with later tranches only after balance-sheet and integration progress remain on plan.
+invalidation_trigger: 2026 adjusted EBITDA falls below the $6.8 billion guidance floor, free-cash-flow-before-growth falls below $3.9 billion without a clearly value-accretive cause, hedge coverage deteriorates materially, or data-center PPAs are delayed or impaired.
 broken_thesis: ""
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy."
-action_tier: HOLD
-bottleneck_upside_score: ""
-bottleneck_upside_case: ""
-promotion_trigger: ""
+next_trigger: Entry at $152-$160, a stronger opportunity at $140-$148, next earnings, debt/integration update, or material PPA/regulatory news.
+one_line_rationale: "BUY_NOW / HALF STARTER: at $158.86 Vistra offers an approximate 8.1% midpoint 2026 free-cash-flow-before-growth yield, strong near-term hedging, and cleaner power-bottleneck diversification than another semiconductor purchase."
+action_tier: BUY_NOW
+bottleneck_upside_score: 88
+bottleneck_upside_case: Scarce reliable power and contracted data-center demand lift cash flow and terminal value beyond a normal generation multiple.
+promotion_trigger: Add a later tranche only after leverage, integration, and PPA execution remain on plan or price enters the stronger zone without thesis damage.
 ---
 # VST Decision
 
 Updated: 2026-07-12
 
-Decision: HOLD
-Dip decision: RESEARCH_FIRST
+Decision: BUY_NOW
+Dip decision: APPROVED
 Sell status: NOT_TRIGGERED
-Confidence: 42 / 100
-Urgency: MEDIUM
+Confidence: 82 / 100
+Urgency: HIGH
 
 One-line rationale:
-Hold/watch only: Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy.
+BUY_NOW / HALF STARTER: at $158.86 Vistra offers an approximate 8.1% midpoint 2026 free-cash-flow-before-growth yield, strong near-term hedging, and cleaner power-bottleneck diversification than another semiconductor purchase.
 
 Thesis expressed:
-Vistra is a strong power scarcity proxy, but not current public SA exposure and not an automatic long-only buy.
+Vistra is a direct expression of scarce dispatchable US power, with a hedged generation fleet and long-duration data-center power demand that is not fully captured by the current cash-flow yield.
 
 Anti-thesis:
-Power scarcity and nuclear/generation value may already be priced.
+Acquisition leverage, integration risk, power-price normalization, regulatory intervention, nuclear outages, or weak retail execution can overwhelm the data-center demand thesis.
 
 Evidence quality:
-SA_FILING_AND_LOCAL_BASELINE
+PRIMARY_COMPANY_IR_AND_SEC
 
 Hedge or sizing:
-No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
+Use a half starter while the geopolitical regime is elevated; policy cap 4%, with later tranches only after balance-sheet and integration progress remain on plan.
 
 Invalidation trigger:
-Datacenter/generation scarcity thesis weakens or valuation offers no margin of safety.
+2026 adjusted EBITDA falls below the $6.8 billion guidance floor, free-cash-flow-before-growth falls below $3.9 billion without a clearly value-accretive cause, hedge coverage deteriorates materially, or data-center PPAs are delayed or impaired.
 
 Buy now?
-NO
+YES
 
 Buy on dip?
-RESEARCH_FIRST
+APPROVED
 
 Sell?
 NO
 
 Next trigger:
-Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
+Entry at $152-$160, a stronger opportunity at $140-$148, next earnings, debt/integration update, or material PPA/regulatory news.
 
 Human action:
 Follow sizing and hedge discipline before any trade.

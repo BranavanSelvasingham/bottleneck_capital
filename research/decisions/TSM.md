@@ -21,7 +21,7 @@ thesis_expressed: "TSMC is the cleanest upstream AI compute bottleneck: leading-
 anti_thesis: Taiwan/geopolitical risk, customer concentration, capex execution, or a sudden advanced-node and advanced-packaging demand slowdown can dominate even a strong moat.
 evidence_quality: PRIMARY_FILINGS_AND_SA_13F
 valuation_case: At the $434.11 July 10 close and Q1 2026 EPS of $3.49/ADR, TSM trades near 31.1x annualized Q1 ADR EPS. That is defensible for quality but not a clear discount immediately before June sales and Q2 results.
-hedge_or_sizing: No puts or shorts; make no further purchase before July 16 earnings, treat any already-submitted two-share order as the full pre-earnings allocation if it fills, and cap total TSM exposure at 6% through the event.
+hedge_or_sizing: No puts or shorts; make no further purchase before July 16 earnings and apply a 6% event-risk policy cap from the local ledger.
 invalidation_trigger: Move to RESEARCH_REQUIRED or SELL review if advanced technologies fall below 65% of wafer revenue for two quarters, HPC falls below 50% of revenue without offsetting packaging growth, 2026 revenue growth guidance falls below 20%, gross margin guidance falls below 58%, customer concentration or geopolitical risk materially worsens, or SA fully exits.
 broken_thesis: ""
 next_trigger: July 13 2026 June revenue, July 16 Q2 results, SA filing change, customer-concentration update, guidance change, geopolitical escalation, or a post-earnings move into the $405-$415 add zone.
@@ -54,7 +54,7 @@ Evidence quality:
 PRIMARY_FILINGS_AND_SA_13F
 
 Hedge or sizing:
-No puts or shorts; make no further purchase before July 16 earnings, treat any already-submitted two-share order as the full pre-earnings allocation if it fills, and cap total TSM exposure at 6% through the event.
+No puts or shorts; make no further purchase before July 16 earnings and apply a 6% event-risk policy cap from the local ledger.
 
 Invalidation trigger:
 Move to RESEARCH_REQUIRED or SELL review if advanced technologies fall below 65% of wafer revenue for two quarters, HPC falls below 50% of revenue without offsetting packaging growth, 2026 revenue growth guidance falls below 20%, gross margin guidance falls below 58%, customer concentration or geopolitical risk materially worsens, or SA fully exits.

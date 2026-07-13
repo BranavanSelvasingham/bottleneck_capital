@@ -64,6 +64,21 @@ remain visible on the action board until resolved or the universe mapping is cor
 
 ## Decision Discipline
 
+## Position Privacy
+
+Exact user positions are local-only and must never be committed, pushed, included in a PR,
+or written into tracked research or generated reports. This includes share quantities, cost
+basis, account values, current portfolio weights, account names, and transaction fills.
+
+- Keep exact holdings only in `state/local_positions.yaml` and local reports derived from it.
+- Keep `state/local_positions.yaml`, `reports/local_exposure.md`, `state/signal_events.jsonl`,
+  and generated action-board/sunday-prep directories gitignored and untracked.
+- Public research may include company market prices, valuation ranges, entry zones, and policy
+  position caps. It must not include the user's actual exposure.
+- Set tracked `current_position_weight_pct` metadata to `0` or omit it. Runtime decisions must
+  apply local position capacity without persisting the result.
+- PR titles, bodies, commits, and review comments must not repeat local position data.
+
 This repo is a long-term, thesis-led investment research system.
 
 Every asset must have a current decision:
