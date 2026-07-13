@@ -478,7 +478,7 @@ TICKER_BASELINES: dict[str, BaselineNote] = {
     ),
     "SPCX": BaselineNote(
         "Space infrastructure adjacent proxy and local-position tracker.",
-        "SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, "
+        "SPCX is tracked as an adjacent proxy for SpaceX-style launch, satellite, "
         "connectivity, and defense infrastructure scarcity, not as current public SA exposure.",
         "The ticker/listing path, liquidity, valuation, and actual instrument exposure may be "
         "unclear or non-actionable.",

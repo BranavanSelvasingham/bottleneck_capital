@@ -11,10 +11,10 @@ unresolved_material_event: false
 evidence_quality: PRIMARY_COMPANY_IR_AND_SA_FILING
 thesis_expressed: Broadcom is a direct custom-AI-silicon and networking bottleneck, with the multi-generation OpenAI accelerator platform adding a marquee deployment to an already accelerating AI semiconductor business.
 anti_thesis: Valuation, hyperscaler/customer concentration, custom-silicon competition, VMware execution, debt, or slower AI deployment can compress the premium multiple despite strong revenue growth.
-hedge_or_sizing: Hold 4 shares at a $370 average cost; do not add near $400. Add only at $370-$375 or lower with no thesis damage, and cap AVGO at 8% of known FX-normalized exposure.
+hedge_or_sizing: Do not add near $400. Add only at $370-$375 or lower with no thesis damage, subject to an 8% policy cap applied from the local ledger.
 invalidation_trigger: AI semiconductor growth falls below 25% for two quarters, the OpenAI multi-generation deployment is materially delayed or reduced, major custom-accelerator customers are lost, networking share deteriorates, or leverage/VMware execution worsens materially.
 next_trigger: Price at or below $375, next quarterly results, OpenAI deployment update, major custom-silicon customer change, guidance change, or SA filing change.
-one_line_rationale: "HOLD / ADD BELOW $375: Q2 AI semiconductor revenue grew 143% YoY and OpenAI validates the custom-silicon thesis, but the July 10 close near $400 and a roughly 6.5% portfolio weight do not offer enough margin of safety for another share."
+one_line_rationale: "HOLD / ADD BELOW $375: Q2 AI semiconductor revenue grew 143% YoY and OpenAI validates the custom-silicon thesis, but the July 10 close near $400 does not offer enough margin of safety."
 asset_role: Custom AI silicon, networking, connectivity, and infrastructure software bottleneck.
 default_holding_period: multi_year
 current_decision: HOLD
@@ -27,9 +27,9 @@ confidence_score: 85
 valuation_attractiveness_score: 45
 urgency_score: 90
 max_position_weight_pct: 8
-current_position_weight_pct: 6.5
+current_position_weight_pct: 0
 approved_entry_zone: ADD_ON_DIP at $370-$375 or lower with no thesis damage; do not add at the July 10 close near $400.
-do_not_buy_zone: Above $400, after a customer/program loss, after an AI semiconductor guidance cut, or when AVGO exceeds 8% of known FX-normalized exposure.
+do_not_buy_zone: Above $400, after a customer/program loss, after an AI semiconductor guidance cut, or when the local capacity gate reaches the 8% policy cap.
 sell_trigger_status: false
 hedge_required: true
 main_hedge: No puts or shorts; use price discipline and an 8% position cap, while treating SA put exposure as a crowding-risk signal.

@@ -21,6 +21,41 @@ def test_validate_project_warns_when_only_mock_events_exist(tmp_path: Path) -> N
     assert any(issue.code == "MOCK_EVENT_FALLBACK_ONLY" for issue in issues)
 
 
+def test_validate_project_errors_when_private_paths_are_not_ignored(tmp_path: Path) -> None:
+    _write_minimal_project(tmp_path)
+    (tmp_path / ".git").mkdir()
+    (tmp_path / ".gitignore").write_text(
+        "state/local_positions.yaml\nreports/local_exposure.md\n",
+        encoding="utf-8",
+    )
+
+    issues = validate_project(tmp_path)
+
+    assert any(issue.code == "POSITION_PRIVACY_IGNORE_GAP" for issue in issues)
+
+
+def test_validate_project_errors_on_committed_current_position_weight(tmp_path: Path) -> None:
+    _write_minimal_project(tmp_path)
+    (tmp_path / ".gitignore").write_text(
+        "state/local_positions.yaml\n"
+        "reports/local_exposure.md\n"
+        "state/signal_events.jsonl\n"
+        "reports/action_boards/\n"
+        "reports/daily_decision_boards/\n"
+        "reports/sunday_preps/\n",
+        encoding="utf-8",
+    )
+    asset = tmp_path / "research" / "assets" / "AAA.md"
+    asset.write_text(
+        "---\nticker: AAA\ncurrent_decision: HOLD\ncurrent_position_weight_pct: 4.2\n---\n",
+        encoding="utf-8",
+    )
+
+    issues = validate_project(tmp_path)
+
+    assert any(issue.code == "POSITION_PRIVACY_TRACKED_WEIGHT" for issue in issues)
+
+
 def test_validate_project_warns_on_overdue_research_block(tmp_path: Path) -> None:
     _write_minimal_project(tmp_path)
     for kind in ("assets", "decisions"):
@@ -460,6 +495,15 @@ def test_validate_project_strict_live_accepts_git_email_for_sec_user_agent(
 
 
 def _write_minimal_project(root: Path) -> None:
+    (root / ".gitignore").write_text(
+        "state/local_positions.yaml\n"
+        "reports/local_exposure.md\n"
+        "state/signal_events.jsonl\n"
+        "reports/action_boards/\n"
+        "reports/daily_decision_boards/\n"
+        "reports/sunday_preps/\n",
+        encoding="utf-8",
+    )
     watchlist = root / "configs" / "watchlist.yaml"
     watchlist.parent.mkdir(parents=True, exist_ok=True)
     watchlist.write_text(

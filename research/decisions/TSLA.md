@@ -9,7 +9,7 @@ confidence_score: 25
 urgency: HIGH
 last_updated: 2026-07-12
 source_classification: sa_adjacent_thesis_proxy
-instrument_role: local_position_adjacent_proxy
+instrument_role: adjacent_proxy
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
@@ -19,12 +19,12 @@ portfolio_risk_allows_add: false
 buy_thesis: Tesla may express AI autonomy, robotics, battery/storage, and energy infrastructure optionality, but its fit to the Bottleneck Capital sleeve is unvalidated.
 thesis_expressed: Tesla may be an indirect call option on Musk-platform consolidation, including a possible SpaceX tie-up, while also expressing AI autonomy, robotics, battery/storage, and energy infrastructure optionality.
 anti_thesis: A Tesla-SpaceX combination could be dilutive or governance-negative if Tesla is used to finance SpaceX at an unfavorable valuation; EV cyclicality, competition, key-person risk, and unclear AI monetization could still dominate.
-evidence_quality: LOCAL_POSITION_AND_RECENT_PUBLIC_MERGER_CHATTER
-valuation_case: Approximate CAD 19,000 position value entered by user; SpaceX merger optionality may be material, but shares, cost basis, current market price, transaction odds, and exchange-ratio math are pending.
-hedge_or_sizing: Hold existing exposure only; do not add until merger terms, exact TSLA sizing, valuation, and thesis fit are validated.
+evidence_quality: RECENT_PUBLIC_MERGER_CHATTER_AND_COMPANY_EVIDENCE
+valuation_case: SpaceX merger optionality may be material, but transaction odds, exchange-ratio math, and standalone valuation remain unresolved.
+hedge_or_sizing: Do not add until merger terms, valuation, and thesis fit are validated; apply the local capacity gate without publishing exposure.
 invalidation_trigger: SpaceX merger optionality disappears, transaction terms would dilute TSLA holders badly, or Tesla fails to express a durable AI/autonomy/energy/platform-consolidation thesis.
 broken_thesis: ""
-next_trigger: Confirm exact shares and cost basis, then underwrite TSLA as a SpaceX merger/platform-consolidation option with explicit dilution and governance risk.
+next_trigger: Underwrite TSLA as a SpaceX merger/platform-consolidation option with explicit dilution and governance risk.
 one_line_rationale: "Hold/watch only: TSLA now has plausible SpaceX merger/platform-consolidation optionality, but no new capital until transaction odds, terms, sizing, and valuation are underwritten."
 action_tier: HOLD_SPECULATIVE
 bottleneck_upside_score: 65
@@ -51,10 +51,10 @@ Anti-thesis:
 A Tesla-SpaceX combination could be dilutive or governance-negative if Tesla is used to finance SpaceX at an unfavorable valuation; EV cyclicality, competition, key-person risk, and unclear AI monetization could still dominate.
 
 Evidence quality:
-LOCAL_POSITION_AND_RECENT_PUBLIC_MERGER_CHATTER
+RECENT_PUBLIC_MERGER_CHATTER_AND_COMPANY_EVIDENCE
 
 Hedge or sizing:
-Hold existing exposure only; do not add until merger terms, exact TSLA sizing, valuation, and thesis fit are validated.
+Do not add until merger terms, valuation, and thesis fit are validated; apply the local capacity gate without publishing exposure.
 
 Invalidation trigger:
 SpaceX merger optionality disappears, transaction terms would dilute TSLA holders badly, or Tesla fails to express a durable AI/autonomy/energy/platform-consolidation thesis.
@@ -69,7 +69,7 @@ Sell?
 NO
 
 Next trigger:
-Confirm exact shares and cost basis, then underwrite TSLA as a SpaceX merger/platform-consolidation option with explicit dilution and governance risk.
+Underwrite TSLA as a SpaceX merger/platform-consolidation option with explicit dilution and governance risk.
 
 Human action:
 Follow sizing and hedge discipline before any trade.

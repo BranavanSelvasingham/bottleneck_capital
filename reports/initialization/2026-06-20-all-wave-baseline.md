@@ -43,5 +43,5 @@ Scope: conservative first-pass decisions for every tracked ticker before the nex
 | WTS | 3 | HOLD | Watts is a possible datacenter water/thermal infrastructure read-through, but the AI link is not yet material enough for action. |
 | LITE | 3 | HOLD | Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy. |
 | MRVL | 3 | HOLD | Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system. |
-| SPCX | 3 | HOLD | SPCX is tracked as a user-held adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure. |
+| SPCX | 3 | HOLD | SPCX is tracked as an adjacent proxy for SpaceX-style launch, satellite, connectivity, and defense infrastructure scarcity, not as current public SA exposure. |
 | ONTO | 3 | HOLD | Onto is a plausible advanced packaging/process-control bottleneck proxy, but not current SA exposure. |

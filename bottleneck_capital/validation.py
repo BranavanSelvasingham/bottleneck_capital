@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
@@ -35,6 +36,7 @@ def validate_project(root: Path, *, strict_live: bool = False) -> list[Validatio
     watchlist = load_watchlist(root)
     tickers = [item["ticker"] for item in watchlist]
     position_items = _load_local_position_items(root, issues)
+    _check_position_privacy(root, issues)
     _check_duplicates(tickers, issues)
     _check_ticker_files(root, tickers, issues)
     _check_generated_wiring(root, tickers, issues)
@@ -47,6 +49,80 @@ def validate_project(root: Path, *, strict_live: bool = False) -> list[Validatio
     _check_live_environment(root, issues, strict_live=strict_live)
     _check_local_positions(root, tickers, issues, strict_live=strict_live, positions=position_items)
     return issues
+
+
+def _check_position_privacy(root: Path, issues: list[ValidationIssue]) -> None:
+    private_paths = (
+        "state/local_positions.yaml",
+        "reports/local_exposure.md",
+        "state/signal_events.jsonl",
+        "reports/action_boards",
+        "reports/daily_decision_boards",
+        "reports/sunday_preps",
+    )
+    is_git_worktree = (root / ".git").exists()
+    ignore_path = root / ".gitignore"
+    ignore_text = ignore_path.read_text(encoding="utf-8") if ignore_path.exists() else ""
+    required_patterns = (
+        "state/local_positions.yaml",
+        "reports/local_exposure.md",
+        "state/signal_events.jsonl",
+        "reports/action_boards/",
+        "reports/daily_decision_boards/",
+        "reports/sunday_preps/",
+    )
+    missing = (
+        [pattern for pattern in required_patterns if pattern not in ignore_text]
+        if is_git_worktree
+        else []
+    )
+    if missing:
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "POSITION_PRIVACY_IGNORE_GAP",
+                "Missing private-path ignore rules: " + ", ".join(missing),
+            )
+        )
+
+    try:
+        result = (
+            subprocess.run(
+                ["git", "ls-files", "--", *private_paths],
+                cwd=root,
+                check=False,
+                capture_output=True,
+                text=True,
+            )
+            if is_git_worktree
+            else None
+        )
+    except OSError:
+        result = None
+    tracked = result.stdout.splitlines() if result and result.returncode == 0 else []
+    if tracked:
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "POSITION_PRIVACY_TRACKED_FILE",
+                "Private position-derived files are tracked: " + ", ".join(tracked),
+            )
+        )
+
+    for path in sorted((root / "research" / "assets").glob("*.md")):
+        metadata, _ = read_markdown_frontmatter(path)
+        try:
+            weight = float(metadata.get("current_position_weight_pct") or 0)
+        except (TypeError, ValueError):
+            weight = 0
+        if weight > 0:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "POSITION_PRIVACY_TRACKED_WEIGHT",
+                    f"{path.name} contains a committed current position weight.",
+                )
+            )
 
 
 def render_validation(issues: list[ValidationIssue]) -> str:
