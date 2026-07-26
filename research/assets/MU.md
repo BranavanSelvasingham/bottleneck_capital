@@ -2,42 +2,42 @@
 ticker: MU
 name: Micron
 sleeve: memory_storage_networking
-last_updated: 2026-07-11
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_call_signal_and_put_signal
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: PRIMARY_COMPANY_RESULTS_AND_10Q
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Micron is a direct HBM, DRAM, and AI-memory bottleneck whose multi-year customer agreements and HBM4 ramp provide more visibility than a normal memory upcycle.
 anti_thesis: Current 86% gross-margin guidance may represent peak-cycle pricing; new supply, customer concentration, substitution, capex execution, or an HBM share loss could collapse normalized earnings.
-hedge_or_sizing: No puts or shorts; buy one share only at $925-$950, reserve a second tranche for $875-$900, and cap MU at 4% of known FX-normalized exposure until margins prove durable.
+hedge_or_sizing: No puts or shorts; suspend the prior one-share dip add until the July 15 dislocation cause, HBM demand, margin durability, valuation, and sizing are reviewed.
 invalidation_trigger: Move to HOLD or SELL review if forward gross-margin guidance falls below 70%, HBM4 qualification or volume shipments slip materially, strategic customer agreements weaken, DRAM/HBM supply growth overtakes demand, or SA fully exits.
-next_trigger: Price at or below $950, next quarterly results, HBM4 customer qualification, strategic customer agreement update, gross-margin guidance change, or SA filing change.
-one_line_rationale: "ADD_ON_DIP: Q3 revenue reached $41.46 billion, Q4 guidance is $50 billion with about 86% gross margin and $31 non-GAAP EPS, and HBM4 is shipping; buy one share only at $925-$950 because the stock is up more than 250% YTD and peak-cycle risk remains material."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the MU memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: HBM and AI memory bottleneck.
 default_holding_period: multi_year
-current_decision: ADD_ON_DIP
-dip_decision: APPROVED
+current_decision: RESEARCH_REQUIRED
+dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
-action_tier: ADD_ON_DIP
-dip_approved: true
+action_tier: RESEARCH_REQUIRED
+dip_approved: false
 valuation_improved: true
 portfolio_risk_allows_add: true
 research_priority: HIGH
-last_primary_source_check: 2026-07-11
+last_primary_source_check: 2026-07-24
 thesis_health_score: 88
-confidence_score: 80
+confidence_score: 60.0
 valuation_attractiveness_score: 72
 urgency_score: 90
 max_position_weight_pct: 4
 current_position_weight_pct: 0
-approved_entry_zone: "ADD_ON_DIP one share at $925-$950; reserve a second tranche for $875-$900 only if the HBM thesis and forward margin outlook remain intact."
-valuation_case: "At the $979.30 July 10 close, MU is about 7.9x annualized Q4 non-GAAP EPS guidance of $31, but peak-cycle earnings require a discount; $925-$950 is the first approved entry and $875-$900 is the stronger margin-of-safety zone."
-do_not_buy_zone: "Do not chase above $1,025, exceed 4% before margin durability is proven, or buy after an HBM delay, customer-agreement deterioration, supply-glut evidence, or forward gross-margin guidance below 70%."
+approved_entry_zone: No new capital until the July 15 10:45 sentinel dislocation is resolved; prior $925-$950 add-on-dip zone is suspended pending cause, HBM demand, margin, valuation, and sizing review.
+valuation_case: At the $979.30 July 10 close, MU is about 7.9x annualized Q4 non-GAAP EPS guidance of $31, but peak-cycle earnings require a discount; $925-$950 is the first approved entry and $875-$900 is the stronger margin-of-safety zone.
+do_not_buy_zone: Do not buy while the July 15 dislocation is unresolved, above $1,025, above a 4% cap before margin durability is proven, or after an HBM delay, customer-agreement deterioration, supply-glut evidence, or forward gross-margin guidance below 70%.
 sell_trigger_status: false
 hedge_required: true
-main_hedge: No puts or shorts; use one-share tranche sizing, a 4% cap, and explicit review on margin, HBM execution, customer agreements, supply growth, or SA exit.
+main_hedge: No puts or shorts; suspend prior tranche sizing until the July 15 dislocation is resolved, then retain a 4% cap and explicit review on margin, HBM execution, customer agreements, supply growth, or SA exit.
 open_questions_count: 1
 broken_thesis: ""
 ---
@@ -47,24 +47,24 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: ADD_ON_DIP
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Micron is the strongest unowned discount candidate, but buy only on another red day: one share at $925-$950, with a stronger add zone at $875-$900.
+RESEARCH_REQUIRED: the July 15 10:45 sentinel pushed MU below the prior add-on-dip zone with an unresolved intraday dislocation; cause, HBM demand, margin cycle risk, valuation, and sizing must be refreshed before capital.
 
 ### Decision table
 
 | Field | Status |
 |---|---|
-| Long-term ownership candidate? | YES, WITH CYCLE-AWARE SIZING |
+| Long-term ownership candidate? | YES, RESEARCH BLOCKED |
 | Buy today? | NO |
-| Add on dip? | YES, one share at $925-$950 |
+| Add on dip? | RESEARCH_FIRST; prior $925-$950 zone suspended |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | Mistaking extraordinary HBM scarcity margins for permanently normalized earnings. |
 | Main upside driver today | HBM demand, DRAM/NAND recovery, supply discipline, and AI server content growth. |
-| Next review trigger | Partnership terms, primary-source confirmation, and June 24 earnings |
+| Next review trigger | Resolve July 15 10:45 sentinel dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -87,8 +87,8 @@ What this asset is not a bet on:
 
 ### Thesis A - Primary thesis
 
-Status: ACTIVE / ADD_ON_DIP
-Confidence: 80
+Status: ACTIVE / RESEARCH_REQUIRED
+Confidence: 45
 Time horizon: multi-year
 Importance: HIGH
 
@@ -109,10 +109,12 @@ What would break it:
 - HBM leadership or memory pricing breaks while valuation remains elevated.
 
 Decision impact:
-ADD_ON_DIP. Buy one share at $925-$950, not at Friday's $979.30 close; reserve a second tranche for $875-$900 if the thesis remains intact.
+RESEARCH_REQUIRED. Do not add capital until the July 15 10:45 sentinel dislocation is resolved
+with primary-source review of HBM demand, forward gross margin, inventory/cycle risk,
+valuation, and portfolio sizing.
 
 Hedge implication:
-No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
+No puts or shorts; suspend the prior one-share dip add until the dislocation is resolved.
 
 ### Thesis B - Valuation thesis
 
@@ -197,6 +199,7 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 
 ## 10. Latest Signals
 
+- July 15, 2026 10:45 sentinel: event `d7589a27c9cafc3428c0a6dd` flagged MU price dislocation: intraday -8.5% and one-day -6.8% at $916.00. Treat as RESEARCH_REQUIRED until cause, HBM demand, margin cycle risk, valuation, and sizing are resolved.
 - June 22, 2026: Market reports describe a Micron-Anthropic AI memory/storage partnership and a 5-6% MU share move ahead of June 24 earnings. Treat as unresolved material event until economics and valuation are underwritten.
 - Wave: 1
 - Source classification: `sa_reported_current_13f`
@@ -213,16 +216,16 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 - `research/agent_packets/wave_1/MU.md`
 - `reports/initialization/2026-06-20-wave-1-execution.md`
 
-Evidence quality: market-news update plus SA filing and local baseline. No unscheduled market
-action is authorized until primary-source terms, earnings, valuation, and sizing are reviewed.
+Evidence quality: live intraday dislocation unresolved, plus primary company results/10-Q, market-news update, SA filing, and local baseline. No new capital is authorized until the July 15 sentinel event is resolved.
 
 ## 12. Open Questions
 
-- What are the Anthropic partnership term, volume, margin, prepayment, and duration economics?
-- Does June 24 earnings confirm structural HBM/DRAM scarcity or only peak-cycle pricing?
-- Is valuation still acceptable after the reported 5-6% move and large year-to-date run?
+- What caused the July 15 MU dislocation, and is the HBM thesis damaged or only repriced?
+- Are forward gross margin, HBM4 execution, strategic customer agreements, and inventory/cycle risk still strong enough to restore the add-on-dip protocol?
+- Is valuation still acceptable after the move below the prior add-on-dip zone, given sizing and peak-cycle risk?
 
 ## 13. Latest Agent Notes
 
-June 22 material news moved current action to RESEARCH_REQUIRED, with no BUY_NOW, ADD_ON_DIP,
-TRIM, or SELL action authorized.
+July 15 10:45 sentinel moved current action to RESEARCH_REQUIRED and suspended the prior
+ADD_ON_DIP protocol. No BUY_NOW, ADD_ON_DIP, TRIM, or SELL action is authorized until the
+dislocation is resolved.

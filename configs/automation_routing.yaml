@@ -33,10 +33,26 @@ limits:
   max_concurrent_write_agents: 3
   default_task_timeout_minutes: 45
 write_discipline:
+  sole_decision_writer: portfolio_pm
+  collector_write_scope:
+    - state/latest_events.jsonl
+    - state/latest_market_events.jsonl
+    - state/latest_filings_events.jsonl
+    - state/signal_events.jsonl
+    - state/ingest_status.json
+  macro_watcher_write_scope:
+    - state/latest_manual_events.jsonl
+    - state/latest_events.jsonl
+    - state/signal_events.jsonl
+  research_resolver_write_scope:
+    - research/memos/{date}-{ticker}-*.md
+    - state/research_handoffs.jsonl
   asset_agent_write_scope:
-    - research/assets/{ticker}.md
-    - research/decisions/{ticker}.md
     - research/memos/{date}-{ticker}-*.md
   portfolio_pm_write_scope:
+    - research/assets/{ticker}.md
+    - research/decisions/{ticker}.md
     - research/decisions/index.md
+    - state/research_handoffs.jsonl
     - reports/daily_decision_boards/{date}.md
+    - reports/local_portfolio_boards/{date}.md

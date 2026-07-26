@@ -16,6 +16,7 @@ from bottleneck_capital.io import (
     scalar_text,
     write_markdown_with_frontmatter,
 )
+from bottleneck_capital.research_handoffs import pending_research_handoffs
 from bottleneck_capital.signal_events import (
     active_signal_events,
     event_id_for_record,
@@ -100,13 +101,17 @@ def load_watchlist(root: Path) -> list[dict[str, Any]]:
 
 def evaluate_all(root: Path) -> list[DecisionResult]:
     events = active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
+    handoffs = pending_research_handoffs(root)
     safe_bounded_dips = _safe_bounded_dip_tickers(root)
     decision_events = [
         event
         for event in events
         if not _is_safe_bounded_dip(event, safe_bounded_dips)
     ]
-    return [evaluate_ticker(root, item, decision_events) for item in load_watchlist(root)]
+    return [
+        evaluate_ticker(root, item, decision_events, research_handoffs=handoffs)
+        for item in load_watchlist(root)
+    ]
 
 
 def _safe_bounded_dip_tickers(root: Path) -> set[str]:
@@ -136,6 +141,8 @@ def evaluate_ticker(
     root: Path,
     watchlist_item: dict[str, Any],
     signal_events: list[dict[str, Any]] | None = None,
+    *,
+    research_handoffs: list[dict[str, Any]] | None = None,
 ) -> DecisionResult:
     ticker = scalar_text(watchlist_item.get("ticker")).upper()
     decision_path = root / "research" / "decisions" / f"{ticker}.md"
@@ -148,6 +155,11 @@ def evaluate_ticker(
         event
         for event in (signal_events or [])
         if scalar_text(event.get("ticker")).upper() == ticker
+    ]
+    ticker_handoffs = [
+        handoff
+        for handoff in (research_handoffs or [])
+        if scalar_text(handoff.get("ticker")).upper() == ticker
     ]
     unresolved_events = [event for event in ticker_events if _is_unresolved_material(event)]
     released_event_override = _is_released_material_event_override(
@@ -167,16 +179,16 @@ def evaluate_ticker(
 
     name = scalar_text(data.get("name") or watchlist_item.get("name") or ticker)
     sleeve = scalar_text(data.get("sleeve") or watchlist_item.get("sleeve") or "unassigned")
-    current = _normalize_decision(
-        (
-            asset_data.get("current_decision") or asset_data.get("decision")
-            if asset_research_override
-            else decision_data.get("current_decision")
+    if asset_research_override:
+        raw_decision = asset_data.get("current_decision") or asset_data.get("decision")
+    else:
+        raw_decision = (
+            decision_data.get("current_decision")
             or decision_data.get("decision")
             or asset_data.get("current_decision")
             or asset_data.get("decision")
         )
-    )
+    current = _normalize_decision(raw_decision)
     thesis_damage = scalar_bool(asset_data.get("thesis_damage")) or scalar_bool(
         decision_data.get("thesis_damage")
     )
@@ -213,6 +225,24 @@ def evaluate_ticker(
                 "SELL requires a named broken thesis or unacceptable risk.",
             )
         return _result(ticker, name, sleeve, "SELL", data, broken_thesis=broken_thesis)
+
+    if ticker_handoffs and current != "TRIM":
+        latest_handoff = sorted(
+            ticker_handoffs,
+            key=lambda handoff: scalar_text(handoff.get("created_at")),
+        )[-1]
+        return _research_required(
+            ticker,
+            name,
+            sleeve,
+            data,
+            (
+                f"Pending Portfolio PM handoff "
+                f"{scalar_text(latest_handoff.get('handoff_id'))} from "
+                f"{scalar_text(latest_handoff.get('memo_path'))}: "
+                f"{scalar_text(latest_handoff.get('summary'))}"
+            ),
+        )
 
     if thesis_damage_events:
         return _research_required(

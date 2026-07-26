@@ -5,9 +5,9 @@ sleeve: crowded_ai_beta_hedge
 current_decision: HOLD
 dip_decision: NOT_ARMED
 sell_status: NOT_TRIGGERED
-confidence_score: 34
+confidence_score: 80.0
 urgency: HIGH
-last_updated: 2026-07-12
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: signal_only_no_puts_or_shorts
@@ -19,7 +19,7 @@ portfolio_risk_allows_add: true
 buy_thesis: SMH is useful for interpreting SA semiconductor hedge/crowding risk, not for a long-only ETF trade right now.
 thesis_expressed: SMH is useful for interpreting SA semiconductor hedge/crowding risk, not for a long-only ETF trade right now.
 anti_thesis: ETF exposure is too broad to express Bottleneck Capital's best single-name theses.
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 valuation_case: signal-only risk map, not an entry valuation
 hedge_or_sizing: No puts or shorts; use as risk signal only and do not allocate capital.
 invalidation_trigger: Separate long-only ETF thesis documented with valuation, sizing, and invalidation.
@@ -33,12 +33,12 @@ promotion_trigger: ""
 ---
 # SMH Decision
 
-Updated: 2026-07-12
+Updated: 2026-07-25
 
 Decision: HOLD
 Dip decision: NOT_ARMED
 Sell status: NOT_TRIGGERED
-Confidence: 34 / 100
+Confidence: 80.0 / 100
 Urgency: HIGH
 
 One-line rationale:
@@ -51,7 +51,7 @@ Anti-thesis:
 ETF exposure is too broad to express Bottleneck Capital's best single-name theses.
 
 Evidence quality:
-SA_FILING_AND_LOCAL_BASELINE
+RESOLVER_MEMO_PM_REVIEW
 
 Hedge or sizing:
 No puts or shorts; use as risk signal only and do not allocate capital.

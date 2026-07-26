@@ -2,28 +2,28 @@
 ticker: BW
 name: Babcock & Wilcox Enterprises
 sleeve: power_bottleneck
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.
 anti_thesis: This could be a levered industrial turnaround rather than an AI power solution.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: Liquidity or backlog deterioration removes any credible power-bottleneck expression.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the BW memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Power equipment and industrial turnaround exposure.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-17
 thesis_health_score: 38
-confidence_score: 32
+confidence_score: 60.0
 valuation_attractiveness_score: 22
 urgency_score: 60
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # BW - Babcock & Wilcox Enterprises
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog quality make it a watch-only position until evidence improves.
+RESEARCH_REQUIRED: the July 13 12:30 sentinel flagged an unresolved BW intraday price dislocation; cause, valuation, liquidity, leverage, and backlog quality must be refreshed before capital.
 
 ### Decision table
 
@@ -59,7 +60,7 @@ Babcock & Wilcox may fit the power bottleneck sleeve, but leverage and backlog q
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | Debt, project execution, margins, and thesis purity. |
 | Main upside driver today | Backlog tied to power reliability, clean generation, or datacenter-adjacent demand. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 13 intraday dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,9 @@ What would break it:
 - Liquidity or backlog deterioration removes any credible power-bottleneck expression.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 13 intraday dislocation cause is
+bounded and primary evidence clears thesis, valuation, liquidity, backlog quality,
+leverage, execution risk, and sizing.
 
 Hedge implication:
 No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
@@ -116,7 +118,7 @@ Claim: backlog, liquidity, and normalized EBITDA scenario value. Current baselin
 
 Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
-change, or detected dip can reopen the decision.
+change, or resolution of the July 13 intraday dislocation can reopen the decision.
 
 ## 3. Market-Implied View vs Variant View
 
@@ -203,8 +205,8 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 - `research/agent_packets/wave_2/BW.md`
 - `reports/initialization/2026-06-20-wave-2-execution.md`
 
-Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
-before the next scheduled process.
+Evidence quality: live intraday dislocation unresolved. No capital action is authorized
+until primary evidence and valuation resolve the July 13 price-dislocation trigger.
 
 ## 12. Open Questions
 
@@ -212,5 +214,6 @@ before the next scheduled process.
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+2026-07-13 12:30 sentinel moved the working decision to RESEARCH_REQUIRED after BW
+triggered an unresolved intraday price-dislocation event. No BUY_NOW, ADD_ON_DIP, TRIM,
+or SELL action is authorized.

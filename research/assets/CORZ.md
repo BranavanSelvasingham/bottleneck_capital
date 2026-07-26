@@ -2,28 +2,28 @@
 ticker: CORZ
 name: Core Scientific
 sleeve: miner_to_datacenter
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Core Scientific is one of the cleaner miner-to-HPC conversion candidates because contracted hosting can separate value from Bitcoin beta.
 anti_thesis: Customer concentration, post-restructuring capital needs, or power delivery risk can still make the equity fragile.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: HPC contracts weaken or financing prevents profitable conversion of sites.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Core Scientific is one of the cleaner miner-to-HPC conversion candidates because contracted hosting can separate value from Bitcoin beta."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the CORZ memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: HPC hosting conversion candidate.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-22
 thesis_health_score: 52
-confidence_score: 42
+confidence_score: 60.0
 valuation_attractiveness_score: 30
 urgency_score: 90
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # CORZ - Core Scientific
 

@@ -2,30 +2,30 @@
 ticker: MRVL
 name: Marvell Technology
 sleeve: ai_networking_optical
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_adjacent_historical_or_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system.
 anti_thesis: Custom silicon wins may be lumpy and valuation may already discount AI upside.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: AI custom silicon/networking fails to drive durable earnings growth.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the MRVL memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Adjacent AI networking/custom silicon proxy.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
-research_priority: MEDIUM
-last_primary_source_check: 2026-06-21
+research_priority: HIGH
+last_primary_source_check: 2026-07-17
 thesis_health_score: 48
-confidence_score: 38
-valuation_attractiveness_score: 27
-urgency_score: 60
+confidence_score: 60.0
+valuation_attractiveness_score: 25
+urgency_score: 90
 max_position_weight_pct: 0
 current_position_weight_pct: 0
 approved_entry_zone: No new capital until scheduled scan validates valuation.
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # MRVL - Marvell Technology
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Marvell is a plausible AI networking and custom silicon beneficiary, but not current SA exposure in this system.
+RESEARCH_REQUIRED: the July 15 open scan flagged an unresolved MRVL price dislocation; cause, valuation, AI networking demand, custom silicon evidence, and thesis-proxy fit must be refreshed before capital.
 
 ### Decision table
 
@@ -57,9 +58,9 @@ Marvell is a plausible AI networking and custom silicon beneficiary, but not cur
 | Add on dip? | RESEARCH_FIRST |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
-| Main risk today | Customer concentration, cycle risk, margin execution, and non-SA status. |
+| Main risk today | Unresolved July 15 price dislocation, customer concentration, cycle risk, margin execution, and non-SA status. |
 | Main upside driver today | AI custom silicon, electro-optics/networking, and datacenter revenue mix. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 15 open-scan MRVL dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,8 @@ What would break it:
 - AI custom silicon/networking fails to drive durable earnings growth.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 15 open dislocation is explained
+with primary-source evidence, valuation, and sizing.
 
 Hedge implication:
 No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
@@ -190,6 +191,7 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 
 ## 10. Latest Signals
 
+- 2026-07-15 open scan: unresolved MRVL price dislocation, event `c25738449bb6207dfea19d7e`; check cause, AI networking and custom silicon demand, customer concentration, margins, valuation, and thesis-proxy fit before capital.
 - Wave: 3
 - Source classification: `sa_adjacent_historical_or_thesis_proxy`
 - Instrument role: `common_equity`
@@ -208,9 +210,10 @@ before the next scheduled process.
 
 ## 12. Open Questions
 
-- None blocking before the next scheduled scan. Future work is event/schedule-driven.
+- What caused the July 15 MRVL dislocation, and does it indicate AI networking/custom silicon thesis damage or valuation pressure?
+- Is post-dislocation valuation attractive enough despite non-current SA status and customer-concentration risk?
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+2026-07-15 open scan moved MRVL from HOLD to RESEARCH_REQUIRED. Current action is research
+before acting, with no BUY_NOW, ADD_ON_DIP, TRIM, or SELL action authorized.

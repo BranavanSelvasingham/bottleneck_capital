@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -31,7 +32,7 @@ class LiveCheckResult:
     filings: IngestResult | None
     signal_count: int
     active_high_priority_count: int
-    action_board_path: Path
+    action_board_path: Path | None
     validation_issues: list[ValidationIssue]
     warnings: tuple[str, ...] = ()
     errors: tuple[str, ...] = ()
@@ -48,6 +49,8 @@ def run_live_check(
     filing_lookback_days: int = 3,
     sec_user_agent: str = "",
     strict_validate: bool = False,
+    write_board: bool = True,
+    filing_mode: str = "auto",
 ) -> LiveCheckResult:
     warnings: list[str] = []
     errors: list[str] = []
@@ -64,34 +67,45 @@ def run_live_check(
     except IngestError as exc:
         errors.append(f"market ingest failed: {exc}")
 
+    if filing_mode not in {"auto", "always", "skip"}:
+        raise ValueError(f"Unsupported filing mode: {filing_mode}")
     filings: IngestResult | None = None
-    try:
-        filings = ingest_filings(
-            root,
-            company_tickers_input=company_tickers_input,
-            submissions_dir=submissions_dir,
-            lookback_days=filing_lookback_days,
-            sec_user_agent=sec_user_agent,
+    skip_filings = filing_mode == "skip" or (
+        filing_mode == "auto" and _filing_backoff_active(root)
+    )
+    if skip_filings:
+        warnings.append(
+            "filings ingest skipped due to active SEC 403 backoff or explicit collector policy; "
+            "configure an approved SEC mirror/proxy or filing feed to recover coverage"
         )
-        warnings.extend(filings.warnings)
-        clear_manual_event(root, "filing_data_gap:daily")
-    except IngestError as exc:
-        warning = f"filings ingest skipped: {exc}"
-        warnings.append(warning)
-        write_manual_event(
-            root,
-            {
-                "ticker": "BCAP",
-                "event_type": "filing_data_gap",
-                "event_class": "filing_data_gap",
-                "source": "filing_ingest",
-                "summary": (
-                    "Filing ingest did not complete; 13F/13G/8-K/10-Q/10-K and "
-                    f"company filing coverage is incomplete. {warning}"
-                ),
-                "dedupe_key": "filing_data_gap:daily",
-            },
-        )
+    else:
+        try:
+            filings = ingest_filings(
+                root,
+                company_tickers_input=company_tickers_input,
+                submissions_dir=submissions_dir,
+                lookback_days=filing_lookback_days,
+                sec_user_agent=sec_user_agent,
+            )
+            warnings.extend(filings.warnings)
+            clear_manual_event(root, "filing_data_gap:daily")
+        except IngestError as exc:
+            warning = f"filings ingest skipped: {exc}"
+            warnings.append(warning)
+            write_manual_event(
+                root,
+                {
+                    "ticker": "BCAP",
+                    "event_type": "filing_data_gap",
+                    "event_class": "filing_data_gap",
+                    "source": "filing_ingest",
+                    "summary": (
+                        "Filing ingest did not complete; 13F/13G/8-K/10-Q/10-K and "
+                        f"company filing coverage is incomplete. {warning}"
+                    ),
+                    "dedupe_key": "filing_data_gap:daily",
+                },
+            )
 
     signal_records = run_sentinel(root)
     _resolve_recovered_data_gaps(root, market=market, filings=filings)
@@ -102,7 +116,7 @@ def run_live_check(
         if scalar_text(record.get("priority")) in {"high", "critical"}
         and scalar_text(record.get("event_class")) != "noise"
     ]
-    action_board_path = write_action_board(root)
+    action_board_path = write_action_board(root) if write_board else None
     validation_issues = validate_project(root, strict_live=strict_validate)
     return LiveCheckResult(
         market=market,
@@ -114,6 +128,28 @@ def run_live_check(
         warnings=tuple(warnings),
         errors=tuple(errors),
     )
+
+
+def _filing_backoff_active(root: Path) -> bool:
+    recovery_env = (
+        "BCAP_SEC_COMPANY_TICKERS_URL",
+        "BCAP_SEC_SUBMISSIONS_URL_TEMPLATE",
+        "BCAP_SEC_BROWSE_ATOM_URL",
+        "BCAP_FILING_EVENTS_URL",
+    )
+    if any(os.environ.get(name) for name in recovery_env):
+        return False
+    active = active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
+    for record in active:
+        if scalar_text(record.get("event_class")) != "filing_data_gap":
+            continue
+        summary = scalar_text(record.get("summary")).lower()
+        raw = record.get("raw_event")
+        if isinstance(raw, dict):
+            summary += " " + scalar_text(raw.get("summary")).lower()
+        if any(marker in summary for marker in ("403", "forbidden", "backoff")):
+            return True
+    return False
 
 
 def _resolve_recovered_data_gaps(

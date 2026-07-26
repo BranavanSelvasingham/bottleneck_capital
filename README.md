@@ -10,6 +10,34 @@ The core command is:
 
 It updates `research/decisions/index.md` and writes a dated board under `reports/daily_decision_boards/`.
 
+For the portfolio-first decision process:
+
+```bash
+./bcap portfolio-pm
+```
+
+This is the sole scheduled decision writer. It compiles ticker decisions, writes the dated
+decision board, and writes a private gitignored portfolio board under
+`reports/local_portfolio_boards/`. The private board applies exact local positions and cash
+to factor concentration, scenario vulnerability, discount classification, remaining capacity,
+and marginal-capital ranking without persisting position data in tracked research.
+
+Resolver evidence is handed to Portfolio PM through an append-only queue:
+
+```bash
+./bcap handoff add --memo research/memos/2026-07-25-AAA-evidence.md \
+  --ticker AAA --cause-status BOUNDED --thesis-status INTACT \
+  --valuation-status UNREVIEWED --provisional-bias HOLD --confidence 80 \
+  --summary "Cause is bounded; PM must refresh valuation before changing capital."
+./bcap handoff list
+./bcap handoff apply --handoff-id HANDOFF_ID --decision HOLD \
+  --reason "Decision reaffirmed after reviewing the linked primary-source memo."
+```
+
+Pending handoffs force `RESEARCH_REQUIRED` for capital-increasing decisions and remain visible
+until PM records an application. Use `./bcap validate --pm-preflight` before PM recovery work;
+use `./bcap validate --strict-live` before authorizing BUY_NOW or ADD_ON_DIP.
+
 For a compact current-action surface that does not rewrite decision files:
 
 ```bash
@@ -29,6 +57,16 @@ writes the action board, and runs validation. It continues market signal detecti
 filing ingestion is temporarily unavailable, but reports that as a warning. If market
 ingest itself fails, it still refreshes the action board from existing signal state,
 prints validation context, records an error-status run ledger entry, and exits non-zero.
+
+Scheduled collection uses:
+
+```bash
+./bcap collector-check
+```
+
+It performs ingestion, local held-price refresh, signal classification, and validation without
+writing decisions or boards. Filing mode defaults to `auto`, which respects an active SEC 403
+backoff until an approved mirror, proxy, or filing feed is configured.
 
 For lower-level diagnostics:
 

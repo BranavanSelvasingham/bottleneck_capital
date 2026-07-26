@@ -2,30 +2,30 @@
 ticker: GLW
 name: Corning
 sleeve: ai_networking_optical
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.
 anti_thesis: The AI link may be too diluted by consumer, display, or telecom cycles.
 hedge_or_sizing: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 invalidation_trigger: AI/datacenter optical demand does not become material enough to change earnings power.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the GLW memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: AI optical/fiber beneficiary with put-signal caution.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
-research_priority: MEDIUM
-last_primary_source_check: 2026-06-21
+research_priority: HIGH
+last_primary_source_check: 2026-07-16
 thesis_health_score: 48
-confidence_score: 38
-valuation_attractiveness_score: 27
-urgency_score: 60
+confidence_score: 60.0
+valuation_attractiveness_score: 25
+urgency_score: 90
 max_position_weight_pct: 0
 current_position_weight_pct: 0
 approved_entry_zone: No new capital until scheduled scan validates valuation.
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # GLW - Corning
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Corning may benefit from datacenter optical/fiber demand, but the put signal and non-AI end markets keep it watch-only.
+RESEARCH_REQUIRED: the July 15 open scan flagged an unresolved GLW price dislocation; cause, valuation, datacenter optical demand, non-AI end-market weakness, and SA put-signal context must be refreshed before capital.
 
 ### Decision table
 
@@ -57,9 +58,9 @@ Corning may benefit from datacenter optical/fiber demand, but the put signal and
 | Add on dip? | RESEARCH_FIRST |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
-| Main risk today | End-market dilution, cyclicality, and ambiguity of SA put exposure. |
+| Main risk today | Unresolved July 15 price dislocation, end-market dilution, cyclicality, and ambiguity of SA put exposure. |
 | Main upside driver today | Optical communications demand, datacenter fiber, and margin recovery. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 15 open-scan GLW dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,8 @@ What would break it:
 - AI/datacenter optical demand does not become material enough to change earnings power.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 15 open dislocation is explained
+with primary-source evidence, valuation, and sizing.
 
 Hedge implication:
 No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
@@ -190,6 +191,7 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 
 ## 10. Latest Signals
 
+- 2026-07-15 open scan: unresolved GLW price dislocation, event `fbc090b2c428a6591580c0ef`; check cause, datacenter optical/fiber demand, non-AI end-market weakness, valuation, and SA put-signal context before capital.
 - Wave: 2
 - Source classification: `sa_reported_current_13f`
 - Instrument role: `common_equity_with_put_signal`
@@ -208,9 +210,10 @@ before the next scheduled process.
 
 ## 12. Open Questions
 
-- None blocking before the next scheduled scan. Future work is event/schedule-driven.
+- What caused the July 15 GLW dislocation, and does it indicate AI optical/fiber thesis damage or non-AI end-market pressure?
+- Is post-dislocation valuation attractive enough after put-signal and sizing risk?
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+2026-07-15 open scan moved GLW from HOLD to RESEARCH_REQUIRED. Current action is research
+before acting, with no BUY_NOW, ADD_ON_DIP, TRIM, or SELL action authorized.

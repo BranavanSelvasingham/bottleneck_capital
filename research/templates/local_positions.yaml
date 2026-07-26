@@ -3,6 +3,9 @@
 
 as_of: YYYY-MM-DD
 base_currency: CAD
+fx_to_base:
+  CAD: 1
+  USD: 0
 cash:
   CAD: 0
   USD: 0

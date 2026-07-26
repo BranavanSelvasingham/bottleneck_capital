@@ -2,30 +2,30 @@
 ticker: ASML
 name: ASML Holding
 sleeve: semicap_equipment
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA put signal makes valuation and China/export-control risk central.
 anti_thesis: Semicap cycle, export controls, or customer capex digestion can overpower monopoly quality for long periods.
 hedge_or_sizing: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 invalidation_trigger: Sustained leading-edge order/backlog deterioration or export controls that impair the core EUV growth runway.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA put signal makes valuation and China/export-control risk central."
+next_trigger: Reassess on export-control changes, customer capex, or a valuation reset.
+one_line_rationale: "HOLD / NO ADD: Q2 guidance, backlog, and EUV demand remain strong; valuation, export controls, customer capex, and SA crowding prevent a fresh add."
 asset_role: Lithography and leading-edge semicap bottleneck.
 default_holding_period: multi_year
 current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-24
 thesis_health_score: 70
-confidence_score: 55
-valuation_attractiveness_score: 35
-urgency_score: 90
+confidence_score: 82.0
+valuation_attractiveness_score: 30
+urgency_score: 95
 max_position_weight_pct: 0
 current_position_weight_pct: 0
 approved_entry_zone: No new capital until scheduled scan validates valuation.
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: HOLD
 ---
 # ASML - ASML Holding
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA put signal makes valuation and China/export-control risk central.
+RESEARCH_REQUIRED: the July 15 pre-market scan flagged an unresolved ASML price dislocation; cause, valuation, order/backlog durability, export-control risk, and customer capex must be refreshed before capital.
 
 ### Decision table
 
@@ -57,9 +58,9 @@ ASML is the cleanest tooling scarcity asset in leading-edge chips, but the SA pu
 | Add on dip? | RESEARCH_FIRST |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
-| Main risk today | Order weakness, geopolitics, capex cycle drawdown, or put-signal crowding risk. |
+| Main risk today | Unresolved July 15 price dislocation, order/backlog risk, export controls, capex digestion, and put-signal crowding risk. |
 | Main upside driver today | EUV demand, advanced packaging/foundry intensity, and scarcity economics. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 15 pre-market ASML dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,8 @@ What would break it:
 - Sustained leading-edge order/backlog deterioration or export controls that impair the core EUV growth runway.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 15 pre-market dislocation is explained
+with primary-source evidence, valuation, and sizing.
 
 Hedge implication:
 No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
@@ -190,6 +191,7 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 
 ## 10. Latest Signals
 
+- 2026-07-15 pre-market scan: unresolved ASML price dislocation, event `e58e3585da498a19a4ffe5c1`; check cause, order/backlog durability, EUV demand, export-control risk, customer capex digestion, valuation, and SA put-signal context before capital.
 - Wave: 1
 - Source classification: `sa_reported_current_13f`
 - Instrument role: `common_equity_with_put_signal`
@@ -208,9 +210,10 @@ before the next scheduled process.
 
 ## 12. Open Questions
 
-- None blocking before the next scheduled scan. Future work is event/schedule-driven.
+- What caused the July 15 pre-market dislocation, and does it indicate order/backlog deterioration, China/export-control impairment, customer capex digestion, or only valuation/positioning pressure?
+- Is the post-dislocation valuation attractive enough to justify new capital after long-only sizing and SA put-signal risk are accounted for?
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+2026-07-15 pre-market scan moved ASML from HOLD to RESEARCH_REQUIRED. Current action is
+research before acting, with no BUY_NOW, ADD_ON_DIP, TRIM, or SELL action authorized.

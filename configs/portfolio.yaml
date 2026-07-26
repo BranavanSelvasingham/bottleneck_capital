@@ -1,0 +1,229 @@
+portfolio:
+  default_ticker_limit_pct: 10
+  default_sleeve_limit_pct: 30
+  normal_cash_reserve_pct: 10
+  elevated_cash_reserve_pct: 20
+
+  sleeve_limits_pct:
+    compute_infra: 30
+    power_bottleneck: 35
+    miner_to_datacenter: 20
+    memory_storage_networking: 30
+    semicap_equipment: 25
+    ai_networking_optical: 25
+    ai_power_equipment: 25
+    crowded_ai_beta_hedge: 20
+    enterprise_ai_infra: 20
+    autonomy_energy: 15
+    space_infra: 15
+    ai_services_put_signal: 0
+
+  factor_limits_pct:
+    ai_capex: 70
+    crowding: 55
+    rates_duration: 60
+    financing_liquidity: 45
+    power_scarcity: 55
+    energy_input: 40
+    btc: 20
+    taiwan: 30
+    export_controls: 45
+    supply_chain: 55
+    usd: 50
+    customer_concentration: 55
+    grid_regulation: 45
+
+  sleeve_factor_profiles:
+    compute_infra:
+      ai_capex: 1.00
+      crowding: 0.85
+      rates_duration: 0.75
+      financing_liquidity: 0.75
+      power_scarcity: 0.70
+      supply_chain: 0.45
+      customer_concentration: 0.80
+    power_bottleneck:
+      ai_capex: 0.65
+      rates_duration: 0.55
+      financing_liquidity: 0.45
+      power_scarcity: 0.95
+      energy_input: 0.35
+      grid_regulation: 0.75
+      customer_concentration: 0.35
+    miner_to_datacenter:
+      ai_capex: 0.70
+      crowding: 0.80
+      rates_duration: 0.75
+      financing_liquidity: 0.95
+      power_scarcity: 0.65
+      energy_input: 0.80
+      btc: 1.00
+      customer_concentration: 0.75
+    memory_storage_networking:
+      ai_capex: 0.95
+      crowding: 0.80
+      rates_duration: 0.50
+      financing_liquidity: 0.35
+      taiwan: 0.65
+      export_controls: 0.80
+      supply_chain: 0.85
+      usd: 0.55
+      customer_concentration: 0.75
+    semicap_equipment:
+      ai_capex: 0.90
+      crowding: 0.70
+      rates_duration: 0.45
+      taiwan: 0.55
+      export_controls: 1.00
+      supply_chain: 0.90
+      usd: 0.65
+      customer_concentration: 0.75
+    ai_networking_optical:
+      ai_capex: 1.00
+      crowding: 0.80
+      rates_duration: 0.55
+      financing_liquidity: 0.35
+      export_controls: 0.50
+      supply_chain: 0.75
+      customer_concentration: 0.90
+    ai_power_equipment:
+      ai_capex: 0.90
+      crowding: 0.65
+      rates_duration: 0.55
+      financing_liquidity: 0.40
+      power_scarcity: 0.90
+      energy_input: 0.25
+      supply_chain: 0.60
+      grid_regulation: 0.60
+      customer_concentration: 0.50
+    crowded_ai_beta_hedge:
+      ai_capex: 1.00
+      crowding: 1.00
+      rates_duration: 0.75
+      export_controls: 0.70
+      supply_chain: 0.65
+      customer_concentration: 0.75
+    enterprise_ai_infra:
+      ai_capex: 0.90
+      crowding: 0.75
+      rates_duration: 0.65
+      financing_liquidity: 0.55
+      power_scarcity: 0.55
+      customer_concentration: 0.65
+    autonomy_energy:
+      ai_capex: 0.60
+      crowding: 0.90
+      rates_duration: 0.90
+      financing_liquidity: 0.55
+      energy_input: 0.35
+      export_controls: 0.55
+      supply_chain: 0.80
+      customer_concentration: 0.50
+    space_infra:
+      ai_capex: 0.45
+      crowding: 0.75
+      rates_duration: 0.85
+      financing_liquidity: 0.80
+      supply_chain: 0.65
+      customer_concentration: 0.70
+    ai_services_put_signal:
+      ai_capex: 0.65
+      crowding: 0.75
+      rates_duration: 0.55
+      usd: 0.70
+      customer_concentration: 0.55
+
+  ticker_factor_overrides:
+    TSM:
+      taiwan: 1.00
+      export_controls: 0.95
+      supply_chain: 1.00
+    ASML:
+      export_controls: 1.00
+      supply_chain: 0.95
+      usd: 0.80
+    MU:
+      taiwan: 0.55
+      export_controls: 0.85
+      supply_chain: 0.90
+    VST:
+      power_scarcity: 1.00
+      grid_regulation: 0.85
+      energy_input: 0.50
+    CEG:
+      power_scarcity: 1.00
+      grid_regulation: 0.90
+      energy_input: 0.15
+    TLNE:
+      power_scarcity: 1.00
+      grid_regulation: 0.90
+      financing_liquidity: 0.65
+    CRWV:
+      financing_liquidity: 1.00
+      customer_concentration: 1.00
+    TSLA:
+      rates_duration: 1.00
+      crowding: 1.00
+      supply_chain: 0.90
+
+  scenarios:
+    rates_up_100bp:
+      name: Rates rise 100 bps
+      description: Higher discount rates and tighter financing pressure long-duration and levered assets.
+      factor_shocks:
+        rates_duration: -80
+        financing_liquidity: -50
+        crowding: -30
+        usd: -20
+    ai_capex_slowdown:
+      name: AI capex slows materially
+      description: Hyperscaler and enterprise infrastructure spending falls below embedded expectations.
+      factor_shocks:
+        ai_capex: -90
+        crowding: -60
+        customer_concentration: -45
+        financing_liquidity: -25
+    btc_drawdown_30pct:
+      name: Bitcoin falls 30 percent
+      description: Mining economics and miner financing weaken before datacenter conversion is proven.
+      factor_shocks:
+        btc: -100
+        financing_liquidity: -35
+        crowding: -25
+    taiwan_disruption:
+      name: Taiwan supply disruption
+      description: Fabrication, logistics, or regional security interrupts semiconductor supply.
+      factor_shocks:
+        taiwan: -100
+        supply_chain: -85
+        export_controls: -55
+        crowding: -35
+    export_controls_tighten:
+      name: Export controls tighten
+      description: New restrictions reduce addressable markets or constrain advanced semiconductor supply.
+      factor_shocks:
+        export_controls: -95
+        supply_chain: -50
+        ai_capex: -25
+    energy_and_power_shock:
+      name: Energy and power shock
+      description: Input costs and grid stress rise while scarce generation and equipment may benefit.
+      factor_shocks:
+        energy_input: -70
+        power_scarcity: 55
+        grid_regulation: -20
+        financing_liquidity: -15
+    financing_tightens:
+      name: Financing conditions tighten
+      description: Credit availability deteriorates for capital-intensive infrastructure projects.
+      factor_shocks:
+        financing_liquidity: -90
+        rates_duration: -45
+        customer_concentration: -20
+    favorable_grid_reform:
+      name: Grid and interconnection reform improves
+      description: Policy accelerates generation, transmission, interconnection, and datacenter power buildout.
+      factor_shocks:
+        grid_regulation: 75
+        power_scarcity: 35
+        ai_capex: 20

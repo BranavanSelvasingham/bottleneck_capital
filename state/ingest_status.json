@@ -11,12 +11,14 @@
     ]
   },
   "market": {
-    "event_count": 3,
-    "expected_item_count": 48,
-    "item_count": 48,
-    "last_success_at": "2026-07-12T18:47:11-04:00",
+    "event_count": 23,
+    "expected_item_count": 49,
+    "item_count": 49,
+    "last_success_at": "2026-07-24T19:02:01-04:00",
     "missing_tickers": [],
     "source": "market_yahoo",
-    "warnings": []
+    "warnings": [
+      "Alpaca credentials missing; using Yahoo fallback."
+    ]
   }
 }

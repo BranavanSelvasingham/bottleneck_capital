@@ -2,28 +2,28 @@
 ticker: AVGO
 name: Broadcom
 sleeve: crowded_ai_beta_hedge
-last_updated: 2026-07-11
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_long_with_reported_put_risk_signal
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: PRIMARY_COMPANY_IR_AND_SA_FILING
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Broadcom is a direct custom-AI-silicon and networking bottleneck, with the multi-generation OpenAI accelerator platform adding a marquee deployment to an already accelerating AI semiconductor business.
 anti_thesis: Valuation, hyperscaler/customer concentration, custom-silicon competition, VMware execution, debt, or slower AI deployment can compress the premium multiple despite strong revenue growth.
 hedge_or_sizing: Do not add near $400. Add only at $370-$375 or lower with no thesis damage, subject to an 8% policy cap applied from the local ledger.
 invalidation_trigger: AI semiconductor growth falls below 25% for two quarters, the OpenAI multi-generation deployment is materially delayed or reduced, major custom-accelerator customers are lost, networking share deteriorates, or leverage/VMware execution worsens materially.
-next_trigger: Price at or below $375, next quarterly results, OpenAI deployment update, major custom-silicon customer change, guidance change, or SA filing change.
-one_line_rationale: "HOLD / ADD BELOW $375: Q2 AI semiconductor revenue grew 143% YoY and OpenAI validates the custom-silicon thesis, but the July 10 close near $400 does not offer enough margin of safety."
+next_trigger: Reassess after Q3 AI revenue, custom-silicon deployment evidence, and valuation refresh.
+one_line_rationale: "HOLD / NO ADD: Broadcom custom-silicon and OpenAI thesis remains intact, but deployment economics and valuation require the existing entry discipline."
 asset_role: Custom AI silicon, networking, connectivity, and infrastructure software bottleneck.
 default_holding_period: multi_year
 current_decision: HOLD
 dip_decision: NOT_ARMED
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-07-11
+last_primary_source_check: 2026-07-21
 thesis_health_score: 90
-confidence_score: 85
+confidence_score: 85.0
 valuation_attractiveness_score: 45
 urgency_score: 90
 max_position_weight_pct: 8
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use price discipline and an 8% position cap, while treating SA put exposure as a crowding-risk signal.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: HOLD
 ---
 # AVGO - Broadcom
 

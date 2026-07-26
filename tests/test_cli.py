@@ -70,6 +70,16 @@ def test_regime_event_cli_records_structured_heartbeat(tmp_path: Path) -> None:
             "2026-07-12T09:00:00-04:00",
             "--summary",
             "Ceasefire review remains in force.",
+            "--source-quality",
+            "official_primary",
+            "--expected-duration",
+            "days",
+            "--affected-sleeves",
+            "power_bottleneck,compute_infra",
+            "--transmission",
+            "Lower energy and global-risk pressure.",
+            "--market-confirmation",
+            "MIXED",
         ]
     )
 
@@ -78,7 +88,47 @@ def test_regime_event_cli_records_structured_heartbeat(tmp_path: Path) -> None:
     assert exit_code == 0
     assert manual[-1]["status"] == "ceasefire"
     assert manual[-1]["channels"]["energy"] == 25
+    assert manual[-1]["source_quality"] == "official_primary"
+    assert manual[-1]["affected_sleeves"] == ["power_bottleneck", "compute_infra"]
     assert signals[-1]["event_class"] == "geopolitical_regime_update"
+
+
+def test_collector_check_does_not_write_action_or_decision_board(tmp_path: Path) -> None:
+    _write_project(tmp_path)
+    input_path = tmp_path / "market.json"
+    input_path.write_text(
+        json.dumps(
+            {
+                "snapshots": [
+                    {
+                        "ticker": "AAA",
+                        "price": 100,
+                        "previous_close": 100,
+                        "open": 100,
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    exit_code = main(
+        [
+            "--root",
+            str(tmp_path),
+            "collector-check",
+            "--market-input",
+            str(input_path),
+            "--filing-mode",
+            "skip",
+        ]
+    )
+
+    ledger = read_jsonl(tmp_path / "state" / "run_ledger.jsonl")
+    assert exit_code == 0
+    assert ledger[-1]["process"] == "collector-check"
+    assert not (tmp_path / "reports" / "action_boards").exists()
+    assert not (tmp_path / "reports" / "daily_decision_boards").exists()
 
 
 def test_live_check_cli_runs_market_sentinel_action_board_and_validation(

@@ -146,6 +146,14 @@ def write_exposure_report(root: Path, positions_path: Path | None = None) -> Pat
     return report_path
 
 
+def load_local_positions(
+    root: Path, positions_path: Path | None = None
+) -> tuple[dict[str, Any], list[Position]]:
+    path = positions_path or root / LOCAL_POSITIONS_PATH
+    data = _load_positions_data(path)
+    return data, _load_positions(data)
+
+
 def refresh_position_prices(
     root: Path, positions_path: Path | None = None
 ) -> PositionPriceRefreshResult:

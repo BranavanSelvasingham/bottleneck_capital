@@ -1,0 +1,94 @@
+macro_watch:
+  source_policy:
+    require_primary_source_for_decision_change: true
+    require_two_sources_when_no_official_source: true
+    unverified_headlines_are_signal_only: true
+
+  required_event_fields:
+    - observed_at
+    - source_quality
+    - region
+    - status
+    - severity
+    - confidence
+    - expected_duration
+    - channels
+    - affected_sleeves
+    - transmission
+    - summary
+    - source
+
+  watches:
+    rates_growth_inflation:
+      channels:
+        - rates
+        - global_risk
+        - financing_liquidity
+      primary_sources:
+        - Federal Reserve
+        - Bank of Canada
+        - US Treasury
+        - Statistics Canada
+        - US Bureau of Labor Statistics
+        - US Bureau of Economic Analysis
+    energy_power_grid:
+      channels:
+        - energy
+        - power_scarcity
+        - grid_regulation
+      primary_sources:
+        - US Energy Information Administration
+        - Federal Energy Regulatory Commission
+        - regional grid operators
+        - company regulatory filings
+    ai_capex_memory_networking:
+      channels:
+        - ai_capex
+        - memory_cycle
+        - networking_demand
+      primary_sources:
+        - company filings
+        - company investor relations
+        - earnings guidance
+    export_controls_tariffs:
+      channels:
+        - export_controls
+        - supply_chain
+        - taiwan
+      primary_sources:
+        - US Department of Commerce
+        - US Trade Representative
+        - official foreign-government releases
+    taiwan_and_asia_supply_chain:
+      channels:
+        - taiwan
+        - supply_chain
+        - global_risk
+      primary_sources:
+        - official government releases
+        - company filings
+        - port and logistics authorities
+    middle_east_energy_shipping:
+      channels:
+        - energy
+        - shipping
+        - global_risk
+      primary_sources:
+        - official government releases
+        - maritime authorities
+        - energy agencies
+    funding_liquidity_crowding:
+      channels:
+        - financing_liquidity
+        - crowding
+        - global_risk
+      primary_sources:
+        - central banks
+        - company financing filings
+        - exchange and regulatory disclosures
+
+  scheduled_windows:
+    - pre_market
+    - midday
+    - pre_close
+    - evening

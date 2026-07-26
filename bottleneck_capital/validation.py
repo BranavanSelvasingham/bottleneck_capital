@@ -17,6 +17,21 @@ from bottleneck_capital.io import (
     scalar_text,
 )
 from bottleneck_capital.live_sources import effective_sec_user_agent
+from bottleneck_capital.research_handoffs import (
+    ALLOWED_CAUSE_STATUSES,
+    ALLOWED_PROVISIONAL_BIASES,
+    ALLOWED_THESIS_STATUSES,
+    ALLOWED_VALUATION_STATUSES,
+    APPLICATION_RECORD_TYPE,
+    HANDOFF_RECORD_TYPE,
+    PRIVATE_KEYS,
+    applied_handoff_ids,
+    handoff_id_for,
+    memo_tickers,
+)
+from bottleneck_capital.research_handoffs import (
+    ALLOWED_DECISIONS as HANDOFF_ALLOWED_DECISIONS,
+)
 from bottleneck_capital.signal_events import (
     active_signal_events,
     event_id_for_record,
@@ -41,8 +56,10 @@ def validate_project(root: Path, *, strict_live: bool = False) -> list[Validatio
     _check_ticker_files(root, tickers, issues)
     _check_generated_wiring(root, tickers, issues)
     _check_decisions(root, tickers, issues)
+    _check_research_handoffs(root, tickers, issues, strict_live=strict_live)
     _check_research_blocks(root, issues, strict_live=strict_live)
     _check_market_regime(root, issues, strict_live=strict_live)
+    _check_portfolio_model(root, watchlist, issues)
     _check_signal_events(root, issues)
     _check_event_inputs(root, issues, strict_live=strict_live)
     _check_ingest_freshness(root, issues, strict_live=strict_live, positions=position_items)
@@ -55,6 +72,7 @@ def _check_position_privacy(root: Path, issues: list[ValidationIssue]) -> None:
     private_paths = (
         "state/local_positions.yaml",
         "reports/local_exposure.md",
+        "reports/local_portfolio_boards",
         "state/signal_events.jsonl",
         "reports/action_boards",
         "reports/daily_decision_boards",
@@ -66,6 +84,7 @@ def _check_position_privacy(root: Path, issues: list[ValidationIssue]) -> None:
     required_patterns = (
         "state/local_positions.yaml",
         "reports/local_exposure.md",
+        "reports/local_portfolio_boards/",
         "state/signal_events.jsonl",
         "reports/action_boards/",
         "reports/daily_decision_boards/",
@@ -109,20 +128,68 @@ def _check_position_privacy(root: Path, issues: list[ValidationIssue]) -> None:
             )
         )
 
-    for path in sorted((root / "research" / "assets").glob("*.md")):
-        metadata, _ = read_markdown_frontmatter(path)
-        try:
-            weight = float(metadata.get("current_position_weight_pct") or 0)
-        except (TypeError, ValueError):
-            weight = 0
-        if weight > 0:
-            issues.append(
-                ValidationIssue(
-                    "ERROR",
-                    "POSITION_PRIVACY_TRACKED_WEIGHT",
-                    f"{path.name} contains a committed current position weight.",
+    for directory in ("assets", "decisions"):
+        for path in sorted((root / "research" / directory).glob("*.md")):
+            metadata, _ = read_markdown_frontmatter(path)
+            try:
+                weight = float(metadata.get("current_position_weight_pct") or 0)
+            except (TypeError, ValueError):
+                weight = 0
+            if weight > 0:
+                issues.append(
+                    ValidationIssue(
+                        "ERROR",
+                        "POSITION_PRIVACY_TRACKED_WEIGHT",
+                        f"{directory}/{path.name} contains a committed current position weight.",
+                    )
                 )
+
+
+def _check_portfolio_model(
+    root: Path,
+    watchlist: list[dict[str, Any]],
+    issues: list[ValidationIssue],
+) -> None:
+    path = root / "configs" / "portfolio.yaml"
+    if not path.exists():
+        return
+    data = load_yaml_file(path)
+    config = data.get("portfolio", {}) if isinstance(data, dict) else {}
+    if not isinstance(config, dict):
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "PORTFOLIO_CONFIG_INVALID",
+                "configs/portfolio.yaml must define a portfolio mapping.",
             )
+        )
+        return
+    profiles = config.get("sleeve_factor_profiles", {})
+    mapped = set(profiles) if isinstance(profiles, dict) else set()
+    missing = sorted(
+        {
+            scalar_text(item.get("sleeve"))
+            for item in watchlist
+            if scalar_text(item.get("sleeve")) not in mapped
+        }
+    )
+    if missing:
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "PORTFOLIO_FACTOR_MAP_GAP",
+                "Missing sleeve factor profiles: " + ", ".join(missing),
+            )
+        )
+    scenarios = config.get("scenarios", {})
+    if not isinstance(scenarios, dict) or not scenarios:
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "PORTFOLIO_SCENARIOS_MISSING",
+                "configs/portfolio.yaml must define at least one scenario.",
+            )
+        )
 
 
 def render_validation(issues: list[ValidationIssue]) -> str:
@@ -241,6 +308,273 @@ def _check_signal_events(root: Path, issues: list[ValidationIssue]) -> None:
                 "ACTIVE_HIGH_PRIORITY_SIGNAL",
                 f"{record.get('ticker')} {record.get('event_class')} ({count} active): "
                 f"{record.get('summary')}",
+            )
+        )
+
+
+def _check_research_handoffs(
+    root: Path,
+    tickers: list[str],
+    issues: list[ValidationIssue],
+    *,
+    strict_live: bool,
+) -> None:
+    path = root / "state" / "research_handoffs.jsonl"
+    records = read_jsonl(path)
+    handoffs: dict[str, dict[str, Any]] = {}
+    applications: list[dict[str, Any]] = []
+    ticker_set = {ticker.upper() for ticker in tickers}
+    for record in records:
+        record_type = scalar_text(record.get("record_type"))
+        if record_type == HANDOFF_RECORD_TYPE:
+            handoff_id = scalar_text(record.get("handoff_id"))
+            if not handoff_id:
+                issues.append(
+                    ValidationIssue(
+                        "ERROR",
+                        "RESEARCH_HANDOFF_ID_MISSING",
+                        "Research handoff record has no handoff_id.",
+                    )
+                )
+                continue
+            if handoff_id in handoffs:
+                issues.append(
+                    ValidationIssue(
+                        "ERROR",
+                        "RESEARCH_HANDOFF_DUPLICATE",
+                        f"Duplicate research handoff id: {handoff_id}",
+                    )
+                )
+            handoffs[handoff_id] = record
+            _check_research_handoff_record(root, ticker_set, record, issues)
+        elif record_type == APPLICATION_RECORD_TYPE:
+            applications.append(record)
+        else:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "RESEARCH_HANDOFF_RECORD_TYPE_INVALID",
+                    f"Unknown research handoff record type: {record_type or '<missing>'}",
+                )
+            )
+
+    for application in applications:
+        applied_id = scalar_text(application.get("applied_handoff_id"))
+        decision = scalar_text(application.get("decision")).upper()
+        if applied_id not in handoffs:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "RESEARCH_HANDOFF_APPLICATION_ORPHANED",
+                    f"Application references unknown handoff: {applied_id or '<missing>'}",
+                )
+            )
+        if decision not in HANDOFF_ALLOWED_DECISIONS:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "RESEARCH_HANDOFF_APPLICATION_DECISION_INVALID",
+                    f"Application for {applied_id} has invalid decision {decision or '<missing>'}.",
+                )
+            )
+        _check_private_handoff_fields(application, issues)
+
+    applied = applied_handoff_ids(records)
+    for handoff_id, record in handoffs.items():
+        if handoff_id in applied:
+            continue
+        issues.append(
+            ValidationIssue(
+                "ERROR" if strict_live else "WARN",
+                "PENDING_RESEARCH_HANDOFF",
+                (
+                    f"{record.get('ticker')} has unapplied research handoff {handoff_id} "
+                    f"from {record.get('memo_path')}; Portfolio PM must record an outcome."
+                ),
+            )
+        )
+
+    for memo_path in sorted((root / "research" / "memos").glob("*.md")):
+        relative = memo_path.relative_to(root).as_posix()
+        for ticker in memo_tickers(memo_path, ticker_set):
+            expected_id = handoff_id_for(ticker, relative)
+            if expected_id not in handoffs:
+                issues.append(
+                    ValidationIssue(
+                        "ERROR" if strict_live else "WARN",
+                        "RESEARCH_MEMO_HANDOFF_MISSING",
+                        f"{relative} has no structured Portfolio PM handoff for {ticker}.",
+                    )
+                )
+
+    if handoffs:
+        _check_pm_board_freshness(root, handoffs, issues, strict_live=strict_live)
+
+
+def _check_research_handoff_record(
+    root: Path,
+    tickers: set[str],
+    record: dict[str, Any],
+    issues: list[ValidationIssue],
+) -> None:
+    handoff_id = scalar_text(record.get("handoff_id"))
+    ticker = scalar_text(record.get("ticker")).upper()
+    memo_path_text = scalar_text(record.get("memo_path"))
+    if ticker not in tickers:
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "RESEARCH_HANDOFF_TICKER_INVALID",
+                f"Handoff {handoff_id} references unknown ticker {ticker or '<missing>'}.",
+            )
+        )
+    _check_handoff_choice(
+        handoff_id,
+        "cause_status",
+        scalar_text(record.get("cause_status")),
+        ALLOWED_CAUSE_STATUSES,
+        issues,
+    )
+    _check_handoff_choice(
+        handoff_id,
+        "thesis_status",
+        scalar_text(record.get("thesis_status")),
+        ALLOWED_THESIS_STATUSES,
+        issues,
+    )
+    _check_handoff_choice(
+        handoff_id,
+        "valuation_status",
+        scalar_text(record.get("valuation_status")),
+        ALLOWED_VALUATION_STATUSES,
+        issues,
+    )
+    _check_handoff_choice(
+        handoff_id,
+        "provisional_bias",
+        scalar_text(record.get("provisional_bias")),
+        ALLOWED_PROVISIONAL_BIASES,
+        issues,
+    )
+    if not scalar_text(record.get("summary")):
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "RESEARCH_HANDOFF_SUMMARY_MISSING",
+                f"Handoff {handoff_id} has no summary.",
+            )
+        )
+    try:
+        confidence = float(record.get("confidence"))
+    except (TypeError, ValueError):
+        confidence = -1
+    if not 0 <= confidence <= 100:
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "RESEARCH_HANDOFF_CONFIDENCE_INVALID",
+                f"Handoff {handoff_id} confidence must be between 0 and 100.",
+            )
+        )
+    memo_path = (root / memo_path_text).resolve()
+    memo_root = (root / "research" / "memos").resolve()
+    try:
+        memo_path.relative_to(memo_root)
+    except ValueError:
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "RESEARCH_HANDOFF_MEMO_PATH_INVALID",
+                f"Handoff {handoff_id} memo is outside research/memos: {memo_path_text}",
+            )
+        )
+    else:
+        if not memo_path.exists():
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "RESEARCH_HANDOFF_MEMO_MISSING",
+                    f"Handoff {handoff_id} memo does not exist: {memo_path_text}",
+                )
+            )
+    if ticker:
+        decision_path = root / "research" / "decisions" / f"{ticker}.md"
+        metadata, _ = read_markdown_frontmatter(decision_path)
+        last_updated = scalar_text(metadata.get("last_updated"))[:10]
+        memo_date = scalar_text(record.get("memo_date"))[:10]
+        if memo_date and (not last_updated or last_updated < memo_date):
+            issues.append(
+                ValidationIssue(
+                    "WARN",
+                    "RESEARCH_DECISION_STALE",
+                    (
+                        f"{ticker} decision last_updated {last_updated or 'missing'} predates "
+                        f"research handoff memo {memo_date}."
+                    ),
+                )
+            )
+    _check_private_handoff_fields(record, issues)
+
+
+def _check_handoff_choice(
+    handoff_id: str,
+    field: str,
+    value: str,
+    allowed: set[str],
+    issues: list[ValidationIssue],
+) -> None:
+    if value not in allowed:
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "RESEARCH_HANDOFF_FIELD_INVALID",
+                (
+                    f"Handoff {handoff_id} has invalid {field} {value or '<missing>'}; "
+                    f"expected one of {', '.join(sorted(allowed))}."
+                ),
+            )
+        )
+
+
+def _check_private_handoff_fields(
+    record: dict[str, Any],
+    issues: list[ValidationIssue],
+) -> None:
+    private = PRIVATE_KEYS & {str(key).lower() for key in record}
+    if private:
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "RESEARCH_HANDOFF_PRIVACY_GAP",
+                "Research handoff contains private position fields: "
+                + ", ".join(sorted(private)),
+            )
+        )
+
+
+def _check_pm_board_freshness(
+    root: Path,
+    handoffs: dict[str, dict[str, Any]],
+    issues: list[ValidationIssue],
+    *,
+    strict_live: bool,
+) -> None:
+    boards = sorted((root / "reports" / "daily_decision_boards").glob("*.md"))
+    latest_board_date = boards[-1].stem[:10] if boards else ""
+    latest_handoff_date = max(
+        scalar_text(record.get("created_at"))[:10]
+        or scalar_text(record.get("memo_date"))[:10]
+        for record in handoffs.values()
+    )
+    if not latest_board_date or latest_board_date < latest_handoff_date:
+        issues.append(
+            ValidationIssue(
+                "ERROR" if strict_live else "WARN",
+                "PORTFOLIO_PM_BOARD_STALE",
+                (
+                    f"Latest decision board {latest_board_date or 'missing'} predates "
+                    f"research handoffs through {latest_handoff_date}."
+                ),
             )
         )
 

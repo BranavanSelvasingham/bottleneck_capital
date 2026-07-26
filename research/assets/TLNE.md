@@ -2,28 +2,28 @@
 ticker: TLNE
 name: Talen Energy
 sleeve: power_bottleneck
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_adjacent_historical_or_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Talen is a power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only pending promotion or better entry evidence.
 anti_thesis: Datacenter power upside may already be capitalized or limited by contract/regulatory risk.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: Datacenter power contract thesis weakens or source evidence does not support promotion.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Talen is a power scarcity proxy, but it is not latest-current SA exposure and should stay watch-only pending promotion or better entry evidence."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the TLNE memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Adjacent generation/power scarcity proxy.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-23
 thesis_health_score: 50
-confidence_score: 38
+confidence_score: 60.0
 valuation_attractiveness_score: 25
 urgency_score: 60
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # TLNE - Talen Energy
 

@@ -1,5 +1,34 @@
 timezone: America/Toronto
 
+scheduler_families:
+  market_and_filing_collector:
+    cadence: 15_minutes_market_hours_plus_pre_and_post_market
+    command: bcap collector-check
+    decision_writer: false
+  macro_geopolitical_watcher:
+    windows:
+      - pre_market
+      - midday
+      - pre_close
+      - evening
+    command: bcap regime-event
+    decision_writer: false
+  research_resolver:
+    cadence: event_driven_with_periodic_recovery
+    write_scope: research/memos_and_append_only_handoffs
+    decision_writer: false
+  portfolio_pm:
+    times:
+      - "07:15"
+      - "16:20"
+    command: bcap portfolio-pm
+    decision_writer: true
+  weekly_allocator:
+    day: Sunday
+    time: "18:00"
+    command: bcap portfolio-board
+    decision_writer: false
+
 market_days:
   - name: pre-market thesis scan
     time: "07:15"
@@ -30,6 +59,11 @@ weekly_sleeve_rotation:
   Thursday: memory_storage_networking
   Friday: crowded_ai_beta_hedge
 
+weekly_portfolio_synthesis:
+  day: Sunday
+  time: "18:00"
+  purpose: Set sleeve ranges, scenario posture, research priority, and marginal-capital order.
+
 weekend:
   - name: weekend thesis rebuild
     day: Saturday
@@ -37,4 +71,3 @@ weekend:
   - name: Sunday decision prep
     day: Sunday
     purpose: Prepare Monday buy list, dip list, sell watchlist, research priorities, and hedge posture.
-

@@ -2,47 +2,47 @@
 ticker: APLD
 name: Applied Digital
 sleeve: miner_to_datacenter
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_status: NOT_TRIGGERED
-confidence_score: 40
+confidence_score: 60.0
 urgency: HIGH
-last_updated: 2026-07-12
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
+unresolved_material_event: true
 dip_approved: false
 valuation_improved: false
 portfolio_risk_allows_add: true
 buy_thesis: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.
 thesis_expressed: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.
 anti_thesis: The company may be more financing-sensitive development exposure than durable infrastructure scarcity.
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 valuation_case: contracted backlog value plus power-site replacement cost
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: Major customer/financing failure or evidence that sites cannot support contracted AI load.
 broken_thesis: ""
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing."
-action_tier: HOLD
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: Unresolved material event requires research before changing capital.
+action_tier: RESEARCH_REQUIRED
 bottleneck_upside_score: ""
 bottleneck_upside_case: ""
 promotion_trigger: ""
 ---
 # APLD Decision
 
-Updated: 2026-07-12
+Updated: 2026-07-25
 
-Decision: HOLD
+Decision: RESEARCH_REQUIRED
 Dip decision: RESEARCH_FIRST
 Sell status: NOT_TRIGGERED
-Confidence: 40 / 100
+Confidence: 60.0 / 100
 Urgency: HIGH
 
 One-line rationale:
-Hold/watch only: Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.
+Unresolved material event requires research before changing capital.
 
 Thesis expressed:
 Applied Digital may monetize power and sites into AI/HPC datacenter capacity, but the underwriting hinges on contract quality and financing.
@@ -51,7 +51,7 @@ Anti-thesis:
 The company may be more financing-sensitive development exposure than durable infrastructure scarcity.
 
 Evidence quality:
-SA_FILING_AND_LOCAL_BASELINE
+RESOLVER_MEMO_PM_REVIEW
 
 Hedge or sizing:
 No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
@@ -69,7 +69,7 @@ Sell?
 NO
 
 Next trigger:
-Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
+Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
 
 Human action:
-Follow sizing and hedge discipline before any trade.
+Research before acting.

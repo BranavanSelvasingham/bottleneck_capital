@@ -2,28 +2,28 @@
 ticker: WYFI
 name: WhiteFiber
 sleeve: compute_infra
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: WhiteFiber is tracked because it appears in current public SA exposure, but public evidence, liquidity, and financing quality need caution.
 anti_thesis: The asset may be a narrow/illiquid listing with financing sensitivity rather than durable compute infrastructure.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: Public evidence fails to verify durable compute assets or contract economics.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: WhiteFiber is tracked because it appears in current public SA exposure, but public evidence, liquidity, and financing quality need caution."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the WYFI memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Small compute-infra current SA holding.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
-research_priority: MEDIUM
-last_primary_source_check: 2026-06-21
+research_priority: HIGH
+last_primary_source_check: 2026-07-21
 thesis_health_score: 32
-confidence_score: 26
+confidence_score: 60.0
 valuation_attractiveness_score: 16
 urgency_score: 60
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # WYFI - WhiteFiber
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-WhiteFiber is tracked because it appears in current public SA exposure, but public evidence, liquidity, and financing quality need caution.
+RESEARCH_REQUIRED: the July 14 10:45 sentinel flagged an unresolved WYFI price dislocation; cause, valuation, durable compute assets, financing quality, liquidity, and contract economics must be refreshed before capital.
 
 ### Decision table
 
@@ -57,9 +58,9 @@ WhiteFiber is tracked because it appears in current public SA exposure, but publ
 | Add on dip? | RESEARCH_FIRST |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
-| Main risk today | Liquidity, governance, financing, customer contracts, and asset verification. |
+| Main risk today | Unresolved July 14 price dislocation, liquidity, governance, financing, customer contracts, and asset verification. |
 | Main upside driver today | Verified datacenter/compute contracts, power access, and asset quality. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 14 10:45 sentinel dislocation |
 
 ## 1. Role in Bottleneck Capital
 
