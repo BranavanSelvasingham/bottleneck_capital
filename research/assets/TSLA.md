@@ -2,38 +2,38 @@
 ticker: TSLA
 name: Tesla
 sleeve: autonomy_energy
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: adjacent_proxy
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: RECENT_PUBLIC_MERGER_CHATTER_AND_COMPANY_EVIDENCE
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Tesla may be an indirect call option on Musk-platform consolidation, including a possible SpaceX tie-up, while also expressing AI autonomy, robotics, battery/storage, and energy infrastructure optionality.
 anti_thesis: A Tesla-SpaceX combination could be dilutive or governance-negative if Tesla is used to finance SpaceX at an unfavorable valuation; EV cyclicality, competition, key-person risk, and unclear AI monetization could still dominate.
 hedge_or_sizing: Hold existing exposure only; do not add until merger terms, exact TSLA sizing, valuation, and thesis fit are validated.
 invalidation_trigger: SpaceX merger optionality disappears, transaction terms would dilute TSLA holders badly, or Tesla fails to express a durable AI/autonomy/energy/platform-consolidation thesis.
-next_trigger: Underwrite TSLA as a SpaceX merger/platform-consolidation option with explicit dilution and governance risk.
-one_line_rationale: "Hold/watch only: TSLA now has plausible SpaceX merger/platform-consolidation optionality, but no new capital until transaction odds, terms, sizing, and valuation are underwritten."
+next_trigger: Reassess on autonomy commercialization, margins, free cash flow, and any filed transaction terms.
+one_line_rationale: "HOLD / NO ADD: Q2 supports autonomy and energy optionality but weak margins, negative free cash flow, high capex, governance, and speculative SpaceX merger terms block more capital."
 asset_role: Local-position tracker for Musk-platform consolidation, SpaceX merger optionality, AI autonomy, robotics, battery/storage, and energy optionality.
 default_holding_period: multi_year
 current_decision: HOLD
 dip_decision: NOT_ARMED
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: ""
+last_primary_source_check: 2026-07-24
 thesis_health_score: 35
-confidence_score: 25
+confidence_score: 65.0
 valuation_attractiveness_score: 0
 urgency_score: 90
-action_tier: HOLD_SPECULATIVE
+action_tier: HOLD
 bottleneck_upside_score: 65
-bottleneck_upside_case: "A favorable Tesla-SpaceX transaction or Musk-platform consolidation gives public TSLA holders exposure to launch, satellite, autonomy, robotics, and energy infrastructure scarcity."
-base_case_return_band: "0-30%"
-bull_case_return_band: "75-200%"
-downside_case_return_band: "-40% to -60%"
-promotion_trigger: "Promote only if transaction odds and exchange-ratio math become favorable to TSLA holders, or if autonomy/energy fundamentals justify upside without SpaceX."
-first_tranche_rule: "No add until merger/dilution math and standalone valuation are known."
+bottleneck_upside_case: A favorable Tesla-SpaceX transaction or Musk-platform consolidation gives public TSLA holders exposure to launch, satellite, autonomy, robotics, and energy infrastructure scarcity.
+base_case_return_band: 0-30%
+bull_case_return_band: 75-200%
+downside_case_return_band: -40% to -60%
+promotion_trigger: Promote only if transaction odds and exchange-ratio math become favorable to TSLA holders, or if autonomy/energy fundamentals justify upside without SpaceX.
+first_tranche_rule: No add until merger/dilution math and standalone valuation are known.
 opportunity_rank: 3
 max_position_weight_pct: 0
 current_position_weight_pct: 0

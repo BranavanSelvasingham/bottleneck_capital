@@ -22,15 +22,21 @@ preserve unrelated changes, and validate.
 Scheduled write commands use a shared `scheduled-write` lock plus per-process locks; treat a
 live lock conflict as a real same-file collision, and stale dead-PID locks as recoverable.
 
-For sentinel windows, prefer `bcap live-check`. It runs market ingestion, attempts filing
-ingestion, classifies sentinel events, writes the action board, and validates. Use the
-lower-level sequence `bcap ingest market`, `bcap ingest filings`, `bcap sentinel run`,
-then `bcap action-board` only for diagnostics or recovery. Use `state/latest_events.jsonl`
+For scheduled sentinel collection, prefer `bcap collector-check`. It runs market ingestion,
+attempts filing ingestion subject to active SEC backoff, refreshes local held-position prices,
+classifies sentinel events, and validates without rewriting decisions or decision boards.
+Use `bcap live-check` when an updated action board is also required. Use the lower-level
+sequence `bcap ingest market`, `bcap ingest filings`, `bcap sentinel run`, then
+`bcap action-board` only for diagnostics or recovery. Use `state/latest_events.jsonl`
 or `state/latest_events.json` as the preferred sentinel input. `mock/latest_events.*` is a
 fallback only and should be treated as a validation warning on market days.
 
 Signal events are append-only. Use `bcap signal resolve --event-id ... --reason ...` after
 research review; do not hand-edit old JSONL rows just to mark them resolved.
+Every resolver memo must also create one structured pending PM handoff per covered ticker with
+`bcap handoff add`. Resolving the source event does not complete the investment review. Keep the
+handoff pending until Portfolio PM updates or reaffirms the ticker decision and records the result
+with `bcap handoff apply`. Never treat a resolved signal as an applied portfolio conclusion.
 
 Use `bcap validate` after process or universe changes and `bcap validate --strict-live`
 before resuming market-day automation. Use `bcap live-readiness` to write the dated resume
@@ -38,7 +44,16 @@ checklist and recovery actions. Strict-live must use live provider sources, live
 ingest status, SEC user-agent configuration, and exact local position data. Alpaca
 credentials are preferred but not mandatory when the auto market provider successfully uses
 the Yahoo fallback. Use `bcap action-board` whenever the user needs the latest actionable
-steps outside the close-board window.
+steps outside the close-board window. Use `bcap portfolio-pm` at the pre-market and close
+decision windows. It is the sole scheduled decision writer and writes both the decision board
+and the gitignored local portfolio board. Collectors, macro/geopolitical watchers, and research
+resolvers may append events or write bounded memos, but must not rewrite ticker decisions.
+Before `bcap portfolio-pm`, run `bcap validate --pm-preflight`, review every row from
+`bcap handoff list`, update or explicitly reaffirm the public ticker decision, and apply each
+reviewed handoff. `--pm-preflight` is a recovery gate: it leaves live-source gaps visible but
+does not let an overdue research block prevent the PM from repairing that block. New BUY_NOW or
+ADD_ON_DIP decisions still require a clean `bcap validate --strict-live`; when strict-live is
+blocked, PM may only reaffirm or move to HOLD, RESEARCH_REQUIRED, TRIM, or SELL.
 Before clearing a market-day entry, refresh the configured cross-asset context basket and
 record a structured geopolitical/macro heartbeat with `bcap regime-event`. The heartbeat
 must state region, status, severity, confidence, affected channels, observed time, summary,
@@ -72,7 +87,7 @@ basis, account values, current portfolio weights, account names, and transaction
 
 - Keep exact holdings only in `state/local_positions.yaml` and local reports derived from it.
 - Keep `state/local_positions.yaml`, `reports/local_exposure.md`, `state/signal_events.jsonl`,
-  and generated action-board/sunday-prep directories gitignored and untracked.
+  and generated local-portfolio/action-board/sunday-prep directories gitignored and untracked.
 - Public research may include company market prices, valuation ranges, entry zones, and policy
   position caps. It must not include the user's actual exposure.
 - Set tracked `current_position_weight_pct` metadata to `0` or omit it. Runtime decisions must

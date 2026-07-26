@@ -36,6 +36,10 @@ class OpportunityCandidate:
     valuation_score: float
     bottleneck_score: float
     confidence_score: float
+    portfolio_capacity_score: float
+    diversification_score: float
+    scenario_resilience_score: float
+    discount_class: str
 
 
 @dataclass(frozen=True)
@@ -53,9 +57,11 @@ def rank_opportunities(
     *,
     decision_overrides: dict[str, str] | None = None,
     regime: MarketRegime | None = None,
+    portfolio: Any | None = None,
 ) -> list[OpportunityCandidate]:
     prices = _latest_prices(root)
     current_regime = regime or assess_market_regime(root)
+    portfolio_context = portfolio or _private_portfolio_context(root, current_regime)
     candidates: list[OpportunityCandidate] = []
     for ticker in _watchlist_tickers(root):
         data = _asset_decision_data(root, ticker)
@@ -71,7 +77,23 @@ def rank_opportunities(
         valuation = _score(data.get("valuation_attractiveness_score"), 40.0)
         confidence = _score(data.get("confidence_score"), 50.0)
         bottleneck = _score(data.get("bottleneck_upside_score"), thesis)
-        portfolio = _portfolio_score(data)
+        capacity = _portfolio_score(
+            data,
+            _portfolio_metric(portfolio_context, "capacity_scores", ticker, 60.0),
+        )
+        diversification = _portfolio_metric(
+            portfolio_context,
+            "diversification_scores",
+            ticker,
+            50.0,
+        )
+        resilience = _portfolio_metric(
+            portfolio_context,
+            "scenario_resilience_scores",
+            ticker,
+            50.0,
+        )
+        discount = _discount_class(portfolio_context, ticker)
         action_bonus = {
             "BUY_NOW": 10.0,
             "ADD_ON_DIP": 5.0,
@@ -82,11 +104,13 @@ def rank_opportunities(
             100.0,
             max(
                 0.0,
-                0.30 * thesis
-                + 0.30 * valuation
-                + 0.20 * bottleneck
+                0.25 * thesis
+                + 0.25 * valuation
+                + 0.15 * bottleneck
                 + 0.10 * confidence
-                + 0.10 * portfolio
+                + 0.10 * capacity
+                + 0.10 * diversification
+                + 0.05 * resilience
                 + action_bonus,
             ),
         )
@@ -118,6 +142,10 @@ def rank_opportunities(
                 valuation_score=valuation,
                 bottleneck_score=bottleneck,
                 confidence_score=confidence,
+                portfolio_capacity_score=capacity,
+                diversification_score=diversification,
+                scenario_resilience_score=resilience,
+                discount_class=discount,
             )
         )
     return sorted(candidates, key=lambda item: (-item.score, item.ticker))
@@ -135,6 +163,7 @@ def overdue_research_blocks(
         item.ticker: item
         for item in rank_opportunities(root, decision_overrides=decision_overrides)
     }
+    handoff_checks = _latest_handoff_check_by_ticker(root)
     overdue: list[OverdueResearchBlock] = []
     for ticker in _watchlist_tickers(root):
         data = _asset_decision_data(root, ticker)
@@ -143,9 +172,13 @@ def overdue_research_blocks(
         ).upper()
         if decision != "RESEARCH_REQUIRED":
             continue
-        checked = scalar_text(
-            data.get("last_primary_source_check") or data.get("last_updated")
-        )[:10]
+        checked = max(
+            (
+                scalar_text(data.get("last_primary_source_check"))[:10],
+                scalar_text(data.get("last_updated"))[:10],
+                handoff_checks.get(ticker, ""),
+            )
+        )
         checked_date = _date_value(checked)
         age_days = (today - checked_date).days if checked_date is not None else 999
         if age_days <= max_age:
@@ -163,6 +196,20 @@ def overdue_research_blocks(
             )
         )
     return sorted(overdue, key=lambda item: (-item.score, -item.age_days, item.ticker))
+
+
+def _latest_handoff_check_by_ticker(root: Path) -> dict[str, str]:
+    latest: dict[str, str] = {}
+    for record in read_jsonl(root / "state" / "research_handoffs.jsonl"):
+        if scalar_text(record.get("record_type")) != "research_handoff":
+            continue
+        ticker = scalar_text(record.get("ticker")).upper()
+        checked = scalar_text(
+            record.get("primary_source_checked_at") or record.get("memo_date")
+        )[:10]
+        if ticker and checked and checked > latest.get(ticker, ""):
+            latest[ticker] = checked
+    return latest
 
 
 def opportunity_board_limit(root: Path) -> int:
@@ -202,17 +249,42 @@ def _latest_prices(root: Path) -> dict[str, float]:
     return prices
 
 
-def _portfolio_score(data: dict[str, Any]) -> float:
+def _portfolio_score(data: dict[str, Any], private_capacity: float) -> float:
     if not scalar_bool(data.get("portfolio_risk_allows_add", True)):
         return 0.0
-    maximum = _float(data.get("max_position_weight_pct"))
-    current = _float(data.get("current_position_weight_pct"))
-    if maximum <= 0:
-        return 60.0
-    if current >= maximum:
-        return 10.0
-    remaining_ratio = (maximum - current) / maximum
-    return min(100.0, 60.0 + 40.0 * remaining_ratio)
+    return min(100.0, max(0.0, private_capacity))
+
+
+def _private_portfolio_context(root: Path, regime: MarketRegime) -> Any | None:
+    from bottleneck_capital.positions import LOCAL_POSITIONS_PATH
+
+    if not (root / LOCAL_POSITIONS_PATH).exists():
+        return None
+    try:
+        from bottleneck_capital.portfolio import analyze_portfolio
+
+        return analyze_portfolio(root, regime=regime)
+    except (OSError, ValueError):
+        return None
+
+
+def _portfolio_metric(
+    portfolio: Any | None,
+    field: str,
+    ticker: str,
+    default: float,
+) -> float:
+    values = getattr(portfolio, field, {}) if portfolio is not None else {}
+    if not isinstance(values, dict):
+        return default
+    return _score(values.get(ticker), default)
+
+
+def _discount_class(portfolio: Any | None, ticker: str) -> str:
+    discounts = getattr(portfolio, "discounts", {}) if portfolio is not None else {}
+    if not isinstance(discounts, dict) or ticker not in discounts:
+        return "NOT_CLASSIFIED"
+    return scalar_text(getattr(discounts[ticker], "classification", "")) or "NOT_CLASSIFIED"
 
 
 def _research_required_max_age_days(root: Path) -> int:

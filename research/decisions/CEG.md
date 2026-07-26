@@ -7,7 +7,7 @@ dip_decision: APPROVED
 sell_status: NOT_TRIGGERED
 confidence_score: 84
 urgency: HIGH
-last_updated: 2026-07-12
+last_updated: 2026-07-25
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
@@ -33,7 +33,7 @@ promotion_trigger: Enter at $230-$240 only if the decline is broad-market or val
 ---
 # CEG Decision
 
-Updated: 2026-07-12
+Updated: 2026-07-25
 
 Decision: HOLD
 Dip decision: APPROVED

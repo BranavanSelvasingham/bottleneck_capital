@@ -2,28 +2,28 @@
 ticker: NBIS
 name: Nebius
 sleeve: compute_infra
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_post_quarter_13g
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jurisdiction, customer, and financing risk keep it hold-only.
 anti_thesis: AI cloud ambition may require capital faster than contracts and utilization mature.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: AI cloud utilization, funding, or jurisdiction risk invalidates durable infrastructure value.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jurisdiction, customer, and financing risk keep it hold-only."
+next_trigger: Reassess on disclosed utilization, contract economics, and financing terms.
+one_line_rationale: "HOLD / WATCH: financing and NVIDIA alignment reduce immediate funding risk, but utilization, contract economics, concentration, and valuation block new capital."
 asset_role: Post-quarter SA clue in AI cloud infrastructure.
 default_holding_period: multi_year
 current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-25
 thesis_health_score: 50
-confidence_score: 40
+confidence_score: 65.0
 valuation_attractiveness_score: 28
 urgency_score: 90
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: HOLD
 ---
 # NBIS - Nebius
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jurisdiction, customer, and financing risk keep it hold-only.
+RESEARCH_REQUIRED: the July 13 open scan flagged an unresolved NBIS price dislocation; cause, valuation, customer demand, utilization, funding runway, and jurisdiction risk must be refreshed before capital.
 
 ### Decision table
 
@@ -59,7 +60,7 @@ Nebius is a post-quarter SA evidence name and a compute-infra candidate, but jur
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | Jurisdiction, financing, customer concentration, and execution. |
 | Main upside driver today | Power-secured AI cloud capacity, customer demand, and infrastructure buildout. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 13 open dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,9 @@ What would break it:
 - AI cloud utilization, funding, or jurisdiction risk invalidates durable infrastructure value.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 13 open dislocation cause is bounded
+and primary evidence clears thesis, valuation, customer demand, utilization, funding runway,
+jurisdiction risk, and sizing.
 
 Hedge implication:
 No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
@@ -116,7 +118,7 @@ Claim: capacity economics and funding-adjusted AI cloud scenario value. Current 
 
 Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
-change, or detected dip can reopen the decision.
+change, or resolution of the July 13 open dislocation can reopen the decision.
 
 ## 3. Market-Implied View vs Variant View
 
@@ -203,8 +205,8 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 - `research/agent_packets/wave_1/NBIS.md`
 - `reports/initialization/2026-06-20-wave-1-execution.md`
 
-Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
-before the next scheduled process.
+Evidence quality: live open dislocation unresolved. No capital action is authorized until
+primary evidence and valuation resolve the July 13 price-dislocation trigger.
 
 ## 12. Open Questions
 
@@ -212,5 +214,6 @@ before the next scheduled process.
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+2026-07-13 open dislocation scan moved the working decision to RESEARCH_REQUIRED after NBIS
+triggered an unresolved price-dislocation event. No BUY_NOW, ADD_ON_DIP, TRIM, or SELL
+action is authorized.

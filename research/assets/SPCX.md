@@ -2,28 +2,28 @@
 ticker: SPCX
 name: SpaceX / SPCX ticker signal
 sleeve: space_infra
-last_updated: 2026-07-11
+last_updated: 2026-07-25
 source_classification: sa_adjacent_thesis_proxy
 instrument_role: adjacent_proxy
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: PRIMARY_IR_SEC_AND_CREDIT_RATING
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: SPCX is tracked as Space Exploration Technologies Corp. public equity exposure to launch, satellite, connectivity, defense infrastructure, and AI-infrastructure scarcity.
 anti_thesis: The $25 billion unsecured notes issuance, expected negative free cash flow, xAI/AI infrastructure capital intensity, post-IPO valuation, and volatility can overwhelm strong space infrastructure assets.
 hedge_or_sizing: Add no capital until valuation and free-cash-flow conversion improve; apply the local concentration gate without publishing exposure.
 invalidation_trigger: Senior-note terms, bridge-loan refinancing, customer demand, or liquidity risk show the post-IPO equity is overlevered or no longer a clean space/AI infrastructure expression.
-next_trigger: Next earnings/filing, material Starlink or launch guidance change, AI infrastructure capex/free-cash-flow update, credit-rating change, or valuation reset.
-one_line_rationale: "HOLD / NO ADD: the $25 billion bond refinancing closed with a BBB stable rating and bridge-loan repayment, but expected negative free cash flow and valuation still block new capital."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the SPCX memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Space infrastructure adjacent proxy.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: NOT_ARMED
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-07-11
+last_primary_source_check: 2026-07-22
 thesis_health_score: 70
-confidence_score: 65
+confidence_score: 60.0
 valuation_attractiveness_score: 18
 urgency_score: 60
 max_position_weight_pct: 20
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # SPCX - SpaceX / SPCX ticker signal
 

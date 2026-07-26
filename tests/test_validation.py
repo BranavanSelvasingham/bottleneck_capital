@@ -39,6 +39,7 @@ def test_validate_project_errors_on_committed_current_position_weight(tmp_path: 
     (tmp_path / ".gitignore").write_text(
         "state/local_positions.yaml\n"
         "reports/local_exposure.md\n"
+        "reports/local_portfolio_boards/\n"
         "state/signal_events.jsonl\n"
         "reports/action_boards/\n"
         "reports/daily_decision_boards/\n"
@@ -498,6 +499,7 @@ def _write_minimal_project(root: Path) -> None:
     (root / ".gitignore").write_text(
         "state/local_positions.yaml\n"
         "reports/local_exposure.md\n"
+        "reports/local_portfolio_boards/\n"
         "state/signal_events.jsonl\n"
         "reports/action_boards/\n"
         "reports/daily_decision_boards/\n"

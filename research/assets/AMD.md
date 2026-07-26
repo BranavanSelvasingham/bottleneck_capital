@@ -2,28 +2,28 @@
 ticker: AMD
 name: Advanced Micro Devices
 sleeve: crowded_ai_beta_hedge
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: AMD is a second-source AI accelerator candidate, but SA put exposure says the long case must clear high valuation and execution hurdles.
 anti_thesis: NVIDIA ecosystem strength, software lock-in, or gross-margin pressure may keep AMD from becoming a true bottleneck.
 hedge_or_sizing: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 invalidation_trigger: AI accelerator roadmap fails to gain durable datacenter traction at acceptable margins.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: AMD is a second-source AI accelerator candidate, but SA put exposure says the long case must clear high valuation and execution hurdles."
+next_trigger: Reassess after Q2 shipments, gross-margin evidence, and valuation refresh.
+one_line_rationale: "HOLD / NO ADD: Helios customer evidence supports the accelerator thesis, but Q2 shipment conversion, margins, valuation, and SA put-signal risk remain gates."
 asset_role: AI accelerator challenger and crowded-beta risk map.
 default_holding_period: multi_year
 current_decision: HOLD
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-23
 thesis_health_score: 52
-confidence_score: 45
+confidence_score: 70.0
 valuation_attractiveness_score: 30
 urgency_score: 90
 max_position_weight_pct: 0
@@ -33,8 +33,9 @@ do_not_buy_zone: Any price without thesis, valuation, sizing, and invalidation.
 sell_trigger_status: false
 hedge_required: true
 main_hedge: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
-open_questions_count: 0
+open_questions_count: 1
 broken_thesis: ""
+action_tier: HOLD
 ---
 # AMD - Advanced Micro Devices
 
@@ -42,24 +43,24 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-AMD is a second-source AI accelerator candidate, but SA put exposure says the long case must clear high valuation and execution hurdles.
+RESEARCH_REQUIRED: the July 15 10:45 sentinel flagged an unresolved AMD price dislocation; cause, valuation, MI300/MI350 execution, customer demand, margin trajectory, and SA put-signal context must be refreshed before capital.
 
 ### Decision table
 
 | Field | Status |
 |---|---|
-| Long-term ownership candidate? | POSSIBLE, NOT APPROVED |
+| Long-term ownership candidate? | POSSIBLE, RESEARCH BLOCKED |
 | Buy today? | NO |
 | Add on dip? | RESEARCH_FIRST |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | Crowded AI beta, product execution, software ecosystem, and margin dilution. |
 | Main upside driver today | MI accelerator adoption, datacenter share gains, and customer second-sourcing. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 15 10:45 sentinel dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,9 @@ What would break it:
 - AI accelerator roadmap fails to gain durable datacenter traction at acceptable margins.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 15 10:45 sentinel dislocation is resolved
+with primary-source review of MI300/MI350 execution, customer demand, margin trajectory,
+valuation, and SA put-signal context.
 
 Hedge implication:
 No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
@@ -190,6 +192,7 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 
 ## 10. Latest Signals
 
+- July 15, 2026 10:45 sentinel: event `bd7f76ea757ef6254d916a2d` flagged AMD price dislocation: intraday -6.6%. Treat as RESEARCH_REQUIRED until cause and valuation are resolved.
 - Wave: 2
 - Source classification: `sa_reported_current_13f`
 - Instrument role: `common_equity_with_put_signal`
@@ -203,14 +206,13 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 - `research/agent_packets/wave_2/AMD.md`
 - `reports/initialization/2026-06-20-wave-2-execution.md`
 
-Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
-before the next scheduled process.
+Evidence quality: live intraday dislocation unresolved, plus SA filing and local baseline. No new capital is authorized before the July 15 sentinel event is resolved.
 
 ## 12. Open Questions
 
-- None blocking before the next scheduled scan. Future work is event/schedule-driven.
+- Resolve the July 15 10:45 AMD dislocation with primary company/filing/IR evidence, MI300/MI350 execution, customer demand, margin trajectory, valuation, and SA put-signal context.
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+July 15 10:45 sentinel moved current action to RESEARCH_REQUIRED. No BUY_NOW, ADD_ON_DIP,
+TRIM, or SELL action is authorized until the dislocation is resolved.

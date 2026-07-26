@@ -7,7 +7,7 @@ dip_decision: NOT_ARMED
 sell_status: NOT_TRIGGERED
 confidence_score: 32
 urgency: MEDIUM
-last_updated: 2026-07-12
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: reported_put_signal
 trade_policy: signal_only_no_puts_or_shorts
@@ -33,7 +33,7 @@ promotion_trigger: ""
 ---
 # INFY Decision
 
-Updated: 2026-07-12
+Updated: 2026-07-25
 
 Decision: HOLD
 Dip decision: NOT_ARMED

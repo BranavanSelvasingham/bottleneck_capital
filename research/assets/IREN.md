@@ -2,38 +2,38 @@
 ticker: IREN
 name: IREN
 sleeve: miner_to_datacenter
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta.
 anti_thesis: The stock may still be a Bitcoin miner with expensive AI optionality.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: AI/HPC conversion fails to become material or financing dilutes away site value.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: IREN is a high-priority power/site conversion candidate, but new capital needs verified AI/HPC economics over mining beta."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the IREN memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Power-rich miner-to-AI datacenter conversion.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-22
 thesis_health_score: 50
-confidence_score: 40
+confidence_score: 60.0
 valuation_attractiveness_score: 28
 urgency_score: 90
-action_tier: WATCH_TOP_SPECULATIVE
+action_tier: RESEARCH_REQUIRED
 bottleneck_upside_score: 78
-bottleneck_upside_case: "Power-secured mining sites convert into contracted AI/HPC datacenter capacity; equity rerates from mining beta to scarce powered compute infrastructure."
-base_case_return_band: "30-60%"
-bull_case_return_band: "100-300%"
-downside_case_return_band: "-50% or worse"
-promotion_trigger: "Promote to ADD_ON_DIP only if AI/HPC contract economics and financing terms show that conversion value exceeds dilution and mining beta risk."
-first_tranche_rule: "Speculative starter only; size below CEG unless contract and financing evidence improve materially."
+bottleneck_upside_case: Power-secured mining sites convert into contracted AI/HPC datacenter capacity; equity rerates from mining beta to scarce powered compute infrastructure.
+base_case_return_band: 30-60%
+bull_case_return_band: 100-300%
+downside_case_return_band: -50% or worse
+promotion_trigger: Promote to ADD_ON_DIP only if AI/HPC contract economics and financing terms show that conversion value exceeds dilution and mining beta risk.
+first_tranche_rule: Speculative starter only; size below CEG unless contract and financing evidence improve materially.
 opportunity_rank: 2
 max_position_weight_pct: 0
 current_position_weight_pct: 0

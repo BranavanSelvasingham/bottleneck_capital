@@ -2,28 +2,28 @@
 ticker: BE
 name: Bloom Energy
 sleeve: power_bottleneck
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_and_call_signal
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment.
 anti_thesis: Fuel-cell economics, warranty risk, financing needs, or loose energy-transition exposure may swamp datacenter upside.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: Datacenter backlog fails to convert or financing/product risk impairs delivery economics.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the BE memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Onsite power solution for AI datacenter scarcity.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-24
 thesis_health_score: 55
-confidence_score: 45
+confidence_score: 60.0
 valuation_attractiveness_score: 32
 urgency_score: 90
 max_position_weight_pct: 0
@@ -33,8 +33,9 @@ do_not_buy_zone: Any price without thesis, valuation, sizing, and invalidation.
 sell_trigger_status: false
 hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
-open_questions_count: 0
+open_questions_count: 1
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # BE - Bloom Energy
 
@@ -42,24 +43,24 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Bloom may be a direct answer to grid-constrained AI campuses if customers value rapid onsite power deployment.
+RESEARCH_REQUIRED: the July 15 10:45 sentinel flagged an unresolved BE price dislocation; cause, valuation, customer conversion, product reliability, warranty risk, financing needs, margins, and onsite-power demand must be refreshed before capital.
 
 ### Decision table
 
 | Field | Status |
 |---|---|
-| Long-term ownership candidate? | POSSIBLE, NOT APPROVED |
+| Long-term ownership candidate? | POSSIBLE, RESEARCH BLOCKED |
 | Buy today? | NO |
 | Add on dip? | RESEARCH_FIRST |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | Contract quality, product reliability, cash needs, customer concentration, and margins. |
 | Main upside driver today | Datacenter customer wins, backlog conversion, margin improvement, and financing access. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 15 10:45 sentinel dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,9 @@ What would break it:
 - Datacenter backlog fails to convert or financing/product risk impairs delivery economics.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 15 10:45 sentinel dislocation is resolved
+with primary-source review of customer conversion, product reliability, warranty risk,
+financing needs, margins, onsite-power demand, and valuation.
 
 Hedge implication:
 No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
@@ -190,6 +192,7 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 
 ## 10. Latest Signals
 
+- July 15, 2026 10:45 sentinel: event `610a5c7d15b537730394f822` flagged BE price dislocation: intraday -6.3%. Treat as RESEARCH_REQUIRED until cause and valuation are resolved.
 - Wave: 1
 - Source classification: `sa_reported_current_13f`
 - Instrument role: `common_equity_and_call_signal`
@@ -203,14 +206,13 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 - `research/agent_packets/wave_1/BE.md`
 - `reports/initialization/2026-06-20-wave-1-execution.md`
 
-Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
-before the next scheduled process.
+Evidence quality: live intraday dislocation unresolved, plus SA filing and local baseline. No new capital is authorized before the July 15 sentinel event is resolved.
 
 ## 12. Open Questions
 
-- None blocking before the next scheduled scan. Future work is event/schedule-driven.
+- Resolve the July 15 10:45 BE dislocation with primary company/filing/IR evidence, customer conversion, product reliability, warranty risk, financing needs, margins, onsite-power demand, and valuation.
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+July 15 10:45 sentinel moved current action to RESEARCH_REQUIRED. No BUY_NOW, ADD_ON_DIP,
+TRIM, or SELL action is authorized until the dislocation is resolved.

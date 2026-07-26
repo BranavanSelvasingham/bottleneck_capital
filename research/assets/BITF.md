@@ -2,28 +2,28 @@
 ticker: BITF
 name: Bitfarms
 sleeve: miner_to_datacenter
-last_updated: 2026-06-22
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: true
-evidence_quality: LIVE_MARKET_GAP_AND_SEC_BROWSE_ATOM
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: BITF was tracked as a Bitfarms power/site option; live checks now verify the successor market symbol as KEEL / Keel Infrastructure Corp., with Bitfarms Ltd as a former name dated 2026-03-31.
 anti_thesis: Keel may no longer express the intended miner-to-datacenter thesis, making SA-mirroring conclusions unreliable until the rebrand, asset base, and current strategic focus are reviewed.
 hedge_or_sizing: No puts or shorts; maintain zero/add-none sizing and do not treat BITF/KEEL as buyable until SA mapping and thesis fit are corrected.
 invalidation_trigger: Confirmed Keel no longer expresses the intended miner-to-datacenter exposure, or SA/public filing mapping no longer supports tracking this name as current SA exposure.
-next_trigger: Research whether Keel Infrastructure still expresses the intended miner-to-datacenter thesis and whether SA/public-filing mapping should remain as BITF or migrate to KEEL.
-one_line_rationale: "RESEARCH_REQUIRED: BITF live-market coverage now maps to KEEL / Keel Infrastructure, but thesis fit and SA mapping need review before action."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the BITF memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Miner-to-datacenter optionality.
 default_holding_period: multi_year
 current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-22
+last_primary_source_check: 2026-07-20
 thesis_health_score: 20
-confidence_score: 20
+confidence_score: 60.0
 valuation_attractiveness_score: 0
 urgency_score: 90
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; maintain zero/add-none sizing until SA mapping and thesis fit are verified.
 open_questions_count: 3
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # BITF - Bitfarms
 

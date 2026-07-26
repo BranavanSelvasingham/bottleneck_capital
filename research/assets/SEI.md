@@ -2,28 +2,28 @@
 ticker: SEI
 name: Solaris Energy Infrastructure
 sleeve: power_bottleneck
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.
 anti_thesis: The company may remain energy-services cyclicality rather than durable datacenter power.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: Contracted power demand fails to scale or margins do not support fleet expansion.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the SEI memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Distributed/mobile power infrastructure candidate.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-21
 thesis_health_score: 43
-confidence_score: 34
+confidence_score: 60.0
 valuation_attractiveness_score: 25
 urgency_score: 60
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # SEI - Solaris Energy Infrastructure
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Solaris Energy Infrastructure could fit AI power scarcity if contracted distributed power demand scales beyond legacy end markets.
+RESEARCH_REQUIRED: the July 13 14:30 sentinel flagged an unresolved SEI intraday price dislocation; cause, valuation, contracted power demand, fleet economics, and financing risk must be refreshed before capital.
 
 ### Decision table
 
@@ -59,7 +60,7 @@ Solaris Energy Infrastructure could fit AI power scarcity if contracted distribu
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | End-market cyclicality, customer concentration, capex, and contract duration. |
 | Main upside driver today | Customer contracts, mobile power fleet growth, and margin expansion. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 13 intraday dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,9 @@ What would break it:
 - Contracted power demand fails to scale or margins do not support fleet expansion.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 13 intraday dislocation cause is
+bounded and primary evidence clears thesis, valuation, contracted power demand, fleet
+economics, customer concentration, financing risk, margins, and sizing.
 
 Hedge implication:
 No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
@@ -116,7 +118,7 @@ Claim: contracted fleet economics and normalized EBITDA scenario value. Current 
 
 Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
-change, or detected dip can reopen the decision.
+change, or resolution of the July 13 intraday dislocation can reopen the decision.
 
 ## 3. Market-Implied View vs Variant View
 

@@ -2,28 +2,28 @@
 ticker: INTC
 name: Intel
 sleeve: semicap_equipment
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold.
 anti_thesis: The turnaround may consume capital without proving process or foundry competitiveness.
 hedge_or_sizing: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 invalidation_trigger: Foundry roadmap slips further or capital needs overwhelm strategic value.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the INTC memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Foundry and domestic semiconductor capacity turnaround.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-23
 thesis_health_score: 45
-confidence_score: 38
+confidence_score: 60.0
 valuation_attractiveness_score: 25
 urgency_score: 90
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # INTC - Intel
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Intel is a possible strategic foundry bottleneck, but execution, capital intensity, and put exposure keep the stock on hold.
+RESEARCH_REQUIRED: the July 15 open scan flagged an unresolved INTC price dislocation; cause, valuation, foundry roadmap, capital intensity, financing needs, and SA put-signal context must be refreshed before capital.
 
 ### Decision table
 
@@ -57,9 +58,9 @@ Intel is a possible strategic foundry bottleneck, but execution, capital intensi
 | Add on dip? | RESEARCH_FIRST |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
-| Main risk today | Execution delays, balance sheet strain, foundry losses, and competitive pressure. |
+| Main risk today | Unresolved July 15 price dislocation, execution delays, balance sheet strain, foundry losses, and competitive pressure. |
 | Main upside driver today | Foundry progress, process roadmap execution, subsidies, and strategic customer wins. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 15 open-scan INTC dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,8 @@ What would break it:
 - Foundry roadmap slips further or capital needs overwhelm strategic value.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 15 open dislocation is explained
+with primary-source evidence, valuation, and sizing.
 
 Hedge implication:
 No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit invalidation.
@@ -190,6 +191,7 @@ No puts or shorts; require smaller sizing, higher valuation hurdle, and explicit
 
 ## 10. Latest Signals
 
+- 2026-07-15 open scan: unresolved INTC price dislocation, event `7eeed40e5584cebb9ecfa01a`; check cause, foundry roadmap, capital intensity, financing needs, valuation, and SA put-signal context before capital.
 - Wave: 2
 - Source classification: `sa_reported_current_13f`
 - Instrument role: `common_equity_with_put_signal`
@@ -208,9 +210,10 @@ before the next scheduled process.
 
 ## 12. Open Questions
 
-- None blocking before the next scheduled scan. Future work is event/schedule-driven.
+- What caused the July 15 INTC dislocation, and does it indicate foundry roadmap, financing, or capital-intensity thesis damage?
+- Is post-dislocation valuation attractive enough after turnaround and put-signal risk?
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+2026-07-15 open scan moved INTC from HOLD to RESEARCH_REQUIRED. Current action is research
+before acting, with no BUY_NOW, ADD_ON_DIP, TRIM, or SELL action authorized.

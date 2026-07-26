@@ -2,36 +2,36 @@
 ticker: VST
 name: Vistra
 sleeve: power_bottleneck
-last_updated: 2026-07-13
+last_updated: 2026-07-25
 source_classification: sa_adjacent_historical_or_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: PRIMARY_COMPANY_IR_AND_SEC
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Vistra is a direct expression of scarce dispatchable US power, with a hedged generation fleet and long-duration data-center power demand that is not fully captured by the current cash-flow yield.
 anti_thesis: Acquisition leverage, integration risk, power-price normalization, regulatory intervention, nuclear outages, or weak retail execution can overwhelm the data-center demand thesis.
 hedge_or_sizing: Use no more than half the intended allocation at $152-$160 while the geopolitical regime is elevated; reserve the balance for $145-$150 or a clean post-August 7 earnings review. Policy cap 4%.
 invalidation_trigger: 2026 adjusted EBITDA falls below the $6.8 billion guidance floor, free-cash-flow-before-growth falls below $3.9 billion without a clearly value-accretive cause, hedge coverage deteriorates materially, or data-center PPAs are delayed or impaired.
-next_trigger: Half entry at $152-$160, a second tranche at $145-$150 or after August 7 results, debt/integration update, or material PPA/regulatory news.
-one_line_rationale: "BUY_NOW / HALF STARTER: at $158.86 Vistra offers about a 7.7% midpoint cash-flow-before-growth yield after preferred dividends, but $19.2 billion of debt, $2.48 billion of preferred stock, and excluded growth spending make a full immediate allocation unjustified."
+next_trigger: Reassess after August 7 results, guidance, power-price evidence, and strict-live clearance.
+one_line_rationale: "HOLD / NO FURTHER ADD: the power thesis and guidance remain intact, but wait for August 7 results and strict-live clearance before another tranche."
 asset_role: Dispatchable power, nuclear, gas generation, and data-center PPA bottleneck.
 default_holding_period: multi_year
-current_decision: BUY_NOW
+current_decision: HOLD
 dip_decision: APPROVED
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-07-13
+last_primary_source_check: 2026-07-23
 thesis_health_score: 88
-confidence_score: 76
+confidence_score: 78.0
 valuation_attractiveness_score: 70
 urgency_score: 84
-action_tier: BUY_NOW
+action_tier: HOLD
 bottleneck_upside_score: 88
 bottleneck_upside_case: Scarce reliable power and contracted data-center demand lift cash flow and terminal value beyond a normal generation multiple.
-base_case_return_band: "20-40% over 3 years"
-bull_case_return_band: "50-80% over 4-5 years"
-downside_case_return_band: "-35% to -45%"
+base_case_return_band: 20-40% over 3 years
+bull_case_return_band: 50-80% over 4-5 years
+downside_case_return_band: -35% to -45%
 promotion_trigger: Add a later tranche only after leverage, integration, and PPA execution remain on plan or price enters the stronger zone without thesis damage.
 first_tranche_rule: No more than half the intended allocation at $152-$160; reserve the balance for $145-$150 or a clean post-August 7 review.
 max_position_weight_pct: 4

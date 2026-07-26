@@ -2,28 +2,28 @@
 ticker: SNDK
 name: SanDisk
 sleeve: memory_storage_networking
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_and_call_signal
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline.
 anti_thesis: The case may be cyclical NAND beta rather than durable AI storage scarcity.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: NAND/storage recovery fails or balance sheet risk overwhelms AI storage upside.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the SNDK memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: AI storage/NAND scarcity candidate.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-24
 thesis_health_score: 48
-confidence_score: 38
+confidence_score: 60.0
 valuation_attractiveness_score: 27
 urgency_score: 90
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # SNDK - SanDisk
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-SanDisk may express NAND/storage scarcity after separation, but the memory cycle and balance sheet need discipline.
+RESEARCH_REQUIRED: the July 13 open scan flagged an unresolved SNDK price dislocation; cause, valuation, NAND/storage cycle, separation, and balance-sheet evidence must be refreshed before capital.
 
 ### Decision table
 
@@ -59,7 +60,7 @@ SanDisk may express NAND/storage scarcity after separation, but the memory cycle
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | Memory cyclicality, leverage/separation issues, and pricing power uncertainty. |
 | Main upside driver today | NAND recovery, AI storage demand, and separation-driven operating focus. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 13 open dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,9 @@ What would break it:
 - NAND/storage recovery fails or balance sheet risk overwhelms AI storage upside.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 13 open dislocation cause is bounded
+and primary evidence clears thesis, valuation, NAND/storage cycle, separation and
+balance-sheet risk, customer demand, and sizing.
 
 Hedge implication:
 No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
@@ -116,7 +118,7 @@ Claim: cycle-normalized NAND earnings and AI storage scenario value. Current bas
 
 Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
-change, or detected dip can reopen the decision.
+change, or resolution of the July 13 open dislocation can reopen the decision.
 
 ## 3. Market-Implied View vs Variant View
 
@@ -203,8 +205,8 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 - `research/agent_packets/wave_2/SNDK.md`
 - `reports/initialization/2026-06-20-wave-2-execution.md`
 
-Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
-before the next scheduled process.
+Evidence quality: live open dislocation unresolved. No capital action is authorized until
+primary evidence and valuation resolve the July 13 price-dislocation trigger.
 
 ## 12. Open Questions
 
@@ -212,5 +214,6 @@ before the next scheduled process.
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+2026-07-13 open dislocation scan moved the working decision to RESEARCH_REQUIRED after SNDK
+triggered an unresolved price-dislocation event. No BUY_NOW, ADD_ON_DIP, TRIM, or SELL
+action is authorized.

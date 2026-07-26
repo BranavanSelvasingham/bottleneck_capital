@@ -2,28 +2,28 @@
 ticker: LITE
 name: Lumentum
 sleeve: ai_networking_optical
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_adjacent_historical_or_thesis_proxy
 instrument_role: common_equity
 trade_policy: long_only_after_research
 thesis_damage: false
-unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+unresolved_material_event: true
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.
 anti_thesis: Telecom cyclicality may dominate any datacenter optical upside.
 hedge_or_sizing: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 invalidation_trigger: AI/datacom demand fails to offset telecom cyclicality.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: "Hold/watch only: Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy."
+next_trigger: Refresh the next primary catalyst, valuation, financing where relevant, and live filing coverage before changing capital.
+one_line_rationale: "RESEARCH_REQUIRED / NO ADD: the LITE memo bounds the prior move, but current valuation, catalyst, financing, or live-source evidence remains insufficient for capital."
 asset_role: Adjacent optical/networking proxy.
 default_holding_period: multi_year
-current_decision: HOLD
+current_decision: RESEARCH_REQUIRED
 dip_decision: RESEARCH_FIRST
 sell_decision: NOT_TRIGGERED
 research_priority: MEDIUM
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-17
 thesis_health_score: 42
-confidence_score: 34
+confidence_score: 60.0
 valuation_attractiveness_score: 24
 urgency_score: 60
 max_position_weight_pct: 0
@@ -35,6 +35,7 @@ hedge_required: true
 main_hedge: No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
 open_questions_count: 0
 broken_thesis: ""
+action_tier: RESEARCH_REQUIRED
 ---
 # LITE - Lumentum
 
@@ -42,11 +43,11 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-Lumentum can benefit if AI optical components tighten, but it is not current SA exposure and should remain a watchlist proxy.
+RESEARCH_REQUIRED: the July 13 open scan flagged an unresolved LITE price dislocation; cause, valuation, datacom demand, telecom cyclicality, and customer concentration must be refreshed before capital.
 
 ### Decision table
 
@@ -59,7 +60,7 @@ Lumentum can benefit if AI optical components tighten, but it is not current SA 
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | Telecom weakness, customer concentration, and non-SA status. |
 | Main upside driver today | AI transceiver/optical demand and datacom mix improvement. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 13 open dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,9 @@ What would break it:
 - AI/datacom demand fails to offset telecom cyclicality.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not add capital until the July 13 open dislocation cause is bounded
+and primary evidence clears thesis, valuation, datacom demand, telecom cyclicality,
+customer concentration, and sizing.
 
 Hedge implication:
 No puts or shorts; use no-action discipline until valuation and thesis evidence justify capital.
@@ -116,7 +118,7 @@ Claim: datacom recovery and optical component scenario value. Current baseline d
 
 Status: EVENT-DRIVEN
 Claim: New SEC filing, IR update, financing, customer contract, guidance change, SA filing
-change, or detected dip can reopen the decision.
+change, or resolution of the July 13 open dislocation can reopen the decision.
 
 ## 3. Market-Implied View vs Variant View
 
@@ -203,8 +205,8 @@ No puts or shorts; use no-action discipline until valuation and thesis evidence 
 - `research/agent_packets/wave_3/LITE.md`
 - `reports/initialization/2026-06-20-wave-3-execution.md`
 
-Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
-before the next scheduled process.
+Evidence quality: live open dislocation unresolved. No capital action is authorized until
+primary evidence and valuation resolve the July 13 price-dislocation trigger.
 
 ## 12. Open Questions
 
@@ -212,5 +214,6 @@ before the next scheduled process.
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+2026-07-13 open dislocation scan moved the working decision to RESEARCH_REQUIRED after LITE
+triggered an unresolved price-dislocation event. No BUY_NOW, ADD_ON_DIP, TRIM, or SELL
+action is authorized.

@@ -15,6 +15,7 @@ regime:
     TLT: TLT
     UUP: UUP
     XLE: XLE
+    USDCAD: CAD=X
   entry_gates:
     reduce_tranche_adjustment: -4
     pause_new_buy_adjustment: -8

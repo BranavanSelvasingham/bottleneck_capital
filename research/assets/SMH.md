@@ -2,28 +2,28 @@
 ticker: SMH
 name: VanEck Semiconductor ETF
 sleeve: crowded_ai_beta_hedge
-last_updated: 2026-06-21
+last_updated: 2026-07-25
 source_classification: sa_reported_current_13f
 instrument_role: common_equity_with_put_signal
 trade_policy: signal_only_no_puts_or_shorts
 thesis_damage: false
 unresolved_material_event: false
-evidence_quality: SA_FILING_AND_LOCAL_BASELINE
+evidence_quality: RESOLVER_MEMO_PM_REVIEW
 thesis_expressed: SMH is useful for interpreting SA semiconductor hedge/crowding risk, not for a long-only ETF trade right now.
 anti_thesis: ETF exposure is too broad to express Bottleneck Capital's best single-name theses.
 hedge_or_sizing: No puts or shorts; use as risk signal only and do not allocate capital.
 invalidation_trigger: Separate long-only ETF thesis documented with valuation, sizing, and invalidation.
-next_trigger: Next scheduled market/filing scan, SA filing change, company filing/IR update, financing or customer-contract news, guidance change, or a detected valuation dip.
-one_line_rationale: Signal-only SA exposure; no long-only trade is authorized.
+next_trigger: Reassess only if constituent fundamentals or crowding evidence materially changes.
+one_line_rationale: "HOLD / SIGNAL ONLY: the semicap dislocation is useful crowding evidence, not a long, put, or short instruction."
 asset_role: Signal-only semiconductor beta and crowding map.
 default_holding_period: multi_year
 current_decision: HOLD
 dip_decision: NOT_ARMED
 sell_decision: NOT_TRIGGERED
 research_priority: HIGH
-last_primary_source_check: 2026-06-21
+last_primary_source_check: 2026-07-24
 thesis_health_score: 40
-confidence_score: 34
+confidence_score: 80.0
 valuation_attractiveness_score: 20
 urgency_score: 90
 max_position_weight_pct: 0
@@ -33,8 +33,9 @@ do_not_buy_zone: Any price without thesis, valuation, sizing, and invalidation.
 sell_trigger_status: false
 hedge_required: true
 main_hedge: No puts or shorts; use as risk signal only and do not allocate capital.
-open_questions_count: 0
+open_questions_count: 1
 broken_thesis: ""
+action_tier: HOLD
 ---
 # SMH - VanEck Semiconductor ETF
 
@@ -42,24 +43,24 @@ broken_thesis: ""
 
 ### Simple decision
 
-Current action: HOLD
+Current action: RESEARCH_REQUIRED
 
 ### One-line decision
 
-SMH is useful for interpreting SA semiconductor hedge/crowding risk, not for a long-only ETF trade right now.
+RESEARCH_REQUIRED: the July 15 12:30 sentinel flagged an unresolved SMH semiconductor-beta dislocation; use it as signal-only crowding and hedge-pressure evidence, not a trade instruction.
 
 ### Decision table
 
 | Field | Status |
 |---|---|
-| Long-term ownership candidate? | NO / SIGNAL ONLY |
+| Long-term ownership candidate? | NO / SIGNAL ONLY / RESEARCH BLOCKED |
 | Buy today? | NO |
 | Add on dip? | NO |
 | Sell / exit? | NO, unless invalidation triggers |
 | Hedge required? | YES, via sizing/no-action discipline |
 | Main risk today | Crowded semicap/semi valuation, broad ETF exposure, and hedge-signal ambiguity. |
 | Main upside driver today | Read-through to semiconductor crowding, index concentration, and AI beta risk. |
-| Next review trigger | Scheduled scan or new primary-source event |
+| Next review trigger | Resolve July 15 12:30 signal-only dislocation |
 
 ## 1. Role in Bottleneck Capital
 
@@ -101,8 +102,9 @@ What would break it:
 - Separate long-only ETF thesis documented with valuation, sizing, and invalidation.
 
 Decision impact:
-HOLD. Do not add capital until a scheduled scan or fresh primary-source event clears thesis,
-valuation, and sizing.
+RESEARCH_REQUIRED. Do not allocate capital, buy puts, short, or use SMH as a trade instruction.
+Resolve the July 15 12:30 semiconductor-beta dislocation as a signal-only crowding and
+hedge-pressure review before using it to inform single-name risk.
 
 Hedge implication:
 No puts or shorts; use as risk signal only and do not allocate capital.
@@ -190,6 +192,7 @@ No puts or shorts; use as risk signal only and do not allocate capital.
 
 ## 10. Latest Signals
 
+- July 15, 2026 12:30 sentinel: event `f8af123ea6f656fcc9b9fe27` flagged SMH semiconductor-beta dislocation: intraday -5.7%. Treat as signal-only RESEARCH_REQUIRED; no puts, shorts, or ETF trade is authorized.
 - Wave: 1
 - Source classification: `sa_reported_current_13f`
 - Instrument role: `common_equity_with_put_signal`
@@ -203,14 +206,13 @@ No puts or shorts; use as risk signal only and do not allocate capital.
 - `research/agent_packets/wave_1/SMH.md`
 - `reports/initialization/2026-06-20-wave-1-execution.md`
 
-Evidence quality: SA filing and local baseline. No unscheduled market action is authorized
-before the next scheduled process.
+Evidence quality: live intraday dislocation unresolved, plus SA filing and local baseline. No puts, shorts, ETF trade, or new capital is authorized from this signal.
 
 ## 12. Open Questions
 
-- None blocking before the next scheduled scan. Future work is event/schedule-driven.
+- Resolve the July 15 12:30 SMH dislocation as a signal-only semiconductor crowding and hedge-pressure review before using it to inform single-name risk.
 
 ## 13. Latest Agent Notes
 
-All-wave baseline completed. Current action is HOLD, with no BUY_NOW, ADD_ON_DIP, TRIM, or
-SELL action authorized.
+July 15 12:30 sentinel moved current action to RESEARCH_REQUIRED for signal-only review. No
+BUY_NOW, ADD_ON_DIP, TRIM, SELL, put, short, or ETF trade action is authorized.

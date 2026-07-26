@@ -20,8 +20,9 @@ from bottleneck_capital.ingest import (
     write_manual_event,
 )
 from bottleneck_capital.initialize import run_initialization
-from bottleneck_capital.io import read_jsonl
+from bottleneck_capital.io import read_jsonl, scalar_text
 from bottleneck_capital.live_check import LiveCheckResult, run_live_check
+from bottleneck_capital.portfolio import run_portfolio_pm, write_portfolio_board
 from bottleneck_capital.positions import (
     initialize_local_positions,
     refresh_position_prices,
@@ -29,6 +30,20 @@ from bottleneck_capital.positions import (
     write_exposure_report,
 )
 from bottleneck_capital.readiness import is_live_ready, write_live_readiness_report
+from bottleneck_capital.research_handoffs import (
+    ALLOWED_CAUSE_STATUSES,
+    ALLOWED_PROVISIONAL_BIASES,
+    ALLOWED_THESIS_STATUSES,
+    ALLOWED_VALUATION_STATUSES,
+    ResearchHandoffError,
+    add_research_handoff,
+    apply_research_handoff,
+    backfill_research_handoffs,
+    pending_research_handoffs,
+)
+from bottleneck_capital.research_handoffs import (
+    ALLOWED_DECISIONS as HANDOFF_ALLOWED_DECISIONS,
+)
 from bottleneck_capital.runtime import RunLockError, record_run, run_lock
 from bottleneck_capital.sentinel import run_sentinel
 from bottleneck_capital.signal_events import (
@@ -136,10 +151,44 @@ def main(argv: list[str] | None = None) -> int:
         action="store_true",
         help="Treat live-ingestion gaps as validation errors.",
     )
+    live_check_parser.add_argument(
+        "--filing-mode",
+        choices=("auto", "always", "skip"),
+        default="auto",
+        help="Auto respects active SEC backoff; always retries; skip avoids filing ingest.",
+    )
+
+    collector_parser = subparsers.add_parser(
+        "collector-check",
+        help="Collect live events and classify signals without writing decision boards.",
+    )
+    collector_parser.add_argument("--market-provider", default="auto")
+    collector_parser.add_argument("--market-input", type=Path, default=None)
+    collector_parser.add_argument("--market-symbols", default="")
+    collector_parser.add_argument("--company-tickers-input", type=Path, default=None)
+    collector_parser.add_argument("--submissions-dir", type=Path, default=None)
+    collector_parser.add_argument("--filing-lookback-days", type=int, default=3)
+    collector_parser.add_argument("--sec-user-agent", default="")
+    collector_parser.add_argument(
+        "--filing-mode",
+        choices=("auto", "always", "skip"),
+        default="auto",
+    )
+    collector_parser.add_argument("--strict-validate", action="store_true")
 
     subparsers.add_parser("compile-decisions", help="Evaluate and rewrite ticker decision files.")
     subparsers.add_parser("daily-board", help="Write the daily decision board.")
     subparsers.add_parser("action-board", help="Write the current actionable-step board.")
+    portfolio_board_parser = subparsers.add_parser(
+        "portfolio-board",
+        help="Write the private portfolio-first analysis board without changing decisions.",
+    )
+    portfolio_board_parser.add_argument("--positions", type=Path, default=None)
+    portfolio_pm_parser = subparsers.add_parser(
+        "portfolio-pm",
+        help="Run the sole decision writer and then write the private portfolio board.",
+    )
+    portfolio_pm_parser.add_argument("--positions", type=Path, default=None)
     regime_event_parser = subparsers.add_parser(
         "regime-event",
         help="Record a structured macro or geopolitical regime heartbeat.",
@@ -170,6 +219,19 @@ def main(argv: list[str] | None = None) -> int:
     regime_event_parser.add_argument("--summary", required=True)
     regime_event_parser.add_argument("--source", default="structured_regime_review")
     regime_event_parser.add_argument("--source-url", default="")
+    regime_event_parser.add_argument(
+        "--source-quality",
+        choices=("official_primary", "primary", "verified_secondary", "unverified"),
+        default="primary",
+    )
+    regime_event_parser.add_argument("--expected-duration", default="unknown")
+    regime_event_parser.add_argument("--affected-sleeves", default="")
+    regime_event_parser.add_argument("--transmission", default="")
+    regime_event_parser.add_argument(
+        "--market-confirmation",
+        choices=("CONFIRMED", "MIXED", "CONTRADICTED", "UNKNOWN"),
+        default="UNKNOWN",
+    )
     validate_parser = subparsers.add_parser(
         "validate", help="Validate Bottleneck Capital operating invariants."
     )
@@ -177,6 +239,14 @@ def main(argv: list[str] | None = None) -> int:
         "--strict-live",
         action="store_true",
         help="Treat live-ingestion gaps as errors.",
+    )
+    validate_parser.add_argument(
+        "--pm-preflight",
+        action="store_true",
+        help=(
+            "Validate structural invariants before PM recovery while leaving research "
+            "backlog and live-source gaps visible as warnings."
+        ),
     )
     subparsers.add_parser(
         "live-readiness",
@@ -198,6 +268,73 @@ def main(argv: list[str] | None = None) -> int:
         "--reason",
         required=True,
         help="Resolution rationale to append to state/signal_events.jsonl.",
+    )
+    handoff_parser = subparsers.add_parser(
+        "handoff",
+        help="Append-only research resolver to Portfolio PM handoff commands.",
+    )
+    handoff_subparsers = handoff_parser.add_subparsers(
+        dest="handoff_command",
+        required=True,
+    )
+    handoff_add = handoff_subparsers.add_parser(
+        "add",
+        help="Create a pending structured research handoff for Portfolio PM.",
+    )
+    handoff_add.add_argument("--memo", type=Path, required=True)
+    handoff_add.add_argument("--ticker", required=True)
+    handoff_add.add_argument(
+        "--cause-status",
+        required=True,
+        choices=sorted(ALLOWED_CAUSE_STATUSES),
+    )
+    handoff_add.add_argument(
+        "--thesis-status",
+        required=True,
+        choices=sorted(ALLOWED_THESIS_STATUSES),
+    )
+    handoff_add.add_argument(
+        "--valuation-status",
+        required=True,
+        choices=sorted(ALLOWED_VALUATION_STATUSES),
+    )
+    handoff_add.add_argument(
+        "--provisional-bias",
+        required=True,
+        choices=sorted(ALLOWED_PROVISIONAL_BIASES),
+    )
+    handoff_add.add_argument("--confidence", required=True, type=float)
+    handoff_add.add_argument("--summary", required=True)
+    handoff_add.add_argument("--next-catalyst", default="")
+    handoff_add.add_argument("--event-id", action="append", default=[])
+    handoff_add.add_argument("--primary-source-checked-at", default="")
+    handoff_add.add_argument("--expires-at", default="")
+    handoff_subparsers.add_parser("list", help="List pending Portfolio PM handoffs.")
+    handoff_apply = handoff_subparsers.add_parser(
+        "apply",
+        help="Record PM application after the persisted ticker decision is updated.",
+    )
+    handoff_apply.add_argument("--handoff-id", required=True)
+    handoff_apply.add_argument(
+        "--decision",
+        required=True,
+        choices=sorted(HANDOFF_ALLOWED_DECISIONS),
+    )
+    handoff_apply.add_argument("--reason", required=True)
+    handoff_apply.add_argument(
+        "--evidence-quality",
+        default="RESOLVER_MEMO_PM_REVIEW",
+    )
+    handoff_apply.add_argument("--next-trigger", default="")
+    handoff_apply.add_argument("--confidence", type=float, default=None)
+    handoff_apply.add_argument(
+        "--keep-material-event-open",
+        action="store_true",
+        help="Keep unresolved_material_event true after PM application.",
+    )
+    handoff_subparsers.add_parser(
+        "backfill",
+        help="Create pending PM handoffs for existing resolver memos.",
     )
     value_chain_parser = subparsers.add_parser(
         "value-chain", help="Write the Jensen five-layer value-chain visualizer."
@@ -353,9 +490,40 @@ def main(argv: list[str] | None = None) -> int:
                     filing_lookback_days=args.filing_lookback_days,
                     sec_user_agent=args.sec_user_agent,
                     strict_validate=args.strict_validate,
+                    filing_mode=args.filing_mode,
                 ),
             )
         except RunLockError as exc:
+            print(exc)
+            return 1
+        print(_render_live_check_result(result), end="")
+        return 1 if result.errors or has_errors(result.validation_issues) else 0
+    if args.command == "collector-check":
+        symbols = [
+            symbol.strip().upper()
+            for symbol in args.market_symbols.split(",")
+            if symbol.strip()
+        ]
+        try:
+            result = _logged(
+                root,
+                process="collector-check",
+                command="collector-check",
+                fn=lambda: run_live_check(
+                    root,
+                    market_provider=args.market_provider,
+                    market_input=args.market_input,
+                    market_symbols=symbols or None,
+                    company_tickers_input=args.company_tickers_input,
+                    submissions_dir=args.submissions_dir,
+                    filing_lookback_days=args.filing_lookback_days,
+                    sec_user_agent=args.sec_user_agent,
+                    strict_validate=args.strict_validate,
+                    write_board=False,
+                    filing_mode=args.filing_mode,
+                ),
+            )
+        except (RunLockError, ValueError) as exc:
             print(exc)
             return 1
         print(_render_live_check_result(result), end="")
@@ -390,6 +558,33 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         print(path)
         return 0
+    if args.command == "portfolio-board":
+        try:
+            path = _logged(
+                root,
+                process="portfolio-board",
+                command="portfolio-board",
+                fn=lambda: write_portfolio_board(root, positions_path=args.positions),
+            )
+        except (RunLockError, ValueError) as exc:
+            print(exc)
+            return 1
+        print(path)
+        return 0
+    if args.command == "portfolio-pm":
+        try:
+            result = _logged(
+                root,
+                process="portfolio-pm",
+                command="portfolio-pm",
+                fn=lambda: run_portfolio_pm(root, positions_path=args.positions),
+            )
+        except (RunLockError, ValueError) as exc:
+            print(exc)
+            return 1
+        print(result.decision_board_path)
+        print(result.portfolio_board_path)
+        return 0
     if args.command == "regime-event":
         try:
             path, records = _logged(
@@ -404,6 +599,8 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Recorded regime heartbeat in {path}; wrote {len(records)} signal event(s).")
         return 0
     if args.command == "validate":
+        if args.strict_live and args.pm_preflight:
+            parser.error("--strict-live and --pm-preflight are mutually exclusive")
         issues = validate_project(root, strict_live=args.strict_live)
         print(render_validation(issues), end="")
         return 1 if has_errors(issues) else 0
@@ -447,6 +644,66 @@ def main(argv: list[str] | None = None) -> int:
                 return 1
             print(f"Resolved {len(records)} signal event(s).")
             return 0
+    if args.command == "handoff":
+        try:
+            if args.handoff_command == "add":
+                record = add_research_handoff(
+                    root,
+                    memo_path=args.memo,
+                    ticker=args.ticker,
+                    cause_status=args.cause_status,
+                    thesis_status=args.thesis_status,
+                    valuation_status=args.valuation_status,
+                    provisional_bias=args.provisional_bias,
+                    confidence=args.confidence,
+                    summary=args.summary,
+                    next_catalyst=args.next_catalyst,
+                    event_ids=args.event_id,
+                    primary_source_checked_at=args.primary_source_checked_at,
+                    expires_at=args.expires_at,
+                )
+                print(f"Pending handoff {record['handoff_id']} for {record['ticker']}.")
+                return 0
+            if args.handoff_command == "list":
+                for record in pending_research_handoffs(root):
+                    print(
+                        "\t".join(
+                            [
+                                scalar_text(record.get("handoff_id")),
+                                scalar_text(record.get("ticker")),
+                                scalar_text(record.get("cause_status")),
+                                scalar_text(record.get("thesis_status")),
+                                scalar_text(record.get("provisional_bias")),
+                                scalar_text(record.get("memo_path")),
+                                scalar_text(record.get("summary")),
+                            ]
+                        )
+                    )
+                return 0
+            if args.handoff_command == "apply":
+                record = apply_research_handoff(
+                    root,
+                    handoff_id=args.handoff_id,
+                    decision=args.decision,
+                    reason=args.reason,
+                    update_research_files=True,
+                    evidence_quality=args.evidence_quality,
+                    next_trigger=args.next_trigger,
+                    confidence=args.confidence,
+                    keep_material_event_open=args.keep_material_event_open,
+                )
+                print(
+                    f"Applied handoff {record['applied_handoff_id']} as "
+                    f"{record['decision']}."
+                )
+                return 0
+            if args.handoff_command == "backfill":
+                records = backfill_research_handoffs(root)
+                print(f"Backfilled {len(records)} pending research handoff(s).")
+                return 0
+        except ResearchHandoffError as exc:
+            print(exc)
+            return 1
     if args.command == "value-chain":
         if args.serve:
             serve_value_chain_visualizer(root, host=args.host, port=args.port)
@@ -529,6 +786,13 @@ def _record_regime_event(root: Path, args: argparse.Namespace) -> tuple[Path, li
         "summary": args.summary,
         "source": args.source,
         "source_url": args.source_url,
+        "source_quality": args.source_quality,
+        "expected_duration": args.expected_duration,
+        "affected_sleeves": [
+            item.strip() for item in args.affected_sleeves.split(",") if item.strip()
+        ],
+        "transmission": args.transmission,
+        "market_confirmation": args.market_confirmation,
         "dedupe_key": (
             f"regime:{args.region.lower()}:{args.observed_at[:10]}:{args.status}"
         ),
@@ -593,8 +857,12 @@ def _logged(
         outputs.append(str(result.aggregate_path))
     if isinstance(result, Path):
         outputs.append(str(result))
-    if hasattr(result, "action_board_path"):
+    if hasattr(result, "action_board_path") and result.action_board_path is not None:
         outputs.append(str(result.action_board_path))
+    if hasattr(result, "decision_board_path"):
+        outputs.append(str(result.decision_board_path))
+    if hasattr(result, "portfolio_board_path"):
+        outputs.append(str(result.portfolio_board_path))
     if hasattr(result, "market") and result.market is not None:
         outputs.append(str(result.market.output_path))
     if hasattr(result, "filings") and result.filings is not None:
@@ -641,7 +909,11 @@ def _render_live_check_result(result: LiveCheckResult) -> str:
         )
     lines.append(f"Sentinel: {result.signal_count} new signal event(s)")
     lines.append(f"Active high-priority signals: {result.active_high_priority_count}")
-    lines.append(f"Action board: {result.action_board_path}")
+    lines.append(
+        f"Action board: {result.action_board_path}"
+        if result.action_board_path is not None
+        else "Action board: not written (collector-only mode)"
+    )
     for error in result.errors:
         lines.append(f"error: {error}")
     for warning in result.warnings:
