@@ -532,20 +532,24 @@ def render_action_board(
         ]
     )
     gate_by_ticker = {item.ticker: item.entry_gate for item in opportunities or []}
+    structure_gate_by_ticker = {
+        item.ticker: item.market_structure_gate for item in opportunities or []
+    }
     lines.extend([
-        "| Ticker | Decision | Regime Gate | Urgency | Max Add | Why |",
-        "|---|---|---|---:|---:|---|",
+        "| Ticker | Decision | Regime Gate | Structure Gate | Urgency | Max Add | Why |",
+        "|---|---|---|---|---:|---:|---|",
     ])
     if actionable:
         for result in actionable:
             lines.append(
                 f"| {result.ticker} | {result.action} | "
                 f"{_table(gate_by_ticker.get(result.ticker, 'NOT_RANKED'))} | "
+                f"{_table(structure_gate_by_ticker.get(result.ticker, 'NOT_RANKED'))} | "
                 f"{result.urgency} | "
                 f"{_table(result.max_add)} | {_table(result.rationale)} |"
             )
     else:
-        lines.append("| - | - | - | - | - | No actionable decision changes. |")
+        lines.append("| - | - | - | - | - | - | No actionable decision changes. |")
 
     lines.extend(["", "## Active High-Priority Signals", ""])
     grouped_high_events = group_signal_events(high_events)
@@ -581,25 +585,29 @@ def _render_opportunity_ranking(opportunities: list[Any]) -> list[str]:
         "",
         (
             "Structural score uses thesis health, valuation, bottleneck upside, confidence, "
-            "portfolio capacity, and current decision. Regime adjustment stress-tests active "
-            "market and geopolitical channels before capital is deployed."
+            "portfolio capacity, and current decision. Regime and market-structure adjustments "
+            "stress-test macro, geopolitical, short-pressure, options, borrow, liquidity, and "
+            "supply-flow channels before capital is deployed."
         ),
         "",
         (
-            "| Rank | Ticker | Decision | Structural | Regime Adj. | Effective | "
-            "Entry Gate | Price | Approved Entry | Why |"
+            "| Rank | Ticker | Decision | Structural | Regime Adj. | Flow Adj. | Effective | "
+            "Regime Gate | Structure Gate | Flow | Squeeze | Price | Approved Entry | Why |"
         ),
-        "|---:|---|---|---:|---:|---:|---|---:|---|---|",
+        "|---:|---|---|---:|---:|---:|---:|---|---|---|---:|---:|---|---|",
     ]
     if not opportunities:
-        lines.append("| - | - | - | - | - | - | - | - | - | - |")
+        lines.append("| - | - | - | - | - | - | - | - | - | - | - | - | - | - |")
         return lines
     for index, item in enumerate(opportunities, start=1):
         price = f"${item.current_price:,.2f}" if item.current_price > 0 else "Unknown"
         lines.append(
             f"| {index} | {_table(item.ticker)} | {_table(item.decision)} | "
             f"{item.structural_score:.1f} | {item.regime_adjustment:+.1f} | "
-            f"{item.score:.1f} | {_table(item.entry_gate)} | {price} | "
+            f"{item.market_structure_adjustment:+.1f} | {item.score:.1f} | "
+            f"{_table(item.entry_gate)} | {_table(item.market_structure_gate)} | "
+            f"{_table(item.flow_classification)} | {item.squeeze_potential_score:.0f} | "
+            f"{price} | "
             f"{_table(item.entry_zone)} | "
             f"{_table(item.rationale)} |"
         )

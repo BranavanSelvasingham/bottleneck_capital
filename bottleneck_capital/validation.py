@@ -17,6 +17,7 @@ from bottleneck_capital.io import (
     scalar_text,
 )
 from bottleneck_capital.live_sources import effective_sec_user_agent
+from bottleneck_capital.market_structure import assess_market_structure
 from bottleneck_capital.research_handoffs import (
     ALLOWED_CAUSE_STATUSES,
     ALLOWED_PROVISIONAL_BIASES,
@@ -63,9 +64,50 @@ def validate_project(root: Path, *, strict_live: bool = False) -> list[Validatio
     _check_signal_events(root, issues)
     _check_event_inputs(root, issues, strict_live=strict_live)
     _check_ingest_freshness(root, issues, strict_live=strict_live, positions=position_items)
+    _check_market_structure(root, tickers, issues, strict_live=strict_live)
     _check_live_environment(root, issues, strict_live=strict_live)
     _check_local_positions(root, tickers, issues, strict_live=strict_live, positions=position_items)
     return issues
+
+
+def _check_market_structure(
+    root: Path,
+    tickers: list[str],
+    issues: list[ValidationIssue],
+    *,
+    strict_live: bool,
+) -> None:
+    if not strict_live:
+        return
+    for ticker in tickers:
+        metadata, _ = read_markdown_frontmatter(
+            root / "research" / "decisions" / f"{ticker}.md"
+        )
+        decision = scalar_text(metadata.get("current_decision")).upper()
+        if decision not in {"BUY_NOW", "ADD_ON_DIP"}:
+            continue
+        assessment = assess_market_structure(root, ticker)
+        if assessment.data_status in {"MISSING", "STALE", "STALE_PARTIAL"}:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "MARKET_STRUCTURE_DATA_GAP",
+                    f"{ticker} is {decision} but market-structure data is "
+                    f"{assessment.data_status.lower()}.",
+                )
+            )
+        if assessment.execution_gate in {
+            "WAIT_FOR_SUPPLY_ABSORPTION",
+            "REFRESH_STRUCTURE_DATA",
+        }:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "MARKET_STRUCTURE_ENTRY_BLOCK",
+                    f"{ticker} is {decision} but structure gate is "
+                    f"{assessment.execution_gate}.",
+                )
+            )
 
 
 def _check_position_privacy(root: Path, issues: list[ValidationIssue]) -> None:

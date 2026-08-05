@@ -15,6 +15,11 @@ from bottleneck_capital.ingest import (
     write_manual_event,
 )
 from bottleneck_capital.io import read_jsonl, scalar_text
+from bottleneck_capital.market_structure import (
+    MarketStructureError,
+    MarketStructureIngestResult,
+    ingest_market_structure,
+)
 from bottleneck_capital.positions import LOCAL_POSITIONS_PATH, refresh_position_prices
 from bottleneck_capital.sentinel import run_sentinel
 from bottleneck_capital.signal_events import (
@@ -29,6 +34,7 @@ from bottleneck_capital.validation import ValidationIssue, validate_project
 @dataclass(frozen=True)
 class LiveCheckResult:
     market: IngestResult | None
+    market_structure: MarketStructureIngestResult | None
     filings: IngestResult | None
     signal_count: int
     active_high_priority_count: int
@@ -44,6 +50,9 @@ def run_live_check(
     market_provider: str = "auto",
     market_input: Path | None = None,
     market_symbols: list[str] | None = None,
+    market_structure_provider: str = "auto",
+    market_structure_input: Path | None = None,
+    market_structure_mode: str = "auto",
     company_tickers_input: Path | None = None,
     submissions_dir: Path | None = None,
     filing_lookback_days: int = 3,
@@ -66,6 +75,30 @@ def run_live_check(
         _refresh_local_position_prices(root, warnings)
     except IngestError as exc:
         errors.append(f"market ingest failed: {exc}")
+
+    if market_structure_mode not in {"auto", "always", "skip"}:
+        raise ValueError(f"Unsupported market-structure mode: {market_structure_mode}")
+    market_structure: MarketStructureIngestResult | None = None
+    skip_market_structure = market_structure_mode == "skip" or (
+        market_structure_mode == "auto"
+        and market_input is not None
+        and market_structure_input is None
+    )
+    if skip_market_structure:
+        warnings.append(
+            "market-structure ingest skipped for fixture/manual market input or explicit policy"
+        )
+    else:
+        try:
+            market_structure = ingest_market_structure(
+                root,
+                provider=market_structure_provider,
+                input_path=market_structure_input,
+                symbols=market_symbols,
+            )
+            warnings.extend(market_structure.warnings)
+        except MarketStructureError as exc:
+            warnings.append(f"market-structure ingest skipped: {exc}")
 
     if filing_mode not in {"auto", "always", "skip"}:
         raise ValueError(f"Unsupported filing mode: {filing_mode}")
@@ -120,6 +153,7 @@ def run_live_check(
     validation_issues = validate_project(root, strict_live=strict_validate)
     return LiveCheckResult(
         market=market,
+        market_structure=market_structure,
         filings=filings,
         signal_count=len(signal_records),
         active_high_priority_count=len(active_high),

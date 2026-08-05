@@ -19,6 +19,7 @@ from bottleneck_capital.market_regime import (
     regime_adjustment,
     regime_entry_gate,
 )
+from bottleneck_capital.market_structure import assess_market_structure
 
 
 @dataclass(frozen=True)
@@ -28,7 +29,13 @@ class OpportunityCandidate:
     score: float
     structural_score: float
     regime_adjustment: float
+    market_structure_adjustment: float
     entry_gate: str
+    market_structure_gate: str
+    flow_classification: str
+    short_pressure_score: float
+    squeeze_potential_score: float
+    market_structure_data_status: str
     current_price: float
     entry_zone: str
     rationale: str
@@ -120,7 +127,14 @@ def rank_opportunities(
             sleeve=scalar_text(data.get("sleeve")),
             regime=current_regime,
         )
-        score = min(100.0, max(0.0, structural_score + adjustment))
+        market_structure = assess_market_structure(root, ticker)
+        score = min(
+            100.0,
+            max(
+                0.0,
+                structural_score + adjustment + market_structure.score_adjustment,
+            ),
+        )
         candidates.append(
             OpportunityCandidate(
                 ticker=ticker,
@@ -128,12 +142,18 @@ def rank_opportunities(
                 score=score,
                 structural_score=structural_score,
                 regime_adjustment=adjustment,
+                market_structure_adjustment=market_structure.score_adjustment,
                 entry_gate=regime_entry_gate(
                     root,
                     decision=decision,
                     adjustment=adjustment,
                     regime=current_regime,
                 ),
+                market_structure_gate=market_structure.execution_gate,
+                flow_classification=market_structure.flow_classification,
+                short_pressure_score=market_structure.short_pressure_score,
+                squeeze_potential_score=market_structure.squeeze_potential_score,
+                market_structure_data_status=market_structure.data_status,
                 current_price=prices.get(ticker, 0.0),
                 entry_zone=scalar_text(data.get("approved_entry_zone")) or "Not armed",
                 rationale=scalar_text(data.get("one_line_rationale"))
