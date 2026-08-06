@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 from collections.abc import Callable
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -22,6 +23,7 @@ from bottleneck_capital.ingest import (
 from bottleneck_capital.initialize import run_initialization
 from bottleneck_capital.io import read_jsonl, scalar_text
 from bottleneck_capital.live_check import LiveCheckResult, run_live_check
+from bottleneck_capital.market_structure import MarketStructureError, ingest_market_structure
 from bottleneck_capital.portfolio import run_portfolio_pm, write_portfolio_board
 from bottleneck_capital.positions import (
     initialize_local_positions,
@@ -112,6 +114,22 @@ def main(argv: list[str] | None = None) -> int:
         default="",
         help="SEC-compliant User-Agent. Defaults to BCAP_SEC_USER_AGENT.",
     )
+    ingest_structure_parser = ingest_subparsers.add_parser(
+        "market-structure",
+        help="Ingest FINRA short volume or an enriched market-structure feed.",
+    )
+    ingest_structure_parser.add_argument(
+        "--provider",
+        choices=("auto", "finra", "feed"),
+        default="auto",
+    )
+    ingest_structure_parser.add_argument("--input", type=Path, default=None)
+    ingest_structure_parser.add_argument("--symbols", default="")
+    ingest_structure_parser.add_argument(
+        "--trade-date",
+        default="",
+        help="Optional FINRA trade date in YYYY-MM-DD format.",
+    )
     live_check_parser = subparsers.add_parser(
         "live-check",
         help="Run market ingest, filing ingest, sentinel, action board, and validation.",
@@ -127,6 +145,13 @@ def main(argv: list[str] | None = None) -> int:
         "--market-symbols",
         default="",
         help="Optional comma-separated ticker subset for market ingest.",
+    )
+    live_check_parser.add_argument("--market-structure-provider", default="auto")
+    live_check_parser.add_argument("--market-structure-input", type=Path, default=None)
+    live_check_parser.add_argument(
+        "--market-structure-mode",
+        choices=("auto", "always", "skip"),
+        default="auto",
     )
     live_check_parser.add_argument(
         "--company-tickers-input",
@@ -165,6 +190,13 @@ def main(argv: list[str] | None = None) -> int:
     collector_parser.add_argument("--market-provider", default="auto")
     collector_parser.add_argument("--market-input", type=Path, default=None)
     collector_parser.add_argument("--market-symbols", default="")
+    collector_parser.add_argument("--market-structure-provider", default="auto")
+    collector_parser.add_argument("--market-structure-input", type=Path, default=None)
+    collector_parser.add_argument(
+        "--market-structure-mode",
+        choices=("auto", "always", "skip"),
+        default="auto",
+    )
     collector_parser.add_argument("--company-tickers-input", type=Path, default=None)
     collector_parser.add_argument("--submissions-dir", type=Path, default=None)
     collector_parser.add_argument("--filing-lookback-days", type=int, default=3)
@@ -469,6 +501,36 @@ def main(argv: list[str] | None = None) -> int:
                 f"aggregate {result.aggregate_path}"
             )
             return 0
+        if args.ingest_command == "market-structure":
+            symbols = [
+                symbol.strip().upper()
+                for symbol in args.symbols.split(",")
+                if symbol.strip()
+            ]
+            try:
+                trade_date = date.fromisoformat(args.trade_date) if args.trade_date else None
+                result = _logged(
+                    root,
+                    process="ingest-market-structure",
+                    command="ingest market-structure",
+                    fn=lambda: ingest_market_structure(
+                        root,
+                        provider=args.provider,
+                        input_path=args.input,
+                        symbols=symbols or None,
+                        trade_date=trade_date,
+                    ),
+                )
+            except (MarketStructureError, RunLockError, ValueError) as exc:
+                print(exc)
+                return 1
+            for warning in result.warnings:
+                print(f"warning: {warning}")
+            print(
+                f"Wrote {result.record_count} market-structure record(s) to "
+                f"{result.snapshot_path}; trade date {result.trade_date}"
+            )
+            return 0
     if args.command == "live-check":
         symbols = [
             symbol.strip().upper()
@@ -485,6 +547,9 @@ def main(argv: list[str] | None = None) -> int:
                     market_provider=args.market_provider,
                     market_input=args.market_input,
                     market_symbols=symbols or None,
+                    market_structure_provider=args.market_structure_provider,
+                    market_structure_input=args.market_structure_input,
+                    market_structure_mode=args.market_structure_mode,
                     company_tickers_input=args.company_tickers_input,
                     submissions_dir=args.submissions_dir,
                     filing_lookback_days=args.filing_lookback_days,
@@ -514,6 +579,9 @@ def main(argv: list[str] | None = None) -> int:
                     market_provider=args.market_provider,
                     market_input=args.market_input,
                     market_symbols=symbols or None,
+                    market_structure_provider=args.market_structure_provider,
+                    market_structure_input=args.market_structure_input,
+                    market_structure_mode=args.market_structure_mode,
                     company_tickers_input=args.company_tickers_input,
                     submissions_dir=args.submissions_dir,
                     filing_lookback_days=args.filing_lookback_days,
@@ -855,6 +923,8 @@ def _logged(
         outputs.append(str(result.output_path))
     if hasattr(result, "aggregate_path"):
         outputs.append(str(result.aggregate_path))
+    if hasattr(result, "snapshot_path"):
+        outputs.append(str(result.snapshot_path))
     if isinstance(result, Path):
         outputs.append(str(result))
     if hasattr(result, "action_board_path") and result.action_board_path is not None:
@@ -865,6 +935,8 @@ def _logged(
         outputs.append(str(result.portfolio_board_path))
     if hasattr(result, "market") and result.market is not None:
         outputs.append(str(result.market.output_path))
+    if hasattr(result, "market_structure") and result.market_structure is not None:
+        outputs.append(str(result.market_structure.snapshot_path))
     if hasattr(result, "filings") and result.filings is not None:
         outputs.append(str(result.filings.output_path))
     warnings = []
@@ -899,6 +971,14 @@ def _render_live_check_result(result: LiveCheckResult) -> str:
         lines.append(
             f"Market ingest: {result.market.event_count} event(s), "
             f"{result.market.output_path}"
+        )
+    if result.market_structure is None:
+        lines.append("Market-structure ingest: unavailable")
+    else:
+        lines.append(
+            f"Market-structure ingest: {result.market_structure.record_count} record(s), "
+            f"{result.market_structure.source}, trade date "
+            f"{result.market_structure.trade_date}"
         )
     if result.filings is None:
         lines.append("Filing ingest: skipped")

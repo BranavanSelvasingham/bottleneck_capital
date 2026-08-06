@@ -65,8 +65,21 @@ Scheduled collection uses:
 ```
 
 It performs ingestion, local held-price refresh, signal classification, and validation without
-writing decisions or boards. Filing mode defaults to `auto`, which respects an active SEC 403
-backoff until an approved mirror, proxy, or filing feed is configured.
+writing decisions or boards. It also attempts official FINRA daily short-volume ingestion.
+Filing mode defaults to `auto`, which respects an active SEC 403 backoff until an approved
+mirror, proxy, or filing feed is configured.
+
+For a direct market-structure refresh:
+
+```bash
+./bcap ingest market-structure
+```
+
+The default source is FINRA's consolidated daily short-sale volume file. This is flow data, not
+net short interest. Configure `BCAP_MARKET_STRUCTURE_URL` and the optional
+`BCAP_MARKET_STRUCTURE_AUTH_HEADER` for an enriched feed carrying dated short interest, borrow,
+options, float, and supply-event fields. Opportunity ranking uses these inputs only to adjust
+execution risk and timing; squeeze potential does not increase intrinsic value.
 
 For lower-level diagnostics:
 

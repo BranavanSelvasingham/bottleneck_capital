@@ -23,8 +23,9 @@ Scheduled write commands use a shared `scheduled-write` lock plus per-process lo
 live lock conflict as a real same-file collision, and stale dead-PID locks as recoverable.
 
 For scheduled sentinel collection, prefer `bcap collector-check`. It runs market ingestion,
-attempts filing ingestion subject to active SEC backoff, refreshes local held-position prices,
-classifies sentinel events, and validates without rewriting decisions or decision boards.
+attempts market-structure and filing ingestion subject to source availability and active SEC
+backoff, refreshes local held-position prices, classifies sentinel events, and validates without
+rewriting decisions or decision boards.
 Use `bcap live-check` when an updated action board is also required. Use the lower-level
 sequence `bcap ingest market`, `bcap ingest filings`, `bcap sentinel run`, then
 `bcap action-board` only for diagnostics or recovery. Use `state/latest_events.jsonl`
@@ -76,6 +77,18 @@ actions; do not edit code for simple symbol remaps.
 Treat `market_data_gap` and filing coverage gaps as operationally material. Strict-live
 blocks held or actionable ticker gaps; non-actionable watchlist gaps are warnings, but must
 remain visible on the action board until resolved or the universe mapping is corrected.
+
+Before treating a dislocation as a discount, assess market structure from current, dated
+sources. Cover reported short interest and days-to-cover; FINRA/exchange daily short-sale
+volume; borrow fee, availability, and utilization when available; options skew, open interest,
+implied volatility, and dealer positioning when reliable; float, liquidity, lockups, offerings,
+ATMs, converts, insider supply, index flows, and catalyst timing. Daily short-sale volume is
+not net short interest and may reflect market making, hedging, or intraday-covered activity.
+Fails-to-deliver and threshold-list status are investigation signals, not proof of naked
+shorting. A squeeze setup requires corroboration from at least three independent channels plus
+a catalyst and limited new supply. Market structure may change entry timing, tranche size, and
+near-term convexity; it must never raise intrinsic value or override thesis damage. Keep missing
+borrow, options, ownership, or supply data visible rather than assuming neutral conditions.
 
 ## Decision Discipline
 

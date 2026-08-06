@@ -1,0 +1,30 @@
+market_structure:
+  field_max_age_days:
+    daily: 5
+    short_interest: 21
+    borrow: 3
+    options: 3
+    supply: 120
+
+  thresholds:
+    high_short_volume_ratio_pct: 65
+    high_short_exempt_ratio_pct: 3
+    high_short_interest_pct_float: 15
+    high_days_to_cover: 5
+    high_borrow_fee_pct: 10
+    high_borrow_utilization_pct: 90
+    call_heavy_put_call_oi_ratio: 0.7
+    finra_volume_surge_multiple: 2
+    material_supply_overhang_pct_float: 10
+
+  evidence_policy:
+    - Daily short-sale volume is flow, not net short interest.
+    - A squeeze setup requires at least three corroborating inputs and a catalyst.
+    - Short pressure and squeeze potential affect execution, not intrinsic value.
+    - Unlocks, offerings, ATMs, converts, insider sales, and index flows are supply events.
+    - Missing borrow, options, or ownership data must remain visible as a data gap.
+
+  live_feed:
+    url_env: BCAP_MARKET_STRUCTURE_URL
+    auth_header_env: BCAP_MARKET_STRUCTURE_AUTH_HEADER
+    coverage_contract: feed should report covered_tickers and records with source timestamps

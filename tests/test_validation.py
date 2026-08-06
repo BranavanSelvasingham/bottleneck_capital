@@ -495,6 +495,25 @@ def test_validate_project_strict_live_accepts_git_email_for_sec_user_agent(
     assert not any(issue.code == "SEC_USER_AGENT_MISSING" for issue in issues)
 
 
+def test_validate_project_strict_live_blocks_actionable_name_without_structure_data(
+    tmp_path: Path,
+) -> None:
+    _write_minimal_project(tmp_path)
+    decision = tmp_path / "research" / "decisions" / "AAA.md"
+    decision.write_text(
+        decision.read_text(encoding="utf-8").replace(
+            "current_decision: HOLD", "current_decision: ADD_ON_DIP"
+        ),
+        encoding="utf-8",
+    )
+
+    issues = validate_project(tmp_path, strict_live=True)
+
+    gaps = [issue for issue in issues if issue.code == "MARKET_STRUCTURE_DATA_GAP"]
+    assert gaps
+    assert gaps[0].severity == "ERROR"
+
+
 def _write_minimal_project(root: Path) -> None:
     (root / ".gitignore").write_text(
         "state/local_positions.yaml\n"

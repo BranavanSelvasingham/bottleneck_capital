@@ -140,6 +140,17 @@ def _recovery_actions(root: Path, issues) -> list[str]:
             actions.append("- Run `bcap live-check` with network access to refresh market ingest.")
         elif issue.code == "FILINGS_INGEST_STALE":
             actions.append("- Run `bcap live-check` with filing-source access to refresh filings.")
+        elif issue.code == "MARKET_STRUCTURE_DATA_GAP":
+            actions.append(
+                "- Run `bcap ingest market-structure`; configure "
+                "`BCAP_MARKET_STRUCTURE_URL` when short interest, borrow, options, or supply "
+                "coverage beyond FINRA daily flow is decision-critical."
+            )
+        elif issue.code == "MARKET_STRUCTURE_ENTRY_BLOCK":
+            actions.append(
+                "- Keep the entry blocked until dated supply is absorbed or structure data is "
+                "refreshed and the execution gate clears."
+            )
     if not actions:
         actions.append("- None")
     return _dedupe(actions)

@@ -48,6 +48,47 @@ def test_ingest_market_cli_records_run_ledger(tmp_path: Path) -> None:
     assert ledger[-1]["outputs"]
 
 
+def test_ingest_market_structure_cli_records_public_flow(tmp_path: Path) -> None:
+    _write_project(tmp_path)
+    input_path = tmp_path / "market-structure.json"
+    input_path.write_text(
+        json.dumps(
+            {
+                "covered_tickers": ["AAA"],
+                "records": [
+                    {
+                        "ticker": "AAA",
+                        "observed_at": date.today().isoformat(),
+                        "daily_short_volume_ratio_pct": 70,
+                        "short_volume": 70,
+                        "short_exempt_volume": 5,
+                        "total_reported_volume": 100,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    exit_code = main(
+        [
+            "--root",
+            str(tmp_path),
+            "ingest",
+            "market-structure",
+            "--input",
+            str(input_path),
+        ]
+    )
+
+    ledger = read_jsonl(tmp_path / "state" / "run_ledger.jsonl")
+    records = read_jsonl(tmp_path / "state" / "market_structure_snapshots.jsonl")
+    assert exit_code == 0
+    assert records[-1]["ticker"] == "AAA"
+    assert ledger[-1]["process"] == "ingest-market-structure"
+    assert ledger[-1]["outputs"]
+
+
 def test_regime_event_cli_records_structured_heartbeat(tmp_path: Path) -> None:
     _write_project(tmp_path)
 

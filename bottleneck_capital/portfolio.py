@@ -401,14 +401,15 @@ def render_portfolio_board(root: Path, analysis: PortfolioAnalysis) -> str:
             "",
             (
                 "Ranking combines thesis, valuation, bottleneck upside, evidence, private "
-                "capacity, diversification, scenario resilience, and current regime."
+                "capacity, diversification, scenario resilience, current regime, and measured "
+                "market structure. Flow can change execution but not intrinsic value."
             ),
             "",
             (
                 "| Rank | Ticker | Decision | Effective Score | Capacity | Diversification | "
-                "Resilience | Discount | Entry Gate |"
+                "Resilience | Discount | Regime Gate | Structure Gate | Flow | Squeeze |"
             ),
-            "|---:|---|---|---:|---:|---:|---:|---|---|",
+            "|---:|---|---|---:|---:|---:|---:|---|---|---|---|---:|",
         ]
     )
     for index, item in enumerate(opportunities[:10], start=1):
@@ -416,7 +417,9 @@ def render_portfolio_board(root: Path, analysis: PortfolioAnalysis) -> str:
             f"| {index} | {item.ticker} | {item.decision} | {item.score:.1f} | "
             f"{analysis.remaining_capacity_pct.get(item.ticker, 0.0):.1f}% | "
             f"{item.diversification_score:.1f} | {item.scenario_resilience_score:.1f} | "
-            f"{_table(item.discount_class)} | {_table(item.entry_gate)} |"
+            f"{_table(item.discount_class)} | {_table(item.entry_gate)} | "
+            f"{_table(item.market_structure_gate)} | "
+            f"{_table(item.flow_classification)} | {item.squeeze_potential_score:.0f} |"
         )
 
     active_discounts = [
