@@ -20,6 +20,7 @@ sentinel:
     twenty_day_drop_pct: 20
     gap_down_pct: 4
     post_earnings_move_pct: 8
+    reopen_worsening_pct: 5
 
   source_triggers:
     new_sec_filing: true

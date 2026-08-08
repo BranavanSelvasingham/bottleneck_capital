@@ -20,7 +20,9 @@ This is the sole scheduled decision writer. It compiles ticker decisions, writes
 decision board, and writes a private gitignored portfolio board under
 `reports/local_portfolio_boards/`. The private board applies exact local positions and cash
 to factor concentration, scenario vulnerability, discount classification, remaining capacity,
-and marginal-capital ranking without persisting position data in tracked research.
+and marginal-capital ranking without persisting position data in tracked research. It also
+overwrites one concise daily digest under `reports/local_daily_digests/` with what changed,
+the best executable action, entry conditions, invalidation, and data-quality blockers.
 
 Resolver evidence is handed to Portfolio PM through an append-only queue:
 
@@ -28,6 +30,7 @@ Resolver evidence is handed to Portfolio PM through an append-only queue:
 ./bcap handoff add --memo research/memos/2026-07-25-AAA-evidence.md \
   --ticker AAA --cause-status BOUNDED --thesis-status INTACT \
   --valuation-status UNREVIEWED --provisional-bias HOLD --confidence 80 \
+  --cause-key market-wide-risk-off --primary-evidence-key release-2026-07-25 \
   --summary "Cause is bounded; PM must refresh valuation before changing capital."
 ./bcap handoff list
 ./bcap handoff apply --handoff-id HANDOFF_ID --decision HOLD \
@@ -35,7 +38,10 @@ Resolver evidence is handed to Portfolio PM through an append-only queue:
 ```
 
 Pending handoffs force `RESEARCH_REQUIRED` for capital-increasing decisions and remain visible
-until PM records an application. Use `./bcap validate --pm-preflight` before PM recovery work;
+until PM records an application. `handoff add` refreshes Portfolio PM outputs immediately;
+pass `--no-run-pm` only during controlled recovery. The stable cause and evidence keys suppress
+same-ticker, same-cause, same-day repeats unless genuinely new primary evidence arrives. Use
+`./bcap validate --pm-preflight` before PM recovery work;
 use `./bcap validate --strict-live` before authorizing BUY_NOW or ADD_ON_DIP.
 
 For a compact current-action surface that does not rewrite decision files:
@@ -61,13 +67,19 @@ prints validation context, records an error-status run ledger entry, and exits n
 Scheduled collection uses:
 
 ```bash
-./bcap collector-check
+./bcap collector-check --quiet
 ```
 
 It performs ingestion, local held-price refresh, signal classification, and validation without
 writing decisions or boards. It also attempts official FINRA daily short-volume ingestion.
-Filing mode defaults to `auto`, which respects an active SEC 403 backoff until an approved
-mirror, proxy, or filing feed is configured.
+Quiet mode emits output only for a new signal or an error. Filing mode defaults to `auto`,
+which backs off for 60 minutes after an SEC 403 and then retries automatically; an approved
+mirror, proxy, or authenticated filing feed bypasses the SEC backoff immediately.
+
+The tracked schedule uses one persistent daily monitor and six material collection windows:
+07:15, 09:45, 12:30, 15:30, 16:20, and 19:30 Toronto time. Portfolio PM runs at 07:15 and
+16:20, plus immediately after a resolver handoff. Collector success without a new signal is
+silent, so repeated checks do not create user-visible research noise.
 
 For a direct market-structure refresh:
 

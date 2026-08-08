@@ -200,7 +200,7 @@ def _should_reopen_resolved_price_dislocation(
     threshold = (
         thresholds.get("sentinel", {})
         .get("price_triggers", {})
-        .get("reopen_worsening_pct", 3)
+        .get("reopen_worsening_pct", 5)
     )
     return worsening >= float(threshold)
 
@@ -223,8 +223,7 @@ def _max_price_drop_pct(event: dict[str, Any]) -> float:
 
 def _reopened_price_event_id(event_id: str, event: dict[str, Any]) -> str:
     severity_bucket = int(_max_price_drop_pct(event) // 5 * 5)
-    observed_at = scalar_text(event.get("observed_at"))[:13]
-    suffix = f"{event_id}:reopen:{severity_bucket}:{observed_at}"
+    suffix = f"{event_id}:reopen:{severity_bucket}"
     return hashlib.sha256(suffix.encode("utf-8")).hexdigest()[:24]
 
 

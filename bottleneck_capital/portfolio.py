@@ -89,6 +89,7 @@ class PortfolioAnalysis:
 class PortfolioPMResult:
     decision_board_path: Path
     portfolio_board_path: Path
+    daily_digest_path: Path
 
 
 def analyze_portfolio(
@@ -254,11 +255,13 @@ def run_portfolio_pm(
     *,
     positions_path: Path | None = None,
 ) -> PortfolioPMResult:
+    from bottleneck_capital.daily_digest import write_daily_digest
     from bottleneck_capital.decision_engine import write_daily_board
 
     decision_board = write_daily_board(root)
     portfolio_board = write_portfolio_board(root, positions_path=positions_path)
-    return PortfolioPMResult(decision_board, portfolio_board)
+    daily_digest = write_daily_digest(root)
+    return PortfolioPMResult(decision_board, portfolio_board, daily_digest)
 
 
 def render_portfolio_board(root: Path, analysis: PortfolioAnalysis) -> str:

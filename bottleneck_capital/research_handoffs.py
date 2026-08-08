@@ -69,6 +69,8 @@ def add_research_handoff(
     event_ids: list[str] | None = None,
     primary_source_checked_at: str = "",
     expires_at: str = "",
+    cause_key: str = "",
+    primary_evidence_key: str = "",
 ) -> dict[str, Any]:
     ticker = ticker.upper().strip()
     relative_memo = _relative_memo_path(root, memo_path)
@@ -83,17 +85,28 @@ def add_research_handoff(
     if not summary.strip():
         raise ResearchHandoffError("Handoff summary is required.")
 
-    handoff_id = handoff_id_for(ticker, relative_memo)
+    memo_date = _memo_date(relative_memo)
     path = handoff_path(root)
+    records = read_jsonl(path)
     existing = {
         scalar_text(record.get("handoff_id")): record
-        for record in read_jsonl(path)
+        for record in records
         if scalar_text(record.get("record_type")) == HANDOFF_RECORD_TYPE
     }
+    duplicate = _same_daily_resolution(
+        records,
+        ticker=ticker,
+        memo_date=memo_date,
+        cause_key=cause_key,
+        primary_evidence_key=primary_evidence_key,
+    )
+    if duplicate is not None:
+        return duplicate
+
+    handoff_id = handoff_id_for(ticker, relative_memo)
     if handoff_id in existing:
         return existing[handoff_id]
 
-    memo_date = _memo_date(relative_memo)
     record = {
         "record_type": HANDOFF_RECORD_TYPE,
         "handoff_id": handoff_id,
@@ -110,12 +123,43 @@ def add_research_handoff(
         "next_catalyst": next_catalyst.strip(),
         "event_ids": sorted({item.strip() for item in (event_ids or []) if item.strip()}),
         "primary_source_checked_at": primary_source_checked_at.strip() or memo_date,
+        "cause_key": cause_key.strip().lower(),
+        "primary_evidence_key": primary_evidence_key.strip(),
         "expires_at": expires_at.strip(),
         "pm_review_required": True,
     }
     _assert_no_private_fields(record)
     append_jsonl(path, record)
     return record
+
+
+def _same_daily_resolution(
+    records: list[dict[str, Any]],
+    *,
+    ticker: str,
+    memo_date: str,
+    cause_key: str,
+    primary_evidence_key: str,
+) -> dict[str, Any] | None:
+    normalized_cause = cause_key.strip().lower()
+    if not normalized_cause:
+        return None
+    normalized_evidence = primary_evidence_key.strip()
+    matches = [
+        record
+        for record in records
+        if scalar_text(record.get("record_type")) == HANDOFF_RECORD_TYPE
+        and scalar_text(record.get("ticker")).upper() == ticker
+        and scalar_text(record.get("memo_date")) == memo_date
+        and scalar_text(record.get("cause_key")).lower() == normalized_cause
+    ]
+    if not matches:
+        return None
+    latest = matches[-1]
+    existing_evidence = scalar_text(latest.get("primary_evidence_key"))
+    if normalized_evidence and existing_evidence != normalized_evidence:
+        return None
+    return latest
 
 
 def apply_research_handoff(

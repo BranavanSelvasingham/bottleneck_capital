@@ -3,7 +3,9 @@ from __future__ import annotations
 import json
 import os
 from dataclasses import dataclass
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 from bottleneck_capital.decision_engine import write_action_board
 from bottleneck_capital.ingest import (
@@ -14,7 +16,7 @@ from bottleneck_capital.ingest import (
     ingest_market,
     write_manual_event,
 )
-from bottleneck_capital.io import read_jsonl, scalar_text
+from bottleneck_capital.io import ConfigError, load_yaml_file, read_jsonl, scalar_text
 from bottleneck_capital.market_structure import (
     MarketStructureError,
     MarketStructureIngestResult,
@@ -173,6 +175,8 @@ def _filing_backoff_active(root: Path) -> bool:
     )
     if any(os.environ.get(name) for name in recovery_env):
         return False
+    retry_minutes = _filing_retry_minutes(root)
+    now = datetime.now(ZoneInfo("America/Toronto"))
     active = active_signal_events(read_jsonl(root / "state" / "signal_events.jsonl"))
     for record in active:
         if scalar_text(record.get("event_class")) != "filing_data_gap":
@@ -182,8 +186,37 @@ def _filing_backoff_active(root: Path) -> bool:
         if isinstance(raw, dict):
             summary += " " + scalar_text(raw.get("summary")).lower()
         if any(marker in summary for marker in ("403", "forbidden", "backoff")):
-            return True
+            detected_at = _parse_datetime(scalar_text(record.get("detected_at")))
+            if detected_at is None:
+                return True
+            elapsed_minutes = (now - detected_at.astimezone(now.tzinfo)).total_seconds() / 60
+            if elapsed_minutes < retry_minutes:
+                return True
     return False
+
+
+def _filing_retry_minutes(root: Path) -> float:
+    try:
+        config = load_yaml_file(root / "configs" / "live_sources.yaml")
+    except ConfigError:
+        return 60.0
+    filings = config.get("filings", {}) if isinstance(config, dict) else {}
+    try:
+        return max(15.0, float(filings.get("sec_403_retry_minutes", 60)))
+    except (TypeError, ValueError):
+        return 60.0
+
+
+def _parse_datetime(value: str) -> datetime | None:
+    if not value:
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        return parsed.replace(tzinfo=ZoneInfo("America/Toronto"))
+    return parsed
 
 
 def _resolve_recovered_data_gaps(
