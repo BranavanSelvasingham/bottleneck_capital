@@ -107,6 +107,48 @@ def test_backfill_creates_one_pending_handoff_per_ticker(tmp_path: Path) -> None
     assert len(pending_research_handoffs(tmp_path)) == 2
 
 
+def test_handoff_dedupes_same_ticker_cause_day_without_new_primary_evidence(
+    tmp_path: Path,
+) -> None:
+    _write_project(tmp_path)
+    first_memo = _write_memo(tmp_path, "2026-07-25-AAA-dip-1.md")
+    repeated_memo = _write_memo(tmp_path, "2026-07-25-AAA-dip-2.md")
+    new_evidence_memo = _write_memo(tmp_path, "2026-07-25-AAA-dip-3.md")
+    common = {
+        "ticker": "AAA",
+        "cause_status": "BOUNDED",
+        "thesis_status": "INTACT",
+        "valuation_status": "ATTRACTIVE",
+        "provisional_bias": "ADD_ON_DIP_REVIEW",
+        "confidence": 80,
+        "summary": "The same bounded market-wide dip remains under review.",
+        "cause_key": "market-wide-risk-off",
+    }
+
+    first = add_research_handoff(
+        tmp_path,
+        memo_path=first_memo,
+        primary_evidence_key="release-1",
+        **common,
+    )
+    repeated = add_research_handoff(
+        tmp_path,
+        memo_path=repeated_memo,
+        primary_evidence_key="release-1",
+        **common,
+    )
+    new_evidence = add_research_handoff(
+        tmp_path,
+        memo_path=new_evidence_memo,
+        primary_evidence_key="filing-2",
+        **common,
+    )
+
+    assert repeated["handoff_id"] == first["handoff_id"]
+    assert new_evidence["handoff_id"] != first["handoff_id"]
+    assert len(pending_research_handoffs(tmp_path)) == 2
+
+
 def test_handoff_application_requires_persisted_matching_decision(tmp_path: Path) -> None:
     _write_project(tmp_path)
     memo = _write_memo(tmp_path, "2026-07-25-AAA-evidence.md")

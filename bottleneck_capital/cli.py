@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from bottleneck_capital.baseline import write_all_wave_baseline
+from bottleneck_capital.daily_digest import write_daily_digest
 from bottleneck_capital.decision_engine import (
     compile_decisions,
     create_dip_investigation,
@@ -207,9 +208,15 @@ def main(argv: list[str] | None = None) -> int:
         default="auto",
     )
     collector_parser.add_argument("--strict-validate", action="store_true")
+    collector_parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Print only new signals or errors; intended for persistent monitoring tasks.",
+    )
 
     subparsers.add_parser("compile-decisions", help="Evaluate and rewrite ticker decision files.")
     subparsers.add_parser("daily-board", help="Write the daily decision board.")
+    subparsers.add_parser("daily-digest", help="Write one concise daily decision digest.")
     subparsers.add_parser("action-board", help="Write the current actionable-step board.")
     portfolio_board_parser = subparsers.add_parser(
         "portfolio-board",
@@ -340,7 +347,23 @@ def main(argv: list[str] | None = None) -> int:
     handoff_add.add_argument("--next-catalyst", default="")
     handoff_add.add_argument("--event-id", action="append", default=[])
     handoff_add.add_argument("--primary-source-checked-at", default="")
+    handoff_add.add_argument(
+        "--cause-key",
+        default="",
+        help="Stable ticker/cause key used to suppress same-day duplicate resolver work.",
+    )
+    handoff_add.add_argument(
+        "--primary-evidence-key",
+        default="",
+        help="Accession, release ID, or source hash; a new value permits a same-day rerun.",
+    )
     handoff_add.add_argument("--expires-at", default="")
+    handoff_add.add_argument(
+        "--run-pm",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Refresh Portfolio PM boards and the daily digest after creating the handoff.",
+    )
     handoff_subparsers.add_parser("list", help="List pending Portfolio PM handoffs.")
     handoff_apply = handoff_subparsers.add_parser(
         "apply",
@@ -594,7 +617,8 @@ def main(argv: list[str] | None = None) -> int:
         except (RunLockError, ValueError) as exc:
             print(exc)
             return 1
-        print(_render_live_check_result(result), end="")
+        if not args.quiet or _collector_should_report(result):
+            print(_render_live_check_result(result), end="")
         return 1 if result.errors or has_errors(result.validation_issues) else 0
     if args.command == "compile-decisions":
         results = compile_decisions(root)
@@ -607,6 +631,19 @@ def main(argv: list[str] | None = None) -> int:
                 process="daily-board",
                 command="daily-board",
                 fn=lambda: write_daily_board(root),
+            )
+        except RunLockError as exc:
+            print(exc)
+            return 1
+        print(path)
+        return 0
+    if args.command == "daily-digest":
+        try:
+            path = _logged(
+                root,
+                process="daily-digest",
+                command="daily-digest",
+                fn=lambda: write_daily_digest(root),
             )
         except RunLockError as exc:
             print(exc)
@@ -652,6 +689,7 @@ def main(argv: list[str] | None = None) -> int:
             return 1
         print(result.decision_board_path)
         print(result.portfolio_board_path)
+        print(result.daily_digest_path)
         return 0
     if args.command == "regime-event":
         try:
@@ -729,8 +767,18 @@ def main(argv: list[str] | None = None) -> int:
                     event_ids=args.event_id,
                     primary_source_checked_at=args.primary_source_checked_at,
                     expires_at=args.expires_at,
+                    cause_key=args.cause_key,
+                    primary_evidence_key=args.primary_evidence_key,
                 )
                 print(f"Pending handoff {record['handoff_id']} for {record['ticker']}.")
+                if args.run_pm:
+                    pm_result = _logged(
+                        root,
+                        process="portfolio-pm",
+                        command="portfolio-pm --after-resolver",
+                        fn=lambda: run_portfolio_pm(root),
+                    )
+                    print(f"Portfolio PM refreshed: {pm_result.daily_digest_path}")
                 return 0
             if args.handoff_command == "list":
                 for record in pending_research_handoffs(root):
@@ -769,7 +817,7 @@ def main(argv: list[str] | None = None) -> int:
                 records = backfill_research_handoffs(root)
                 print(f"Backfilled {len(records)} pending research handoff(s).")
                 return 0
-        except ResearchHandoffError as exc:
+        except (ResearchHandoffError, RunLockError, ValueError) as exc:
             print(exc)
             return 1
     if args.command == "value-chain":
@@ -933,6 +981,8 @@ def _logged(
         outputs.append(str(result.decision_board_path))
     if hasattr(result, "portfolio_board_path"):
         outputs.append(str(result.portfolio_board_path))
+    if hasattr(result, "daily_digest_path"):
+        outputs.append(str(result.daily_digest_path))
     if hasattr(result, "market") and result.market is not None:
         outputs.append(str(result.market.output_path))
     if hasattr(result, "market_structure") and result.market_structure is not None:
@@ -1000,6 +1050,14 @@ def _render_live_check_result(result: LiveCheckResult) -> str:
         lines.append(f"warning: {warning}")
     lines.append(render_validation(result.validation_issues).rstrip("\n"))
     return "\n".join(lines) + "\n"
+
+
+def _collector_should_report(result: LiveCheckResult) -> bool:
+    return bool(
+        result.signal_count
+        or result.errors
+        or has_errors(result.validation_issues)
+    )
 
 
 if __name__ == "__main__":

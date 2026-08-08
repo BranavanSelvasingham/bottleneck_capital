@@ -32,12 +32,21 @@ sequence `bcap ingest market`, `bcap ingest filings`, `bcap sentinel run`, then
 or `state/latest_events.json` as the preferred sentinel input. `mock/latest_events.*` is a
 fallback only and should be treated as a validation warning on market days.
 
+Run scheduled collectors in one persistent daily monitoring task at 07:15, 09:45, 12:30,
+15:30, 16:20, and 19:30 America/Toronto. Use `bcap collector-check --quiet`; a successful
+check without a new signal should not create a user-visible update. Run Portfolio PM at 07:15
+and 16:20 and immediately after every new resolver handoff. Surface the single overwritten
+`reports/local_daily_digests/{date}.md` report instead of separate collector summaries.
+
 Signal events are append-only. Use `bcap signal resolve --event-id ... --reason ...` after
 research review; do not hand-edit old JSONL rows just to mark them resolved.
 Every resolver memo must also create one structured pending PM handoff per covered ticker with
 `bcap handoff add`. Resolving the source event does not complete the investment review. Keep the
 handoff pending until Portfolio PM updates or reaffirms the ticker decision and records the result
 with `bcap handoff apply`. Never treat a resolved signal as an applied portfolio conclusion.
+Use stable `--cause-key` and `--primary-evidence-key` values when creating the handoff. Do not
+write another resolver memo for the same ticker, cause, and day unless a new primary-source
+filing, release, or disclosure changes the evidence key.
 
 Use `bcap validate` after process or universe changes and `bcap validate --strict-live`
 before resuming market-day automation. Use `bcap live-readiness` to write the dated resume
@@ -74,6 +83,9 @@ If direct SEC access is blocked, use an approved SEC mirror/proxy via
 filing vendor/proxy feed that reports `covered_tickers` and normalized events. Use
 `configs/live_sources.yaml` for provider-symbol overrides after ticker changes or corporate
 actions; do not edit code for simple symbol remaps.
+An SEC 403 creates a bounded backoff, not a permanent filing skip. Auto mode retries after
+`filings.sec_403_retry_minutes` from `configs/live_sources.yaml`; an approved configured feed
+or mirror bypasses the backoff immediately.
 Treat `market_data_gap` and filing coverage gaps as operationally material. Strict-live
 blocks held or actionable ticker gaps; non-actionable watchlist gaps are warnings, but must
 remain visible on the action board until resolved or the universe mapping is corrected.

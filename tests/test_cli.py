@@ -172,6 +172,45 @@ def test_collector_check_does_not_write_action_or_decision_board(tmp_path: Path)
     assert not (tmp_path / "reports" / "daily_decision_boards").exists()
 
 
+def test_quiet_collector_suppresses_unchanged_success_output(
+    tmp_path: Path,
+    capsys,
+) -> None:
+    _write_project(tmp_path)
+    input_path = tmp_path / "market.json"
+    input_path.write_text(
+        json.dumps(
+            {
+                "snapshots": [
+                    {
+                        "ticker": "AAA",
+                        "price": 100,
+                        "previous_close": 100,
+                        "open": 100,
+                    }
+                ]
+            }
+        ),
+        encoding="utf-8",
+    )
+    argv = [
+        "--root",
+        str(tmp_path),
+        "collector-check",
+        "--quiet",
+        "--market-input",
+        str(input_path),
+        "--filing-mode",
+        "skip",
+    ]
+
+    assert main(argv) == 0
+    capsys.readouterr()
+    assert main(argv) == 0
+
+    assert capsys.readouterr().out == ""
+
+
 def test_live_check_cli_runs_market_sentinel_action_board_and_validation(
     tmp_path: Path,
 ) -> None:

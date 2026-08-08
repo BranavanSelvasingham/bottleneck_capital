@@ -7,6 +7,7 @@ market:
 filings:
   feed_url_env: BCAP_FILING_EVENTS_URL
   auth_header_env: BCAP_FILING_EVENTS_AUTH_HEADER
+  sec_403_retry_minutes: 60
   coverage_contract: feed should return covered_tickers plus events, or represent full-watchlist coverage
   symbol_overrides:
     BITF: KEEL

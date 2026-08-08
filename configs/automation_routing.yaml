@@ -32,6 +32,16 @@ limits:
   max_concurrent_asset_agents: 6
   max_concurrent_write_agents: 3
   default_task_timeout_minutes: 45
+consolidation:
+  task_topology: one_persistent_daily_monitor
+  collector_delivery: silent_unless_new_material_signal_or_error
+  resolver_key: ticker_cause_date
+  resolver_repeat_policy: suppress_unless_new_primary_evidence
+  resolver_handoff_args:
+    - --cause-key
+    - --primary-evidence-key
+  resolver_completion: run_portfolio_pm
+  daily_output: reports/local_daily_digests/{date}.md
 write_discipline:
   sole_decision_writer: portfolio_pm
   collector_write_scope:
@@ -56,3 +66,4 @@ write_discipline:
     - state/research_handoffs.jsonl
     - reports/daily_decision_boards/{date}.md
     - reports/local_portfolio_boards/{date}.md
+    - reports/local_daily_digests/{date}.md

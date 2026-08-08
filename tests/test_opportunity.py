@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 from zoneinfo import ZoneInfo
 
+from bottleneck_capital.daily_digest import write_daily_digest
 from bottleneck_capital.opportunity import overdue_research_blocks, rank_opportunities
 
 
@@ -135,6 +136,40 @@ def test_rank_opportunities_penalizes_active_supply_without_inflating_squeeze(
     assert by_ticker["BBB"].flow_classification == "SQUEEZE_SETUP"
     assert by_ticker["BBB"].market_structure_adjustment <= 0
     assert ranked[0].ticker == "BBB"
+
+
+def test_daily_digest_is_concise_and_preserves_execution_gates(tmp_path: Path) -> None:
+    _write_watchlist(tmp_path, ["MU"])
+    _write_ticker(
+        tmp_path,
+        "MU",
+        {
+            "current_decision": "ADD_ON_DIP",
+            "thesis_health_score": 88,
+            "valuation_attractiveness_score": 72,
+            "bottleneck_upside_score": 88,
+            "confidence_score": 80,
+            "approved_entry_zone": "$925-$950",
+            "promotion_trigger": "Enter only after a bounded broad-market decline.",
+            "invalidation_trigger": "HBM pricing or share deteriorates structurally.",
+            "one_line_rationale": "HBM scarcity with cycle-aware sizing.",
+        },
+    )
+    state = tmp_path / "state"
+    state.mkdir(parents=True)
+    (state / "market_snapshots.jsonl").write_text(
+        '{"ticker":"MU","price":930}\n',
+        encoding="utf-8",
+    )
+
+    path = write_daily_digest(tmp_path)
+    text = path.read_text(encoding="utf-8")
+
+    assert "## What Changed" in text
+    assert "## Best Action" in text
+    assert "MU: current $930.00; approved zone $925-$950" in text
+    assert "HBM pricing or share deteriorates structurally" in text
+    assert len(text.splitlines()) < 40
 
 
 def _write_watchlist(root: Path, tickers: list[str]) -> None:

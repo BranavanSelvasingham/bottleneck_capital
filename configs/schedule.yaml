@@ -2,8 +2,15 @@ timezone: America/Toronto
 
 scheduler_families:
   market_and_filing_collector:
-    cadence: 15_minutes_market_hours_plus_pre_and_post_market
-    command: bcap collector-check
+    cadence: six_material_windows_per_market_day
+    times:
+      - "07:15"
+      - "09:45"
+      - "12:30"
+      - "15:30"
+      - "16:20"
+      - "19:30"
+    command: bcap collector-check --quiet
     decision_writer: false
   macro_geopolitical_watcher:
     windows:
@@ -15,6 +22,8 @@ scheduler_families:
     decision_writer: false
   research_resolver:
     cadence: event_driven_with_periodic_recovery
+    dedupe: one_ticker_cause_day_unless_new_primary_evidence
+    completion_command: bcap portfolio-pm
     write_scope: research/memos_and_append_only_handoffs
     decision_writer: false
   portfolio_pm:
@@ -23,6 +32,7 @@ scheduler_families:
       - "16:20"
     command: bcap portfolio-pm
     decision_writer: true
+    output: one_overwritten_daily_digest
   weekly_allocator:
     day: Sunday
     time: "18:00"
@@ -38,9 +48,7 @@ market_days:
     purpose: Detect opening gaps and decide whether they need dip research.
   - name: intraday sentinel checks
     times:
-      - "10:45"
       - "12:30"
-      - "14:30"
     purpose: Cheap checks for sudden price moves, filings, releases, or major source changes.
   - name: late-day action check
     time: "15:30"
@@ -63,6 +71,18 @@ weekly_portfolio_synthesis:
   day: Sunday
   time: "18:00"
   purpose: Set sleeve ranges, scenario posture, research priority, and marginal-capital order.
+
+delivery_policy:
+  task_topology: one_persistent_daily_monitor
+  collector_success_without_new_signal: silent
+  resolver_completion: trigger_portfolio_pm_immediately
+  user_visible_output: reports/local_daily_digests/{date}.md
+  digest_sections:
+    - what_changed
+    - best_action
+    - entry_levels
+    - invalidation
+    - data_quality
 
 weekend:
   - name: weekend thesis rebuild

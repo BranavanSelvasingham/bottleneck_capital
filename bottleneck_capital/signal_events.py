@@ -74,33 +74,37 @@ def existing_signal_event_ids(path: Path) -> set[str]:
 
 def active_signal_events(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     resolved_ids = _resolved_event_ids(records)
-    active_by_identity: dict[str, dict[str, Any]] = {}
+    latest_by_identity: dict[str, dict[str, Any]] = {}
     for record in records:
         if scalar_text(record.get("event_class")) == RESOLUTION_EVENT_CLASS:
             continue
+        identity = _event_identity(record)
+        existing = latest_by_identity.get(identity)
+        if existing is None or _event_sort_key(record) >= _event_sort_key(existing):
+            latest_by_identity[identity] = record
+
+    active: list[dict[str, Any]] = []
+    for identity, record in latest_by_identity.items():
         if scalar_bool(record.get("resolved")):
             continue
-        if event_id_for_record(record) in resolved_ids:
+        if event_id_for_record(record) in resolved_ids or identity in resolved_ids:
             continue
-        identity = _event_identity(record)
-        if identity in resolved_ids:
-            continue
-        active_by_identity[identity] = record
-    return list(active_by_identity.values())
+        active.append(record)
+    return active
 
 
 def group_signal_events(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Collapse repeated alerts while preserving the latest actionable context."""
-    grouped: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    grouped: dict[tuple[str, str, str], list[dict[str, Any]]] = {}
     for record in records:
         ticker = scalar_text(record.get("ticker")).upper()
         event_class = scalar_text(record.get("event_class"))
         if not ticker or not event_class:
             continue
-        grouped.setdefault((ticker, event_class), []).append(record)
+        grouped.setdefault((ticker, event_class, _event_group_key(record)), []).append(record)
 
     consolidated: list[dict[str, Any]] = []
-    for (ticker, event_class), items in grouped.items():
+    for (ticker, event_class, _), items in grouped.items():
         ordered = sorted(items, key=lambda item: scalar_text(item.get("detected_at")))
         latest = dict(ordered[-1])
         latest["ticker"] = ticker
@@ -214,12 +218,34 @@ def _date_from_dedupe_key(dedupe_key: str) -> str:
 
 
 def _event_identity(record: dict[str, Any]) -> str:
-    if scalar_text(record.get("reopened_from_event_id")):
-        return event_id_for_record(record)
-    raw_event = record.get("raw_event")
+    reopened_from = scalar_text(record.get("reopened_from_event_id"))
+    if reopened_from:
+        return f"reopen:{reopened_from}"
     event_class = scalar_text(record.get("event_class"))
+    if event_class in {"geopolitical_regime_update", "macro_regime_update"}:
+        return f"regime:{event_class}:{_event_region(record)}"
+    raw_event = record.get("raw_event")
     if isinstance(raw_event, dict) and event_class:
         canonical = _canonical_dedupe_key(raw_event)
         if canonical:
             return event_id_for_event(raw_event, event_class)
     return event_id_for_record(record)
+
+
+def _event_group_key(record: dict[str, Any]) -> str:
+    event_class = scalar_text(record.get("event_class"))
+    if event_class in {"geopolitical_regime_update", "macro_regime_update"}:
+        return _event_region(record)
+    return ""
+
+
+def _event_region(record: dict[str, Any]) -> str:
+    region = scalar_text(record.get("region"))
+    raw_event = record.get("raw_event")
+    if not region and isinstance(raw_event, dict):
+        region = scalar_text(raw_event.get("region"))
+    return region.lower() or "global"
+
+
+def _event_sort_key(record: dict[str, Any]) -> str:
+    return scalar_text(record.get("detected_at"))
