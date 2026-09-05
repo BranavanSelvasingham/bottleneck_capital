@@ -244,3 +244,4 @@
 {"decision": "RESEARCH_REQUIRED", "rationale": "Unresolved material event requires research before changing capital.", "recorded_at": "2026-07-25T22:39-04:00", "ticker": "SPCX", "urgency": "MEDIUM"}
 {"decision": "HOLD", "rationale": "HOLD / NO ADD: Q2 supports autonomy and energy optionality but weak margins, negative free cash flow, high capex, governance, and speculative SpaceX merger terms block more capital.", "recorded_at": "2026-07-25T22:39-04:00", "ticker": "TSLA", "urgency": "HIGH"}
 {"decision": "RESEARCH_REQUIRED", "rationale": "Unresolved material event requires research before changing capital.", "recorded_at": "2026-07-25T22:39-04:00", "ticker": "ONTO", "urgency": "HIGH"}
+{"decision": "RESEARCH_REQUIRED", "rationale": "Pre-IPO research issuer; no public prospectus, confirmed ticker, audited economics, or fully diluted valuation is available.", "recorded_at": "2026-09-05T12:00-04:00", "ticker": "ANTHROPIC", "urgency": "CRITICAL"}

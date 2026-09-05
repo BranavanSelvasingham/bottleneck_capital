@@ -59,6 +59,7 @@ sa_post_quarter_filings:
   - NBIS
 
 sa_adjacent_thesis_proxies:
+  - ANTHROPIC
   - VST
   - CEG
   - TLNE
