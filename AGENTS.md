@@ -74,6 +74,11 @@ rates proxies; use market confirmation to scale execution risk without pretendin
 company thesis itself broke.
 Use `bcap resume-check` as the final unpause gate; it writes the readiness report and exits
 non-zero until the automation is safe to resume.
+For pre-IPO issuers, read `configs/ipo_watch.yaml` on every broad-outlook, source-collector,
+and investment-review run. Keep the issuer non-tradable and exempt from price/filing coverage
+until a public prospectus, exchange, and ticker are confirmed. A public prospectus, amended
+registration statement, pricing range, trading date, lockup change, or material offering delay
+is a high-priority catalyst event requiring a refreshed asset decision before any order.
 `bcap ingest filings` uses SEC submissions when reachable and falls back to the official
 SEC browse Atom feed when the submissions API is blocked. Include foreign-issuer equivalents
 such as `6-K` and `20-F` in filing coverage for ADRs and non-U.S. issuers.

@@ -1,0 +1,28 @@
+issuers:
+  - research_id: ANTHROPIC
+    name: Anthropic PBC
+    status: confidential_s1_submitted_public_prospectus_pending
+    last_checked: 2026-09-05
+    reported_timing: Public prospectus shifted to late September 2026 and marketing to mid-October at the earliest; timing remains unconfirmed and subject to market conditions.
+    official_sources:
+      - https://www.anthropic.com/news/confidential-draft-s1-sec
+      - https://www.anthropic.com/news
+      - https://www.sec.gov/edgar/search/
+    material_event_triggers:
+      - Public S-1 or amended registration statement
+      - Confirmed exchange, ticker, first trading date, or offering delay
+      - Initial price range or material valuation change
+      - Primary-versus-secondary share mix or overallotment terms
+      - Insider, employee, strategic-holder, or lockup terms
+      - Audited revenue, gross margin, operating loss, free cash flow, or customer concentration
+      - Compute, cloud, chip, power, financing, or minimum-purchase commitments
+      - Material model release, safety incident, litigation, regulation, or government restriction
+    promotion_gates:
+      - Verify the public prospectus directly from the SEC and Anthropic.
+      - Replace ANTHROPIC with the confirmed public ticker and exchange symbol.
+      - Set tradable, market_data_required, and filing_data_required to true.
+      - Underwrite audited revenue quality, gross margin after compute, cash burn, commitments, dilution, governance, and customer concentration.
+      - Calculate fully diluted enterprise value and bear, base, and bull valuation ranges.
+      - Map primary and secondary supply, overallotment, lockups, unlock tranches, and likely tradable float.
+      - Confirm brokerage availability and account eligibility before any order.
+      - Record a fresh decision; do not inherit private-market valuation or first-day price action as a buy signal.

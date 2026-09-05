@@ -54,6 +54,7 @@ def validate_project(root: Path, *, strict_live: bool = False) -> list[Validatio
     position_items = _load_local_position_items(root, issues)
     _check_position_privacy(root, issues)
     _check_duplicates(tickers, issues)
+    _check_pre_ipo_watch(root, watchlist, issues)
     _check_ticker_files(root, tickers, issues)
     _check_generated_wiring(root, tickers, issues)
     _check_decisions(root, tickers, issues)
@@ -256,6 +257,96 @@ def _check_duplicates(tickers: list[str], issues: list[ValidationIssue]) -> None
         seen.add(ticker)
     for ticker in sorted(duplicates):
         issues.append(ValidationIssue("ERROR", "DUPLICATE_WATCHLIST_TICKER", ticker))
+
+
+def _check_pre_ipo_watch(
+    root: Path,
+    watchlist: list[dict[str, Any]],
+    issues: list[ValidationIssue],
+) -> None:
+    path = root / "configs" / "ipo_watch.yaml"
+    if not path.exists():
+        return
+    data = load_yaml_file(path)
+    issuers = data.get("issuers") if isinstance(data, dict) else None
+    if not isinstance(issuers, list):
+        issues.append(
+            ValidationIssue(
+                "ERROR",
+                "IPO_WATCH_INVALID",
+                "configs/ipo_watch.yaml must define an issuers list.",
+            )
+        )
+        return
+
+    by_ticker = {item["ticker"]: item for item in watchlist}
+    for issuer in issuers:
+        if not isinstance(issuer, dict):
+            issues.append(
+                ValidationIssue("ERROR", "IPO_WATCH_INVALID", "Issuer entry must be a mapping.")
+            )
+            continue
+        ticker = scalar_text(issuer.get("research_id")).upper()
+        item = by_ticker.get(ticker)
+        if not ticker or item is None:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "IPO_WATCH_UNMAPPED",
+                    f"IPO issuer {ticker or '<blank>'} is not in configs/watchlist.yaml.",
+                )
+            )
+            continue
+        if item.get("tradable") is not False:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "IPO_WATCH_TRADABLE",
+                    f"{ticker} must remain tradable: false until its public ticker is confirmed.",
+                )
+            )
+        if (
+            item.get("market_data_required") is not False
+            or item.get("filing_data_required") is not False
+        ):
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "IPO_WATCH_COVERAGE_GATE",
+                    f"{ticker} must remain exempt from market and filing ingestion until "
+                    "its public instrument is confirmed.",
+                )
+            )
+        decision_path = root / "research" / "decisions" / f"{ticker}.md"
+        if decision_path.exists():
+            metadata, _ = read_markdown_frontmatter(decision_path)
+            decision = scalar_text(metadata.get("current_decision")).upper()
+            if decision in {"BUY_NOW", "ADD_ON_DIP"}:
+                issues.append(
+                    ValidationIssue(
+                        "ERROR",
+                        "IPO_WATCH_ACTIONABLE",
+                        f"{ticker} cannot be {decision} before it is publicly tradable.",
+                    )
+                )
+        official_sources = issuer.get("official_sources")
+        promotion_gates = issuer.get("promotion_gates")
+        if not isinstance(official_sources, list) or not official_sources:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "IPO_WATCH_SOURCE_GAP",
+                    f"{ticker} must define at least one official source.",
+                )
+            )
+        if not isinstance(promotion_gates, list) or not promotion_gates:
+            issues.append(
+                ValidationIssue(
+                    "ERROR",
+                    "IPO_WATCH_PROMOTION_GAP",
+                    f"{ticker} must define promotion gates before public-market activation.",
+                )
+            )
 
 
 def _check_ticker_files(root: Path, tickers: list[str], issues: list[ValidationIssue]) -> None:

@@ -51,23 +51,36 @@ def ingest_market(
     from bottleneck_capital.market_regime import context_symbols
 
     thresholds = load_yaml_file(root / "configs" / "signal_thresholds.yaml")
-    investment_tickers = symbols or [item["ticker"] for item in load_watchlist(root)]
+    watchlist = load_watchlist(root)
+    investment_tickers = (
+        symbols
+        if symbols is not None
+        else _coverage_tickers(watchlist, "market_data_required")
+    )
     context = context_symbols(root) if symbols is None and input_path is None else {}
     tickers = list(dict.fromkeys([*investment_tickers, *context]))
     symbol_overrides = {**_market_symbol_overrides(root), **context}
     provider = provider.lower()
     source = f"market_{provider}"
     warnings: list[str] = []
+    if symbols is None:
+        warnings.extend(
+            _coverage_exemption_warnings(watchlist, "market_data_required", "Market")
+        )
     if input_path is not None:
         snapshots = _load_market_snapshots(input_path)
         source = "market_input_file"
     elif provider == "auto":
-        snapshots, source, warnings = _fetch_auto_market_snapshots(tickers, symbol_overrides)
+        snapshots, source, provider_warnings = _fetch_auto_market_snapshots(
+            tickers, symbol_overrides
+        )
+        warnings.extend(provider_warnings)
     elif provider == "alpaca":
         snapshots = _fetch_alpaca_snapshots(tickers, symbol_overrides)
         source = "market_alpaca"
     elif provider == "yahoo":
-        snapshots, warnings = _fetch_yahoo_snapshots(tickers, symbol_overrides)
+        snapshots, provider_warnings = _fetch_yahoo_snapshots(tickers, symbol_overrides)
+        warnings.extend(provider_warnings)
         source = "market_yahoo"
     else:
         raise IngestError(f"Unsupported market provider: {provider}")
@@ -115,13 +128,17 @@ def ingest_filings(
     thresholds = load_yaml_file(root / "configs" / "signal_thresholds.yaml")
     forms = _configured_sec_forms(thresholds)
     watchlist = load_watchlist(root)
-    tickers = [item["ticker"] for item in watchlist]
+    tickers = _coverage_tickers(watchlist, "filing_data_required")
     symbol_overrides = _filing_symbol_overrides(root)
     exempt_tickers = _filing_exemptions(root)
     user_agent = effective_sec_user_agent(root, sec_user_agent)
     cutoff = _today_date() - timedelta(days=lookback_days)
     events: list[dict[str, Any]] = []
-    warnings: list[str] = []
+    warnings: list[str] = _coverage_exemption_warnings(
+        watchlist,
+        "filing_data_required",
+        "Filing",
+    )
     missing_tickers: list[str] = []
     live_atom_fallback = False
     if company_tickers_input is not None:
@@ -293,6 +310,30 @@ def _load_market_snapshots(path: Path) -> list[dict[str, Any]]:
 
 def _market_symbol_overrides(root: Path) -> dict[str, str]:
     return _symbol_overrides(root, "market")
+
+
+def _coverage_tickers(watchlist: list[dict[str, Any]], field: str) -> list[str]:
+    return [item["ticker"] for item in watchlist if _coverage_required(item, field)]
+
+
+def _coverage_exemption_warnings(
+    watchlist: list[dict[str, Any]],
+    field: str,
+    channel: str,
+) -> list[str]:
+    return [
+        f"{channel} coverage exempt for {item['ticker']}: "
+        f"{scalar_text(item.get('coverage_exemption_reason')) or 'configured exemption'}"
+        for item in watchlist
+        if not _coverage_required(item, field)
+    ]
+
+
+def _coverage_required(item: dict[str, Any], field: str) -> bool:
+    value = item.get(field, True)
+    if isinstance(value, bool):
+        return value
+    return scalar_text(value).lower() not in {"0", "false", "no", "off"}
 
 
 def _filing_symbol_overrides(root: Path) -> dict[str, str]:

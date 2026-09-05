@@ -1,4 +1,16 @@
 watchlist:
+  - ticker: ANTHROPIC
+    name: Anthropic PBC
+    sleeve: frontier_ai_platform
+    source_classification: sa_adjacent_thesis_proxy
+    instrument_role: pre_ipo_research_issuer
+    trade_policy: research_only_until_listed
+    priority: high
+    listing_status: confidential_s1_submitted
+    tradable: false
+    market_data_required: false
+    filing_data_required: false
+    coverage_exemption_reason: Pre-IPO research issuer; no confirmed public ticker, exchange, or public prospectus yet.
   - ticker: ASML
     name: ASML Holding
     sleeve: semicap_equipment

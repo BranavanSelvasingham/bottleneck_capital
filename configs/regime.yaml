@@ -20,6 +20,11 @@ regime:
     reduce_tranche_adjustment: -4
     pause_new_buy_adjustment: -8
   sleeve_channel_exposures:
+    frontier_ai_platform:
+      global_risk: -0.15
+      energy: -0.04
+      supply_chain: -0.05
+      rates: -0.10
     ai_networking_optical:
       global_risk: -0.10
       energy: -0.02

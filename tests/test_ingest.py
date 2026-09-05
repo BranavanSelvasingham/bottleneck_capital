@@ -469,6 +469,97 @@ def test_market_ingest_price_dislocation_dedupe_ignores_pct_drift(tmp_path: Path
     assert second_signals == []
 
 
+def test_market_ingest_skips_pre_ipo_research_issuers(
+    tmp_path: Path,
+    monkeypatch,
+) -> None:
+    _write_project(tmp_path)
+    (tmp_path / "configs" / "watchlist.yaml").write_text(
+        """watchlist:
+  - ticker: AAA
+    name: AAA Inc.
+    sleeve: compute_infra
+  - ticker: PRIVATE
+    name: Private Issuer
+    sleeve: compute_infra
+    tradable: false
+    market_data_required: false
+    filing_data_required: false
+    coverage_exemption_reason: Pre-IPO research issuer with no confirmed ticker.
+""",
+        encoding="utf-8",
+    )
+    requested: list[str] = []
+
+    def fake_open_json(request):
+        requested.append(request.full_url)
+        return _yahoo_chart_response(symbol="AAA")
+
+    monkeypatch.setattr(ingest_module, "_open_json", fake_open_json)
+
+    result = ingest_market(tmp_path, provider="yahoo")
+
+    status = json.loads((tmp_path / "state" / "ingest_status.json").read_text())
+    assert len(requested) == 1
+    assert "/AAA?" in requested[0]
+    assert status["market"]["expected_item_count"] == 1
+    assert status["market"]["missing_tickers"] == []
+    assert any("Market coverage exempt for PRIVATE" in warning for warning in result.warnings)
+
+
+def test_filing_ingest_skips_pre_ipo_research_issuers(tmp_path: Path) -> None:
+    _write_project(tmp_path)
+    (tmp_path / "configs" / "watchlist.yaml").write_text(
+        """watchlist:
+  - ticker: AAA
+    name: AAA Inc.
+    sleeve: compute_infra
+  - ticker: PRIVATE
+    name: Private Issuer
+    sleeve: compute_infra
+    tradable: false
+    market_data_required: false
+    filing_data_required: false
+    coverage_exemption_reason: Pre-IPO research issuer with no confirmed ticker.
+""",
+        encoding="utf-8",
+    )
+    company_tickers = tmp_path / "company_tickers.json"
+    company_tickers.write_text(
+        json.dumps({"0": {"cik_str": 123456, "ticker": "AAA", "title": "AAA Inc."}}),
+        encoding="utf-8",
+    )
+    submissions_dir = tmp_path / "submissions"
+    submissions_dir.mkdir()
+    (submissions_dir / "CIK0000123456.json").write_text(
+        json.dumps(
+            {
+                "filings": {
+                    "recent": {
+                        "form": ["8-K"],
+                        "accessionNumber": ["0000123456-26-000001"],
+                        "filingDate": [date.today().isoformat()],
+                        "acceptanceDateTime": ["20260622093000"],
+                        "primaryDocument": ["form8k.htm"],
+                    }
+                }
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = ingest_filings(
+        tmp_path,
+        company_tickers_input=company_tickers,
+        submissions_dir=submissions_dir,
+    )
+
+    status = json.loads((tmp_path / "state" / "ingest_status.json").read_text())
+    assert status["filings"]["expected_item_count"] == 1
+    assert status["filings"]["missing_tickers"] == []
+    assert any("Filing coverage exempt for PRIVATE" in warning for warning in result.warnings)
+
+
 def test_filing_ingest_uses_symbol_overrides_and_exemptions(tmp_path: Path) -> None:
     _write_project(tmp_path)
     (tmp_path / "configs" / "watchlist.yaml").write_text(

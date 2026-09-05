@@ -5,6 +5,7 @@ portfolio:
   elevated_cash_reserve_pct: 20
 
   sleeve_limits_pct:
+    frontier_ai_platform: 10
     compute_infra: 30
     power_bottleneck: 35
     miner_to_datacenter: 20
@@ -34,6 +35,15 @@ portfolio:
     grid_regulation: 45
 
   sleeve_factor_profiles:
+    frontier_ai_platform:
+      ai_capex: 1.00
+      crowding: 1.00
+      rates_duration: 0.95
+      financing_liquidity: 0.75
+      power_scarcity: 0.80
+      export_controls: 0.55
+      supply_chain: 0.65
+      customer_concentration: 0.90
     compute_infra:
       ai_capex: 1.00
       crowding: 0.85

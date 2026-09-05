@@ -57,6 +57,42 @@ def test_validate_project_errors_on_committed_current_position_weight(tmp_path: 
     assert any(issue.code == "POSITION_PRIVACY_TRACKED_WEIGHT" for issue in issues)
 
 
+def test_validate_project_enforces_pre_ipo_trade_gate(tmp_path: Path) -> None:
+    _write_minimal_project(tmp_path)
+    watchlist = tmp_path / "configs" / "watchlist.yaml"
+    watchlist.write_text(
+        watchlist.read_text(encoding="utf-8").replace(
+            "    sleeve: compute_infra\n",
+            "    sleeve: compute_infra\n"
+            "    tradable: false\n"
+            "    market_data_required: false\n"
+            "    filing_data_required: false\n",
+        ),
+        encoding="utf-8",
+    )
+    (tmp_path / "configs" / "ipo_watch.yaml").write_text(
+        """issuers:
+  - research_id: AAA
+    official_sources:
+      - https://example.test/official
+    promotion_gates:
+      - Confirm public ticker and exchange.
+""",
+        encoding="utf-8",
+    )
+    decision = tmp_path / "research" / "decisions" / "AAA.md"
+    decision.write_text(
+        decision.read_text(encoding="utf-8").replace(
+            "current_decision: HOLD", "current_decision: BUY_NOW"
+        ),
+        encoding="utf-8",
+    )
+
+    issues = validate_project(tmp_path)
+
+    assert any(issue.code == "IPO_WATCH_ACTIONABLE" for issue in issues)
+
+
 def test_validate_project_warns_on_overdue_research_block(tmp_path: Path) -> None:
     _write_minimal_project(tmp_path)
     for kind in ("assets", "decisions"):
