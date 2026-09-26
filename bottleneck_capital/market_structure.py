@@ -82,7 +82,16 @@ def ingest_market_structure(
     symbols: list[str] | None = None,
     trade_date: date | None = None,
 ) -> MarketStructureIngestResult:
-    tickers = symbols or [item["ticker"] for item in load_watchlist(root)]
+    tickers = (
+        symbols
+        if symbols is not None
+        else [
+            item["ticker"]
+            for item in load_watchlist(root)
+            if scalar_bool(item.get("tradable", True))
+            and scalar_bool(item.get("market_data_required", True))
+        ]
+    )
     symbol_overrides = _symbol_overrides(root)
     provider = provider.lower()
     warnings: list[str] = []

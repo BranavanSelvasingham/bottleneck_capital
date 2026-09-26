@@ -26,6 +26,10 @@ agent_types:
     purpose: Track 13F, 13G, SEC, IR, guidance, financing, and contract updates.
 ticker_owners:
   -
+    ticker: STRIPE
+    owner_agent: asset_analyst.STRIPE
+    sleeve_agent: sleeve_analyst.agentic_commerce
+  -
     ticker: ANTHROPIC
     owner_agent: asset_analyst.ANTHROPIC
     sleeve_agent: sleeve_analyst.frontier_ai_platform
