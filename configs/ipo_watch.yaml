@@ -1,4 +1,32 @@
 issuers:
+  - research_id: STRIPE
+    name: Stripe Inc.
+    status: private_no_public_ipo_terms_verified
+    last_checked: 2026-09-26
+    reported_timing: No confirmed IPO date or public offering terms verified; do not assume an imminent listing.
+    official_sources:
+      - https://stripe.com/newsroom/news
+      - https://stripe.com/newsroom/news/stripe-2025-update
+      - https://stripe.com/newsroom/news/stripe-agrees-to-acquire-openrouter
+      - https://openai.com/index/powering-product-discovery-in-chatgpt/
+      - https://www.sec.gov/edgar/search/
+    material_event_triggers:
+      - Official IPO announcement, public prospectus, ticker, exchange, or trading date
+      - Tender offer, financing, or material change in fully diluted valuation
+      - Audited net revenue, retained payment economics, margins, or free cash flow
+      - OpenRouter closing, consideration, dilution, integration, or disclosed unit economics
+      - Agentic commerce adoption with evidence of incremental retained revenue rather than redirected existing payments
+      - Material OpenAI, Visa, merchant, stablecoin, regulatory, or competitive development
+      - Verified investment access with documented share rights, fees, liquidity, and account eligibility
+    promotion_gates:
+      - Keep STRIPE research-only; it is an internal issuer ID, not a broker symbol.
+      - Verify any public prospectus, exchange, and ticker before enabling public-market coverage.
+      - Underwrite net revenue, margins, cash flow, dilution, acquisitions, and competitive economics; payment volume is not revenue.
+      - Verify share class, ownership chain, transfer restrictions, fees, liquidity, and account eligibility for any proposed instrument.
+      - Build bear, base, and bull per-share valuations using current fully diluted capital and the actual all-in entry price.
+      - Treat the February 2026 tender as a dated reference, not a live quote or approved entry.
+      - Require a separate explicit mandate and review for private equity or a wrapper; do not auto-promote a private offer.
+      - Obtain a fresh Portfolio PM decision and local capacity review before allocating capital; no allocation is approved now.
   - research_id: ANTHROPIC
     name: Anthropic PBC
     status: confidential_s1_submitted_public_prospectus_pending

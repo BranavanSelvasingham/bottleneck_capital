@@ -5,6 +5,7 @@ portfolio:
   elevated_cash_reserve_pct: 20
 
   sleeve_limits_pct:
+    agentic_commerce: 0
     frontier_ai_platform: 10
     compute_infra: 30
     power_bottleneck: 35
@@ -35,6 +36,13 @@ portfolio:
     grid_regulation: 45
 
   sleeve_factor_profiles:
+    agentic_commerce:
+      ai_capex: 0.35
+      crowding: 0.70
+      rates_duration: 0.80
+      financing_liquidity: 0.90
+      usd: 0.60
+      customer_concentration: 0.65
     frontier_ai_platform:
       ai_capex: 1.00
       crowding: 1.00

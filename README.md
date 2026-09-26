@@ -2,6 +2,11 @@
 
 Bottleneck Capital is a long-term, thesis-led investment research system with a lightweight sentinel for fast dip and source-change detection.
 
+Private-company consideration candidates are listed in [the issuer watch](configs/ipo_watch.yaml),
+with dated research such as [Stripe's consideration review](research/assets/STRIPE.md).
+These are research entries, not holdings or approved allocations, and remain excluded from
+public-market coverage until a listed instrument is verified.
+
 The core command is:
 
 ```bash

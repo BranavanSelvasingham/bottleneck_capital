@@ -1,4 +1,16 @@
 watchlist:
+  - ticker: STRIPE
+    name: Stripe Inc.
+    sleeve: agentic_commerce
+    source_classification: sa_adjacent_thesis_proxy
+    instrument_role: pre_ipo_research_issuer
+    trade_policy: research_only_until_listed
+    priority: high
+    listing_status: private_no_public_ipo_terms_verified
+    tradable: false
+    market_data_required: false
+    filing_data_required: false
+    coverage_exemption_reason: Private-company consideration candidate; STRIPE is an internal research ID, not a public ticker.
   - ticker: ANTHROPIC
     name: Anthropic PBC
     sleeve: frontier_ai_platform

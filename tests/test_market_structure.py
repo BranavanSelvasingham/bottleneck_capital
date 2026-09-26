@@ -47,6 +47,48 @@ def test_ingest_market_structure_normalizes_flow_without_calling_it_short_intere
     assert assessment.execution_gate == "DO_NOT_INFER_SHORT_INTEREST"
 
 
+def test_market_structure_skips_private_consideration_candidates(tmp_path: Path) -> None:
+    _write_watchlist(tmp_path, ["AAA"])
+    watchlist = tmp_path / "configs" / "watchlist.yaml"
+    watchlist.write_text(
+        watchlist.read_text(encoding="utf-8")
+        + "  - ticker: STRIPE\n"
+        "    tradable: false\n"
+        "    market_data_required: false\n"
+        "  - ticker: EXEMPT\n"
+        "    market_data_required: false\n",
+        encoding="utf-8",
+    )
+    input_path = tmp_path / "structure.json"
+    input_path.write_text(
+        json.dumps(
+            {
+                "covered_tickers": ["AAA"],
+                "records": [
+                    {
+                        "ticker": ticker,
+                        "trade_date": date.today().isoformat(),
+                        "short_volume": 20,
+                        "total_reported_volume": 100,
+                    }
+                    for ticker in ("AAA", "STRIPE", "EXEMPT")
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+
+    result = ingest_market_structure(tmp_path, input_path=input_path)
+
+    status = json.loads((tmp_path / "state" / "ingest_status.json").read_text())
+    assert result.record_count == 1
+    assert status["market_structure"]["expected_item_count"] == 1
+    assert status["market_structure"]["missing_tickers"] == []
+    records = [json.loads(line) for line in result.snapshot_path.read_text().splitlines()]
+    assert [record["ticker"] for record in records] == ["AAA"]
+    assert not result.warnings
+
+
 def test_squeeze_setup_requires_correlated_borrow_interest_options_and_catalyst(
     tmp_path: Path,
 ) -> None:
