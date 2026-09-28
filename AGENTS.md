@@ -109,6 +109,48 @@ borrow, options, ownership, or supply data visible rather than assuming neutral 
 
 ## Decision Discipline
 
+## Recommendation Calibration
+
+Before any user-facing investment review or Portfolio PM recommendation, read
+`research/theses/recommendation_calibration.md` and run `bcap recommendation review`.
+This applies to broad outlook, current-state, and multibagger skills as well as this
+consultant thread. Reconcile the previous call before proposing the next one.
+
+Use the shared `calibrate-investment-recommendations` skill, whose version-controlled source
+is `skills/calibrate-investment-recommendations/SKILL.md`. Read the scoped lessons and
+counterexamples in `research/learning/lessons.yaml`. New recommendation records require
+lesson IDs, versions, dispositions and concrete effects; their definitions are frozen locally.
+Add one concise "Lesson applied" line to the review, or explain why no lesson changed it.
+Testing a changed approach requires a prospective old-versus-new comparison and a fixed
+window/cohort. Routine reviews record outcomes and counterevidence; they do not auto-promote
+lessons. Authorized lesson-maintenance tasks version changes through a scoped PR. Never turn
+a retrospective winner into a proven rule, and never count correlated calls as independent.
+
+Every material buy, wait, hold, trim, sell, or rotation recommendation must be recorded
+before the final answer with `bcap recommendation record --input ...`. Use the packet
+template in `research/templates/recommendation.json`. A journal record is NOT investment
+clearance: existing thesis, valuation, capacity, handoff, and strict-live gates still apply.
+If recording fails, disclose that failure; never call an unlogged forecast calibrated.
+
+- Separate thesis, valuation, and timing confidence. Do not invent calibrated percentages.
+- Compare a risk-sized starter, waiting, and at least two alternatives on the same horizon.
+  Waiting has opportunity cost; it is not automatically safer or higher-returning.
+- Explain whether HOLD means valuation, unresolved evidence, or portfolio capacity.
+  State the exposure denominator; incomplete household data cannot justify precise weights.
+- Require a fresh source-versus-destination comparison before an opportunity-cost rotation.
+  Being expensive or below cost is not by itself a thesis break or a reason to exit.
+- Give entry recommendations an expiry/review date and a response if the dip never arrives.
+  Refresh valuation after material results or financing changes, not merely after price rises.
+- Link revisions to the previous journal ID and identify new evidence, changed constraints,
+  a valuation change, or an explicit error correction. User pressure alone is not evidence.
+- In subsequent reviews, record sourced, matching-date reference outcomes with
+  `bcap recommendation outcome --input ...`. Score 5/21/63/252 trading-session windows when
+  mature, explicit event deadlines, and rotation opportunity cost. Unfilled or unverified
+  entries are not portfolio wins. Existing positions remain local-only.
+
+Do not make new scheduler jobs for this loop unless requested. Existing reviews must consume
+the journal; collectors still do not write investment decisions or fabricated outcomes.
+
 ## Position Privacy
 
 Exact user positions are local-only and must never be committed, pushed, included in a PR,
@@ -116,6 +158,9 @@ or written into tracked research or generated reports. This includes share quant
 basis, account values, current portfolio weights, account names, and transaction fills.
 
 - Keep exact holdings only in `state/local_positions.yaml` and local reports derived from it.
+- Keep the recommendation journal at `state/local_recommendations.jsonl` and its input/review
+  files under `reports/local_recommendations/` gitignored. Record public reference prices,
+  never actual fills, account balances, share counts, or current portfolio weights.
 - Keep `state/local_positions.yaml`, `reports/local_exposure.md`, `state/signal_events.jsonl`,
   and generated local-portfolio/action-board/sunday-prep directories gitignored and untracked.
 - Public research may include company market prices, valuation ranges, entry zones, and policy

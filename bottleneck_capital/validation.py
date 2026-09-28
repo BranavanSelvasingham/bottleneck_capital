@@ -16,6 +16,8 @@ from bottleneck_capital.io import (
     read_markdown_frontmatter,
     scalar_text,
 )
+from bottleneck_capital.lessons import REGISTER as LESSON_REGISTER
+from bottleneck_capital.lessons import LessonError, load_lessons
 from bottleneck_capital.live_sources import effective_sec_user_agent
 from bottleneck_capital.market_structure import assess_market_structure
 from bottleneck_capital.research_handoffs import (
@@ -53,6 +55,7 @@ def validate_project(root: Path, *, strict_live: bool = False) -> list[Validatio
     tickers = [item["ticker"] for item in watchlist]
     position_items = _load_local_position_items(root, issues)
     _check_position_privacy(root, issues)
+    _check_lesson_register(root, issues)
     _check_duplicates(tickers, issues)
     _check_pre_ipo_watch(root, watchlist, issues)
     _check_ticker_files(root, tickers, issues)
@@ -69,6 +72,16 @@ def validate_project(root: Path, *, strict_live: bool = False) -> list[Validatio
     _check_live_environment(root, issues, strict_live=strict_live)
     _check_local_positions(root, tickers, issues, strict_live=strict_live, positions=position_items)
     return issues
+
+
+def _check_lesson_register(root: Path, issues: list[ValidationIssue]) -> None:
+    if (root / LESSON_REGISTER).exists() or (
+        root / "research/templates/recommendation.json"
+    ).exists():
+        try:
+            load_lessons(root)
+        except LessonError as exc:
+            issues.append(ValidationIssue("ERROR", "LESSON_REGISTER_INVALID", str(exc)))
 
 
 def _check_market_structure(
@@ -114,6 +127,8 @@ def _check_market_structure(
 def _check_position_privacy(root: Path, issues: list[ValidationIssue]) -> None:
     private_paths = (
         "state/local_positions.yaml",
+        "state/local_recommendations.jsonl",
+        "reports/local_recommendations",
         "reports/local_exposure.md",
         "reports/local_portfolio_boards",
         "state/signal_events.jsonl",
@@ -126,6 +141,8 @@ def _check_position_privacy(root: Path, issues: list[ValidationIssue]) -> None:
     ignore_text = ignore_path.read_text(encoding="utf-8") if ignore_path.exists() else ""
     required_patterns = (
         "state/local_positions.yaml",
+        "state/local_recommendations.jsonl",
+        "reports/local_recommendations/",
         "reports/local_exposure.md",
         "reports/local_portfolio_boards/",
         "state/signal_events.jsonl",

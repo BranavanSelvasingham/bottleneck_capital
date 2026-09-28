@@ -1,0 +1,33 @@
+{
+  "ticker": "AAA",
+  "action": "HOLD",
+  "reason": "VALUATION",
+  "rationale": "Example only: replace with the current evidence and marginal-capital conclusion.",
+  "benchmark": "QQQ",
+  "horizon_months": 36,
+  "review_by": "REPLACE_WITH_FUTURE_ISO_TIMESTAMP_WITH_TIMEZONE",
+  "reference_start_at": "REPLACE_WITH_NEXT_REGULAR_SESSION_OPEN_ISO_TIMESTAMP",
+  "confidence": {
+    "thesis": "MODERATE",
+    "valuation": "LOW",
+    "timing": "LOW"
+  },
+  "evidence": ["Replace with dated primary-source references and current quote source."],
+  "alternatives": [
+    {"ticker": "BBB", "case": "Compare expected return, downside, dilution and correlation."},
+    {"ticker": "CASH", "case": "Quantify the benefit and foregone-upside risk of waiting."}
+  ],
+  "invalidation": "Replace with a business or risk condition, not a price-only stop.",
+  "starter_case": "Evaluate a risk-sized entry if thesis, valuation and capacity gates pass.",
+  "wait_case": "Explain why waiting is better or worse than that starter.",
+  "missed_entry_response": "Re-underwrite at the deadline; do not mechanically chase or repeat an expired limit.",
+  "entry": {"mode": "NO_ORDER"},
+  "lesson_applications": [
+    {
+      "id": "L005",
+      "version": 1,
+      "disposition": "APPLIED",
+      "effect": "Replace with the concrete measurement safeguard or other applicable lesson's effect on this call."
+    }
+  ]
+}

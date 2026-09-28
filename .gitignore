@@ -11,3 +11,5 @@ state/signal_events.jsonl
 reports/action_boards/
 reports/daily_decision_boards/
 reports/sunday_preps/
+state/local_recommendations.jsonl
+reports/local_recommendations/
