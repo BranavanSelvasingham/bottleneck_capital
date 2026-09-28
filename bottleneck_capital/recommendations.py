@@ -8,6 +8,7 @@ from typing import Any
 from uuid import uuid4
 
 from bottleneck_capital.io import append_jsonl, read_jsonl
+from bottleneck_capital.lessons import application_snapshots, render_lessons
 from bottleneck_capital.runtime import run_lock
 
 LEDGER = Path("state/local_recommendations.jsonl")
@@ -37,6 +38,8 @@ CALL_FIELDS = {
     "wait_case",
     "missed_entry_response",
     "entry",
+    "lesson_applications",
+    "lesson_test",
     "rotation_ticker",
     "rotation_case",
     "supersedes",
@@ -57,6 +60,7 @@ OUTCOME_FIELDS = {
     "notes",
     "supersedes",
     "correction_reason",
+    "lesson_assessment",
 }
 WINDOWS = {"5_sessions": 5, "21_sessions": 21, "63_sessions": 63, "252_sessions": 252}
 
@@ -127,8 +131,45 @@ def record_recommendation(
         "supersedes",
         "change_kind",
         "change_reason",
+        "lesson_test",
     }
     _fields(payload, CALL_FIELDS, required, "Recommendation")
+    snapshots = application_snapshots(root, payload["lesson_applications"])
+    if "lesson_test" in payload:
+        test = payload["lesson_test"]
+        fields = {
+            "id",
+            "version",
+            "old_approach",
+            "new_approach",
+            "window",
+            "success_criterion",
+            "failure_criterion",
+            "cohort_key",
+        }
+        _fields(test, fields | {"event_deadline"}, fields, "Lesson test")
+        if (
+            not any(
+                test["id"] == item["id"] and test["version"] == item["version"]
+                for item in snapshots
+            )
+            or type(test["version"]) is not int
+        ):
+            raise RecommendationError("Lesson test must reference an application in this call")
+        _choice(test["window"], {*WINDOWS, "EVENT"}, "lesson test window")
+        for field in (
+            "old_approach",
+            "new_approach",
+            "success_criterion",
+            "failure_criterion",
+            "cohort_key",
+        ):
+            _text(test[field], field)
+        if test["window"] == "EVENT":
+            if _time(test.get("event_deadline")) <= now:
+                raise RecommendationError("Freeze a future lesson event deadline")
+        elif "event_deadline" in test:
+            raise RecommendationError("Only EVENT tests specify an event_deadline")
     ticker = _symbol(payload["ticker"])
     _symbol(payload["benchmark"])
     if ticker == payload["benchmark"]:
@@ -143,6 +184,10 @@ def record_recommendation(
     reference_start = _time(payload["reference_start_at"])
     if not now <= reference_start <= now + timedelta(days=7):
         raise RecommendationError("Freeze a reference start within the next seven days")
+    if payload.get("lesson_test", {}).get("window") == "EVENT" and (
+        _time(payload["lesson_test"]["event_deadline"]) <= reference_start
+    ):
+        raise RecommendationError("Lesson event must end after the frozen reference start")
     for key in ("rationale", "invalidation", "starter_case", "wait_case", "missed_entry_response"):
         _text(payload[key], key)
     confidence = payload["confidence"]
@@ -192,6 +237,17 @@ def record_recommendation(
 
     # Freeze the original call. Revisions append a linked record, never overwrite it.
     with run_lock(root, "recommendations"):
+        for old in read_jsonl(root / LEDGER):
+            for snapshot in old.get("lesson_snapshots", []):
+                for current in snapshots:
+                    if (
+                        snapshot["id"] == current["id"]
+                        and snapshot["version"] == current["version"]
+                        and snapshot != current
+                    ):
+                        raise RecommendationError(
+                            "Increment the lesson version after a rule change"
+                        )
         previous = next((r for r in latest_recommendations(root) if r["ticker"] == ticker), None)
         if previous:
             if payload.get("supersedes") != previous["id"]:
@@ -226,7 +282,8 @@ def record_recommendation(
             "id": str(uuid4()),
             "kind": "recommendation",
             "recorded_at": now.isoformat(),
-            "schema_version": 2,
+            "schema_version": 3,
+            "lesson_snapshots": snapshots,
         }
         append_jsonl(root / LEDGER, record)
     return record
@@ -242,7 +299,7 @@ def record_outcome(
     _fields(
         payload,
         OUTCOME_FIELDS,
-        OUTCOME_FIELDS - {"supersedes", "correction_reason", "entry_evidence"},
+        OUTCOME_FIELDS - {"supersedes", "correction_reason", "entry_evidence", "lesson_assessment"},
         "Outcome",
     )
     start, end = _time(payload["start_at"]), _time(payload["end_at"])
@@ -299,6 +356,29 @@ def record_outcome(
         )
         if not call:
             raise RecommendationError("Unknown recommendation")
+        if "lesson_assessment" in payload:
+            test = call.get("lesson_test")
+            if not test:
+                raise RecommendationError("Cannot assess a lesson without a prospective test")
+            assessment = payload["lesson_assessment"]
+            fields = {"conclusion", "old_result", "new_result", "evidence", "reason"}
+            _fields(assessment, fields, fields, "Lesson assessment")
+            _choice(
+                assessment["conclusion"],
+                {"SUPPORTS", "CONTRADICTS", "INCONCLUSIVE"},
+                "lesson assessment",
+            )
+            for field in ("old_result", "new_result", "reason"):
+                _text(assessment[field], field)
+            if not isinstance(assessment["evidence"], list) or not assessment["evidence"]:
+                raise RecommendationError("Lesson assessment requires comparison evidence")
+            for source in assessment["evidence"]:
+                _text(source, "comparison evidence")
+            if assessment["conclusion"] != "INCONCLUSIVE" and (
+                payload["window"] != test["window"]
+                or (test["window"] == "EVENT" and end != _time(test["event_deadline"]))
+            ):
+                raise RecommendationError("Score the frozen lesson window; otherwise INCONCLUSIVE")
         if start < _time(call["recorded_at"]):
             raise RecommendationError("Cannot credit prices before the recommendation was recorded")
         if not call.get("reference_start_at"):
@@ -376,6 +456,7 @@ def record_outcome(
 def render_recommendations(root: Path, *, now: datetime | None = None) -> str:
     now = now or datetime.now(UTC)
     rows = ["# Local Recommendation Review", "", "Reference outcomes are not portfolio P&L.", ""]
+    rows.extend(render_lessons(root))
     calls = latest_recommendations(root)
     if not calls:
         return "\n".join([*rows, "No recommendations recorded yet.\n"])
@@ -386,6 +467,8 @@ def render_recommendations(root: Path, *, now: datetime | None = None) -> str:
         )
         if not call.get("reference_start_at"):
             rows.append("  UNSCORABLE: no prospective reference start was frozen.")
+        if not call.get("lesson_applications"):
+            rows.append("  Legacy call: no lesson application was recorded; do not infer one.")
         rows.extend(
             [
                 f"  Issued {call['recorded_at']}; review by {call['review_by']}.",
@@ -399,6 +482,11 @@ def render_recommendations(root: Path, *, now: datetime | None = None) -> str:
             rows.append(
                 f"  Revises {call['supersedes']} / {call['change_kind']}: {call['change_reason']}"
             )
+        for item in call.get("lesson_applications", []):
+            rows.append(
+                f"  Lesson {item['id']} v{item['version']} / "
+                f"{item['disposition']}: {item['effect']}"
+            )
     rows.extend(["", "## Recorded Outcomes", ""])
     outcomes = [r for r in read_jsonl(root / LEDGER) if r.get("kind") == "outcome"]
     replaced = {r.get("supersedes") for r in outcomes}
@@ -411,6 +499,11 @@ def render_recommendations(root: Path, *, now: datetime | None = None) -> str:
             f"{outcome['excess_return_pp']:+.2f} pp / "
             f"rotation advantage {outcome['rotation_advantage_pp']}"
         )
+        if outcome.get("lesson_assessment"):
+            assessment = outcome["lesson_assessment"]
+            rows.append(
+                f"  Recorded lesson comparison: {assessment['conclusion']} / {assessment['reason']}"
+            )
     rows.extend(
         [
             "",
@@ -429,4 +522,16 @@ def render_recommendations(root: Path, *, now: datetime | None = None) -> str:
         missing = [window for window in WINDOWS if window not in measured]
         if missing:
             rows.append(f"- {call['ticker']} / {call['id']} / {', '.join(missing)}")
+        if call.get("lesson_test") and not any(
+            r["recommendation_id"] == call["id"]
+            and r["id"] not in replaced
+            and r["window"] == call["lesson_test"]["window"]
+            and r.get("lesson_assessment")
+            for r in outcomes
+        ):
+            test = call["lesson_test"]
+            rows.append(
+                f"  Lesson test pending: {test['id']} v{test['version']} / "
+                f"{test['window']} / cohort {test['cohort_key']}"
+            )
     return "\n".join(rows) + "\n"

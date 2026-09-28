@@ -23,6 +23,74 @@ The journal records what was advised; it is not a second decision writer.
    not zero and is not permission to invent an exact concentration percentage.
 5. Resolve the marginal allocation choice below, then append a recommendation packet before
    answering. No exact holdings or transaction fills belong in the packet.
+6. Apply the shared calibration skill and read `research/learning/lessons.yaml`. Log relevant
+   lesson IDs/versions, APPLIED / NOT_APPLICABLE / COUNTEREVIDENCE, and concrete effects.
+   Read scoped counterexamples; a rule's title alone is not a decision.
+
+## Compounding Lessons
+
+The register is the shared, Git-versioned memory. Seed lessons come from the reconstructed
+September 2026 audit and remain PROVISIONAL. Raw historical transcripts and private journal
+records are not copied into tracked research. Historical observations are not prospective tests.
+
+- PROVISIONAL: a bounded hypothesis or process correction awaiting evaluation.
+- SUPPORTED: a documented prospective evaluation supports a specific claim in a stated
+  scope. Process reliability support is not evidence of investment outperformance.
+- RETIRED: keep the history and reason; do not apply it as an active rule.
+
+During existing reviews, check matured observations and relevant counterevidence before the
+next call. Do not create a scheduler. At the first normal review after a preregistered test
+matures, assess it or disclose missing data. Incomplete and inconclusive cases stay visible.
+Do not optimize a rule using its own evaluation sample and then call that forward validation.
+
+Each recommendation's `lesson_applications` contains `id`, `version`, `disposition`, and
+`effect`. The recorder freezes the corresponding definitions as `lesson_snapshots`.
+Existing calls without these fields are legacy; do not retroactively invent lesson usage.
+Any register-content or status change needs a version increment and `change_note`; the
+journal rejects silent same-version definition changes it has already observed.
+
+When an approach is changed for testing, include an optional `lesson_test`:
+
+```json
+{
+  "id": "L001",
+  "version": 1,
+  "old_approach": "Wait for the named results event; remain in cash until the frozen entry gate passes.",
+  "new_approach": "Evaluate a bounded starter only when all existing gates pass; retain the rest in cash.",
+  "window": "21_sessions",
+  "success_criterion": "Specify measurable benefit net of stated costs with a predeclared downside budget.",
+  "failure_criterion": "Specify measurable excess downside or failure versus the old conditional policy.",
+  "cohort_key": "one-economic-catalyst-not-one-record"
+}
+```
+
+This illustrates the fields, not an executable trading policy. Replace narrative examples
+with exact hypothetical conditions, sizing rules, common currency, costs, data requirements
+and success/failure measures before recording. Never include actual quantities or weights.
+EVENT tests additionally require a future `event_deadline` after `reference_start_at`.
+No historical comparator can be invented after its outcome. The old and new cases use the
+same information set, reference start, horizon and hypothetical risk budget. A registry
+change does not rewrite tests already frozen under its older version.
+
+A matching outcome may include `lesson_assessment` with `conclusion` (SUPPORTS,
+CONTRADICTS, INCONCLUSIVE), `old_result`, `new_result`, `evidence` (source list), and
+`reason`. These are sourced analyst assessments, not automatically verified policy returns.
+The CLI requires a prior test and its frozen window/deadline for a conclusive assessment.
+It does not reconstruct conditional execution, slippage, or risk-adjusted returns.
+
+Before proposing promotion, consider every eligible case, missing outcomes, implementation
+cost, adverse paths, and regimes where it failed. Group repeated calls and correlated
+catalysts; a count or win rate alone is not a promotion threshold. Distinguish an attribution
+error, a poor decision process, a sound decision with an unlucky result, and an immature thesis.
+Never rewrite these classifications simply because a stock subsequently rises.
+
+Routine reviews append private observations and flag candidates for maintenance. During an
+authorized lesson-maintenance or audit task, add a privacy-safe evaluation note, update
+`evaluation_ref`, increment the version and explain promotion, narrowing, or retirement.
+SUPPORTED requires an existing repository evaluation note. The note must state comparator,
+sample selection, horizon, dependence, counterevidence and the limited claim supported.
+Preserve earlier versions in Git and publish through a scoped PR; no automatic policy merge.
+Existing thesis, privacy, live-data and capacity gates remain binding even if a lesson is retired.
 
 ## Decision Changes
 
@@ -148,6 +216,8 @@ Keep the final output concise. Include one primary action and:
 4. Thesis / valuation / timing confidence, principal downside, and invalidation.
 5. One relevant matured outcome or unresolved prior call, without turning every review into
    a long retrospective. Private capacity constraints should not leak into tracked files.
+6. One line naming the applied lesson version and actual effect, or why no relevant lesson
+   changed the decision. Keep this inside the invoking skill's existing report.
 
 Do not replace these steps with a promise to be more conservative or more aggressive.
 The improvement is consistent evidence, explicit opportunity cost and measurable follow-up.

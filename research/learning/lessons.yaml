@@ -1,0 +1,109 @@
+schema_version: 1
+lessons:
+  - id: L001
+    version: 1
+    status: PROVISIONAL
+    title: Waiting has opportunity cost
+    problem: Pre-catalyst waits sometimes missed repricing despite an intact business thesis.
+    applies_when: An adequately researched thesis and acceptable valuation pass all entry and capacity gates.
+    rule: Compare a risk-sized starter with waiting, including the no-dip path and an expiry; neither is the default winner.
+    counterexamples:
+      - Waiting can avoid an adverse earnings gap, financing shock, or entry at excessive valuation.
+      - A missed rally does not retroactively clear a blocked entry or justify chasing.
+    evidence:
+      - September 2026 retrospective, Reallocation And Waiting; reconstructed evidence, not a forward test.
+      - "research/theses/recommendation_calibration.md#entry-and-waiting"
+    forward_test: Preregister starter and wait rules at equal hypothetical risk; compare matched-horizon opportunity cost and adverse paths, including unfilled limits.
+    retire_if: Repeated independent comparable cases show no advantage or unacceptable downside from the proposed starter rule.
+    evaluation_ref: ""
+    change_note: Initial bounded hypothesis from retrospective misses and counterexamples; no prospective validation.
+
+  - id: L002
+    version: 1
+    status: PROVISIONAL
+    title: Evaluate both sides of a rotation
+    problem: Replacement recommendations were not adequately tested against retaining the source.
+    applies_when: A sell or trim is proposed mainly to fund a supposedly better opportunity.
+    rule: Compare source, destination and cash on the same horizon; require a documented opportunity-cost case and consider a partial rotation.
+    counterexamples:
+      - A thesis break or unacceptable risk can justify an exit even when the source later rebounds.
+      - A lower-return destination may serve a stated risk-reduction objective; score that objective separately.
+    evidence:
+      - September 2026 retrospective, Reallocation And Waiting; adverse and helpful rotations both observed.
+      - "research/theses/recommendation_calibration.md#holding-and-rotating"
+    forward_test: Freeze retain-source and rotation cases; compare both reference returns, risk objectives and costs over identical windows.
+    retire_if: The proposed selection filter fails against retention across independent cases or confuses risk reduction with alpha.
+    evaluation_ref: ""
+    change_note: Initial rotation-discipline hypothesis; relative future performance is not established.
+
+  - id: L003
+    version: 1
+    status: PROVISIONAL
+    title: Unlock eligibility is not actual selling
+    problem: Supply eligibility dominated near-term forecasts even after contrary absorption evidence.
+    applies_when: A recommendation relies on unlocks, insider supply or a forced-flow discount.
+    rule: Separate eligible supply from likely selling and observed absorption; revise scenarios when new flow evidence contradicts them.
+    counterexamples:
+      - Early absorption can fail when later holders sell or liquidity deteriorates.
+      - Missing borrow or supply data is uncertainty, not confirmation of a squeeze.
+    evidence:
+      - September 2026 retrospective, Forecasts At Their Actual Deadlines; reconstructed unlock forecast misses.
+      - "research/theses/recommendation_calibration.md#entry-and-waiting"
+    forward_test: Freeze an eligibility-led comparator and evidence-updated scenarios with explicit event deadlines; score coverage and errors without redefining bins.
+    retire_if: The specific absorption signal lacks predictive value after accounting for later supply and liquidity.
+    evaluation_ref: ""
+    change_note: Initial flow-forecast hypothesis; not a technical price rule or an intrinsic-value uplift.
+
+  - id: L004
+    version: 1
+    status: PROVISIONAL
+    title: Explain revisions rather than follow pressure
+    problem: Some advice changed without a commensurate documented change in evidence or constraints.
+    applies_when: A recommendation or valuation is revised, including after user pushback.
+    rule: Name new evidence, revised assumptions, changed constraints or the explicit error; otherwise reaffirm without manufacturing confidence.
+    counterexamples:
+      - User corrections can supply genuine missing evidence or a different mandate.
+      - Consistency must not become refusal to correct a mistake.
+    evidence:
+      - September 2026 retrospective, Process Findings; reconstructed changes within conversations.
+      - "research/theses/recommendation_calibration.md#holding-and-rotating"
+    forward_test: Review whether each changed call is traceable to a timestamped cause; separately assess outcomes without rewarding stubbornness.
+    retire_if: Revise the implementation if it obstructs evidence-based corrections; never remove the underlying audit trail.
+    evaluation_ref: ""
+    change_note: Process correction; success means traceability, not proof of better returns.
+
+  - id: L005
+    version: 1
+    status: PROVISIONAL
+    title: Separate reference performance from execution
+    problem: An earlier retrospective credited an unsupported entry and favored selective endpoints.
+    applies_when: Any recommendation, limit, watchlist candidate or prior forecast is evaluated.
+    rule: Use frozen starts and matched windows; retain unfilled and unscorable cases, and never label reference gains as portfolio profit.
+    counterexamples:
+      - A useful long-term thesis can have poor short-term reference returns.
+      - Verified executions require separate private cash-flow reconciliation, not an inferred daily-bar fill.
+    evidence:
+      - September 2026 retrospective, Corrections To The Prior Retrospective; historical entry credit corrected.
+      - "research/theses/recommendation_calibration.md#outcome-evidence"
+    forward_test: Audit provenance, maturity, corporate actions and all predefined checkpoints; measure attribution errors separately from investment returns.
+    retire_if: Replace a measurement convention only with a documented more accurate one; never loosen anti-lookahead controls.
+    evaluation_ref: ""
+    change_note: Measurement correction; no empirical alpha claim.
+
+  - id: L006
+    version: 1
+    status: PROVISIONAL
+    title: Separate attractiveness from portfolio capacity
+    problem: A capacity-limited HOLD was sometimes interpreted as a weak investment thesis.
+    applies_when: Portfolio concentration, contribution room or funding constraints affect a recommendation.
+    rule: State the binding constraint and exposure denominator; compare marginal capital without inventing household precision.
+    counterexamples:
+      - Strong upside does not remove concentration risk or create contribution room.
+      - Incomplete household data cannot establish available capacity.
+    evidence:
+      - September 2026 retrospective, Process Findings; recommendation framing and exposure-denominator issues.
+      - "research/theses/recommendation_calibration.md#before-recommending"
+    forward_test: Check whether independent readers can identify thesis versus capacity reasons, then assess allocation outcomes within unchanged constraints.
+    retire_if: Narrow or replace confusing presentation; preserve privacy and capacity gates regardless of returns.
+    evaluation_ref: ""
+    change_note: Communication and sizing-discipline correction; no actual exposure is stored here.

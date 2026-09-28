@@ -10,6 +10,7 @@ import pytest
 
 from bottleneck_capital.cli import main
 from bottleneck_capital.io import read_jsonl
+from bottleneck_capital.lessons import REGISTER, LessonError
 from bottleneck_capital.recommendations import (
     LEDGER,
     RecommendationError,
@@ -22,6 +23,15 @@ from bottleneck_capital.validation import _check_position_privacy
 
 ISSUED = datetime(2026, 9, 28, 12, tzinfo=UTC)
 FINISHED = datetime(2026, 10, 3, tzinfo=UTC)
+
+
+@pytest.fixture(autouse=True)
+def lesson_registry(tmp_path: Path) -> None:
+    target = tmp_path / REGISTER
+    target.parent.mkdir(parents=True, exist_ok=True)
+    target.write_text(
+        (Path(__file__).parents[1] / REGISTER).read_text(encoding="utf-8"), encoding="utf-8"
+    )
 
 
 def packet() -> dict:
@@ -45,6 +55,14 @@ def packet() -> dict:
         "wait_case": "Waiting avoids execution risk but sacrifices possible appreciation.",
         "missed_entry_response": "Refresh assumptions at the review deadline; do not chase.",
         "entry": {"mode": "LIMIT", "limit_price": 100},
+        "lesson_applications": [
+            {
+                "id": "L005",
+                "version": 1,
+                "disposition": "APPLIED",
+                "effect": "Keep unverified limit touches separate from executed returns.",
+            }
+        ],
     }
 
 
@@ -335,3 +353,118 @@ def test_privacy_gate_rejects_force_tracked_journal_data(tmp_path: Path, private
     subprocess.run(["git", "add", "-f", private_path], cwd=tmp_path, check=True)
     _check_position_privacy(tmp_path, issues)
     assert any(issue.code == "POSITION_PRIVACY_TRACKED_FILE" for issue in issues)
+
+
+def lesson_test() -> dict:
+    return {
+        "id": "L005",
+        "version": 1,
+        "window": "5_sessions",
+        "old_approach": "Credit an earlier low as an entry.",
+        "new_approach": "Reject prices preceding the frozen recommendation.",
+        "success_criterion": "No pre-call or unverified execution credits in this audit.",
+        "failure_criterion": "A pre-call price is credited as an execution.",
+        "cohort_key": "synthetic-one-measurement-audit",
+    }
+
+
+def assessment() -> dict:
+    return {
+        "conclusion": "SUPPORTS",
+        "old_result": "One attribution error in the synthetic audit.",
+        "new_result": "No attribution error in the synthetic audit.",
+        "evidence": ["Synthetic matching-date bar and audit provenance fixture."],
+        "reason": "Supports this measurement check, not investment alpha.",
+    }
+
+
+@pytest.mark.parametrize(
+    "application",
+    [
+        {"id": "L999", "version": 1, "disposition": "APPLIED", "effect": "Unknown rule."},
+        {"id": "L005", "version": 2, "disposition": "APPLIED", "effect": "Wrong version."},
+        {"id": "L005", "version": 1, "disposition": "APPLIED", "effect": ""},
+        {"id": "L005", "version": 1, "disposition": "APPLIED", "effect": "x", "quantity": 3},
+    ],
+)
+def test_invalid_lesson_application_is_not_recorded(tmp_path: Path, application: dict) -> None:
+    with pytest.raises(LessonError):
+        record_recommendation(
+            tmp_path, {**packet(), "lesson_applications": [application]}, now=ISSUED
+        )
+    assert not (tmp_path / LEDGER).exists()
+
+
+def test_lesson_definition_is_frozen_and_cannot_silently_change(tmp_path: Path) -> None:
+    call = record_recommendation(tmp_path, packet(), now=ISSUED)
+    before = deepcopy(call["lesson_snapshots"])
+    register = tmp_path / REGISTER
+    register.write_text(
+        register.read_text().replace(
+            "Separate reference performance from execution", "Changed measurement definition"
+        ),
+        encoding="utf-8",
+    )
+    data = {**packet(), "ticker": "CCC"}
+    with pytest.raises(RecommendationError, match="Increment the lesson version"):
+        record_recommendation(tmp_path, data, now=ISSUED)
+    assert read_jsonl(tmp_path / LEDGER)[0]["lesson_snapshots"] == before
+
+
+def test_lesson_assessment_requires_prospective_test(tmp_path: Path) -> None:
+    call = record_recommendation(tmp_path, packet(), now=ISSUED)
+    with pytest.raises(RecommendationError, match="without a prospective test"):
+        record_outcome(
+            tmp_path, {**observation(call), "lesson_assessment": assessment()}, now=FINISHED
+        )
+
+
+def test_immature_lesson_cannot_be_declared_supported(tmp_path: Path) -> None:
+    test = {**lesson_test(), "window": "21_sessions"}
+    call = record_recommendation(tmp_path, {**packet(), "lesson_test": test}, now=ISSUED)
+    data = {**observation(call), "lesson_assessment": assessment()}
+    with pytest.raises(RecommendationError, match="frozen lesson window"):
+        record_outcome(tmp_path, data, now=FINISHED)
+    data["lesson_assessment"]["conclusion"] = "INCONCLUSIVE"
+    record_outcome(tmp_path, data, now=FINISHED)
+    assert "Lesson test pending" in render_recommendations(tmp_path, now=FINISHED)
+
+
+def test_completed_lesson_assessment_does_not_auto_promote(tmp_path: Path) -> None:
+    call = record_recommendation(tmp_path, {**packet(), "lesson_test": lesson_test()}, now=ISSUED)
+    before = (tmp_path / REGISTER).read_text()
+    record_outcome(tmp_path, {**observation(call), "lesson_assessment": assessment()}, now=FINISHED)
+    assert (tmp_path / REGISTER).read_text() == before
+    output = render_recommendations(tmp_path, now=FINISHED)
+    assert "Recorded lesson comparison: SUPPORTS" in output
+    assert "Lesson test pending" not in output
+
+
+def test_new_version_does_not_rewrite_prior_tests(tmp_path: Path) -> None:
+    first = record_recommendation(tmp_path, {**packet(), "lesson_test": lesson_test()}, now=ISSUED)
+    register = tmp_path / REGISTER
+    register.write_text(
+        register.read_text().replace("id: L005\n    version: 1", "id: L005\n    version: 2"),
+        encoding="utf-8",
+    )
+    data = packet()
+    data["ticker"] = "CCC"
+    data["lesson_applications"][0]["version"] = 2
+    second = record_recommendation(tmp_path, data, now=ISSUED)
+    assert second["lesson_snapshots"][0]["version"] == 2
+    record_outcome(
+        tmp_path, {**observation(first), "lesson_assessment": assessment()}, now=FINISHED
+    )
+    assert read_jsonl(tmp_path / LEDGER)[0]["lesson_test"]["version"] == 1
+
+
+def test_lesson_event_deadline_is_not_redefined_after_result(tmp_path: Path) -> None:
+    test = {**lesson_test(), "window": "EVENT", "event_deadline": "2026-10-02T19:59:00+00:00"}
+    call = record_recommendation(tmp_path, {**packet(), "lesson_test": test}, now=ISSUED)
+    data = {**observation(call), "window": "EVENT", "lesson_assessment": assessment()}
+    with pytest.raises(RecommendationError, match="frozen lesson window"):
+        record_outcome(tmp_path, data, now=FINISHED)
+    data["end_at"] = test["event_deadline"]
+    assert record_outcome(tmp_path, data, now=FINISHED)["lesson_assessment"]["conclusion"] == (
+        "SUPPORTS"
+    )

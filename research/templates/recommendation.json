@@ -21,5 +21,13 @@
   "starter_case": "Evaluate a risk-sized entry if thesis, valuation and capacity gates pass.",
   "wait_case": "Explain why waiting is better or worse than that starter.",
   "missed_entry_response": "Re-underwrite at the deadline; do not mechanically chase or repeat an expired limit.",
-  "entry": {"mode": "NO_ORDER"}
+  "entry": {"mode": "NO_ORDER"},
+  "lesson_applications": [
+    {
+      "id": "L005",
+      "version": 1,
+      "disposition": "APPLIED",
+      "effect": "Replace with the concrete measurement safeguard or other applicable lesson's effect on this call."
+    }
+  ]
 }

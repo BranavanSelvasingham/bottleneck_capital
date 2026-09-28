@@ -60,6 +60,21 @@ Recording does not approve a trade, run live ingestion, or change the ticker dec
 Outcome scoring requires sourced, matching-date price data supplied by the review; it does
 not fetch prices or represent broker fills. Read the protocol for the outcome schema.
 
+The shared [calibration skill](skills/calibrate-investment-recommendations/SKILL.md) reads
+the [versioned lessons register](research/learning/lessons.yaml). Each new call records
+which lesson versions affected it; optional prospective tests compare old and new approaches.
+Seed lessons are PROVISIONAL, not proven alpha. Evaluations do not automatically rewrite rules.
+
+Install the shared skill and bounded links in the three existing investment skills:
+
+```bash
+python3 scripts/install_investment_calibration.py --apply
+python3 scripts/install_investment_calibration.py
+```
+
+The second command checks for drift without writing. The installer preserves existing skill
+content, is idempotent, and stops rather than overwriting a divergent shared skill or hook.
+
 For a compact current-action surface that does not rewrite decision files:
 
 ```bash

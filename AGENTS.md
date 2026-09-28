@@ -116,6 +116,16 @@ Before any user-facing investment review or Portfolio PM recommendation, read
 This applies to broad outlook, current-state, and multibagger skills as well as this
 consultant thread. Reconcile the previous call before proposing the next one.
 
+Use the shared `calibrate-investment-recommendations` skill, whose version-controlled source
+is `skills/calibrate-investment-recommendations/SKILL.md`. Read the scoped lessons and
+counterexamples in `research/learning/lessons.yaml`. New recommendation records require
+lesson IDs, versions, dispositions and concrete effects; their definitions are frozen locally.
+Add one concise "Lesson applied" line to the review, or explain why no lesson changed it.
+Testing a changed approach requires a prospective old-versus-new comparison and a fixed
+window/cohort. Routine reviews record outcomes and counterevidence; they do not auto-promote
+lessons. Authorized lesson-maintenance tasks version changes through a scoped PR. Never turn
+a retrospective winner into a proven rule, and never count correlated calls as independent.
+
 Every material buy, wait, hold, trim, sell, or rotation recommendation must be recorded
 before the final answer with `bcap recommendation record --input ...`. Use the packet
 template in `research/templates/recommendation.json`. A journal record is NOT investment
