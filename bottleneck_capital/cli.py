@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 from collections.abc import Callable
 from datetime import date
 from pathlib import Path
@@ -33,6 +34,12 @@ from bottleneck_capital.positions import (
     write_exposure_report,
 )
 from bottleneck_capital.readiness import is_live_ready, write_live_readiness_report
+from bottleneck_capital.recommendations import (
+    RecommendationError,
+    record_outcome,
+    record_recommendation,
+    render_recommendations,
+)
 from bottleneck_capital.research_handoffs import (
     ALLOWED_CAUSE_STATUSES,
     ALLOWED_PROVISIONAL_BIASES,
@@ -66,6 +73,17 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(prog="bcap")
     parser.add_argument("--root", type=Path, default=Path.cwd(), help="Project root.")
     subparsers = parser.add_subparsers(dest="command", required=True)
+
+    recommendation = subparsers.add_parser(
+        "recommendation", help="Private, append-only recommendation and outcome journal."
+    )
+    recommendation_commands = recommendation.add_subparsers(
+        dest="recommendation_command", required=True
+    )
+    for command in ("record", "outcome"):
+        command_parser = recommendation_commands.add_parser(command)
+        command_parser.add_argument("--input", type=Path, required=True)
+    recommendation_commands.add_parser("review", help="Show current calls and measured outcomes.")
 
     sentinel_parser = subparsers.add_parser("sentinel", help="Sentinel commands.")
     sentinel_subparsers = sentinel_parser.add_subparsers(dest="sentinel_command", required=True)
@@ -459,6 +477,25 @@ def main(argv: list[str] | None = None) -> int:
 
     args = parser.parse_args(argv)
     root = args.root.resolve()
+
+    if args.command == "recommendation":
+        try:
+            if args.recommendation_command == "review":
+                print(render_recommendations(root), end="")
+            else:
+                input_path = args.input if args.input.is_absolute() else root / args.input
+                payload = json.loads(input_path.read_text(encoding="utf-8"))
+                writer = (
+                    record_recommendation
+                    if args.recommendation_command == "record"
+                    else record_outcome
+                )
+                record = writer(root, payload)
+                print(f"Recorded {record['kind']}: {record['id']}")
+        except (RecommendationError, RunLockError, OSError, ValueError) as exc:
+            print(f"Recommendation journal error: {exc}")
+            return 1
+        return 0
 
     if args.command == "sentinel":
         try:

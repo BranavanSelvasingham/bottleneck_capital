@@ -44,6 +44,22 @@ same-ticker, same-cause, same-day repeats unless genuinely new primary evidence 
 `./bcap validate --pm-preflight` before PM recovery work;
 use `./bcap validate --strict-live` before authorizing BUY_NOW or ADD_ON_DIP.
 
+User-facing recommendations additionally follow the
+[recommendation calibration protocol](research/theses/recommendation_calibration.md).
+It compares starting versus waiting, records why a call changed, and measures exits and
+missed opportunities as well as buys. The append-only journal and inputs are local-only:
+
+```bash
+./bcap recommendation review
+./bcap recommendation record --input reports/local_recommendations/next_call.json
+./bcap recommendation outcome --input reports/local_recommendations/outcome.json
+```
+
+Use [the recommendation packet](research/templates/recommendation.json) as the schema example.
+Recording does not approve a trade, run live ingestion, or change the ticker decision engine.
+Outcome scoring requires sourced, matching-date price data supplied by the review; it does
+not fetch prices or represent broker fills. Read the protocol for the outcome schema.
+
 For a compact current-action surface that does not rewrite decision files:
 
 ```bash

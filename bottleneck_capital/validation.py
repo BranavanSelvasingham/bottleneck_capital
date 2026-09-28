@@ -114,6 +114,8 @@ def _check_market_structure(
 def _check_position_privacy(root: Path, issues: list[ValidationIssue]) -> None:
     private_paths = (
         "state/local_positions.yaml",
+        "state/local_recommendations.jsonl",
+        "reports/local_recommendations",
         "reports/local_exposure.md",
         "reports/local_portfolio_boards",
         "state/signal_events.jsonl",
@@ -126,6 +128,8 @@ def _check_position_privacy(root: Path, issues: list[ValidationIssue]) -> None:
     ignore_text = ignore_path.read_text(encoding="utf-8") if ignore_path.exists() else ""
     required_patterns = (
         "state/local_positions.yaml",
+        "state/local_recommendations.jsonl",
+        "reports/local_recommendations/",
         "reports/local_exposure.md",
         "reports/local_portfolio_boards/",
         "state/signal_events.jsonl",
